@@ -1,0 +1,36 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
+class PrefKeys {
+  PrefKeys._();
+
+  static const String languageCode = 'language_code';
+}
+
+class SharedPrefUtils {
+  SharedPrefUtils._();
+
+  static SharedPreferences? _prefs;
+
+  static Future<void> init() async {
+    _prefs ??= await SharedPreferences.getInstance();
+  }
+
+  static SharedPreferences get _instance {
+    final prefs = _prefs;
+    if (prefs == null) {
+      throw StateError('SharedPrefUtils is not initialized.');
+    }
+    return prefs;
+  }
+
+  static String? get languageCode {
+    final code = _instance.getString(PrefKeys.languageCode);
+    if (code == 'ar' || code == 'en') return code;
+    return null;
+  }
+
+  static Future<bool> saveLanguageCode(String code) {
+    if (code != 'ar' && code != 'en') return Future.value(false);
+    return _instance.setString(PrefKeys.languageCode, code);
+  }
+}
