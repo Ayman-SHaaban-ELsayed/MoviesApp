@@ -46,7 +46,7 @@ class HomeTab extends StatelessWidget {
                 ),
                 items: moviesList.map((imagePath) {
                   return MovieCard(
-                    imagePath: imagePath,
+                    imagePath: 'https://www.google.com/imgres?q=%D8%B3%D9%88%D8%B1%D9%87%20%D8%A8%D9%88%D8%B3%D8%AA%D8%B1%20%D9%83%D8%A7%D8%A8%D8%AA%D9%86%20%D8%A7%D9%85%D8%B1%D9%8A%D9%83%D8%A7&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Far%2Farchive%2F7%2F74%2F20250406152742%2521Captain_america_civil_war_ver3.jpg&imgrefurl=https%3A%2F%2Far.wikipedia.org%2Fwiki%2F%25D9%2585%25D9%2584%25D9%2581%3ACaptain_america_civil_war_ver3.jpg&docid=-xj6kRa7KGk-WM&tbnid=giV16T3BEkPZTM&vet=12ahUKEwi5n4LClLqXAxX_ZUEAHb3fAcEQnPAOegQIQRAA..i&w=1382&h=2048&hcb=2&ved=2ahUKEwi5n4LClLqXAxX_ZUEAHb3fAcEQnPAOegQIQRAA',
                     rating: 7.7,
                     onTap: () {
                       print('Movie clicked!');
@@ -71,7 +71,7 @@ class HomeTab extends StatelessWidget {
                   itemCount: moviesList.length,
                   separatorBuilder: (context, index) => SizedBox(width: 12.w),
                   itemBuilder: (context, index) => MovieCard(
-                    imagePath: moviesList[index],
+                    imagePath:'https://www.google.com/imgres?q=%D8%B3%D9%88%D8%B1%D9%87%20%D8%A8%D9%88%D8%B3%D8%AA%D8%B1%20%D9%83%D8%A7%D8%A8%D8%AA%D9%86%20%D8%A7%D9%85%D8%B1%D9%8A%D9%83%D8%A7&imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Far%2Farchive%2F7%2F74%2F20250406152742%2521Captain_america_civil_war_ver3.jpg&imgrefurl=https%3A%2F%2Far.wikipedia.org%2Fwiki%2F%25D9%2585%25D9%2584%25D9%2581%3ACaptain_america_civil_war_ver3.jpg&docid=-xj6kRa7KGk-WM&tbnid=giV16T3BEkPZTM&vet=12ahUKEwi5n4LClLqXAxX_ZUEAHb3fAcEQnPAOegQIQRAA..i&w=1382&h=2048&hcb=2&ved=2ahUKEwi5n4LClLqXAxX_ZUEAHb3fAcEQnPAOegQIQRAA',
                     rating: 7.7,
                     onTap: () {
                       print('Movie clicked!');
