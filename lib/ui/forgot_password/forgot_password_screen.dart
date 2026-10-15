@@ -74,6 +74,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               backgroundColor: AppColors.primary,
               elevation: 0,
               iconTheme: const IconThemeData(color: AppColors.yellow),
+              title: Text(local.forgetPassword,style: AppStyles.regular16Yellow,),
+              centerTitle: true,
             ),
             body: SafeArea(
               child: SingleChildScrollView(
@@ -174,7 +176,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 ),
                               )
                             : Text(
-                                local.sendResetLink,
+                                local.verifyEmail,
                                 style: AppStyles.bold20Black,
                               ),
                       ),
