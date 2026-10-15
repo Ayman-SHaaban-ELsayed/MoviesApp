@@ -1009,6 +1009,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Too many attempts. Please wait a moment and try again.'**
   String get tooManyRequests;
+
+  /// No description provided for @loginWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Login With Google'**
+  String get loginWithGoogle;
 }
 
 class _AppLocalizationsDelegate
