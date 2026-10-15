@@ -6,6 +6,7 @@ import 'package:movies_app/ui/forgot_password/forgot_password_screen.dart';
 import 'package:movies_app/ui/home/home_screen.dart';
 import 'package:movies_app/ui/login/login_Screen.dart';
 import 'package:movies_app/ui/register/register_Screen.dart';
+import 'package:movies_app/ui/profile/update_profile_screen.dart';
 import 'package:movies_app/utils/app_routes.dart';
 import 'package:movies_app/utils/locale_cubit.dart';
 import 'package:movies_app/utils/shared_pref_utils.dart';
@@ -50,6 +51,8 @@ class MyApp extends StatelessWidget {
               AppRoutes.registerRouteName: (context) => const RegisterScreen(),
               AppRoutes.forgotPasswordRouteName: (context) =>
                   const ForgotPasswordScreen(),
+              AppRoutes.updateProfileRouteName: (context) =>
+                  const UpdateProfileScreen(),
             },
           );
         },

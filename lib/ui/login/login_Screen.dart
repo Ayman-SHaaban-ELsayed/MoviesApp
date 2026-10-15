@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../utils/app_assets.dart';
@@ -9,7 +8,7 @@ import '../../utils/app_routes.dart';
 import '../../utils/app_styles.dart';
 import '../../utils/shared_pref_utils.dart';
 import '../../utils/size_utils.dart';
-import '../../utils/toast_utils.dart';
+import '../widgets/custom_dialog.dart';
 import '../register/register_Screen.dart';
 import '../widgets/custom_text_form_field.dart';
 import '../widgets/elevated_button_reuse.dart';
@@ -48,21 +47,27 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state is LoginSuccessState) {
             SharedPrefUtils.saveUserId(state.user.id);
-            ToastUtils.getFlutterToast(
+            bool navigated = false;
+            void navigateHome() {
+              if (!navigated && context.mounted) {
+                navigated = true;
+                CustomDialog.hide(context);
+                Navigator.pushReplacementNamed(context, AppRoutes.homeRouteName);
+              }
+            }
+
+            CustomDialog.showSuccess(
+              context: context,
               message: '${local.welcome}, ${state.user.name}!',
-              backGroundColor: AppColors.green,
-              textColor: AppColors.white,
-              gravity: ToastGravity.BOTTOM,
-              fontSize: 16,
-            );
-            Navigator.pushReplacementNamed(context, AppRoutes.homeRouteName);
+              buttonText: local.close,
+            ).then((_) => navigateHome());
+
+            Future.delayed(const Duration(milliseconds: 900), navigateHome);
           } else if (state is LoginErrorState) {
-            ToastUtils.getFlutterToast(
+            CustomDialog.showError(
+              context: context,
               message: _getLocalizedErrorMessage(state.errorMessage, local),
-              backGroundColor: AppColors.red,
-              textColor: AppColors.white,
-              gravity: ToastGravity.BOTTOM,
-              fontSize: 16,
+              buttonText: local.close,
             );
           }
         },
