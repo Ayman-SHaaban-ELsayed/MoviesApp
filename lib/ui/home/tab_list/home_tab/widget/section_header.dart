@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/app_styles.dart';
 import '../../../../../utils/size_utils.dart';
@@ -17,13 +18,12 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = SizeUtils.getWidth(context: context);
-    final screenHeight = SizeUtils.getHeight(context: context);
-
+    final height = context.height;
+    final width = context.width;
     final languageCode = Localizations.localeOf(context).languageCode;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.043),
+      padding: EdgeInsets.symmetric(horizontal: width * 0.043),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -36,9 +36,9 @@ class SectionHeader extends StatelessWidget {
                       ? Icons.arrow_back_rounded
                       : Icons.arrow_forward_rounded,
                   color: AppColors.yellow,
-                  size: screenHeight * 0.018,
+                  size: height * 0.018,
                 ),
-                SizedBox(width: screenWidth * 0.005),
+                SizedBox(width: width * 0.005),
                 Text(seeMoreText, style: AppStyles.regular16Yellow),
               ],
             ),

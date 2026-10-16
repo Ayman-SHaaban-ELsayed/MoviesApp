@@ -7,12 +7,15 @@ import 'package:movies_app/ui/onBoarding/onBoarding_state.dart';
 import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
+import 'package:movies_app/utils/size_utils.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final height = context.height;
+    final width = context.width;
     final List<OnboardingModel> onboardingItems = [
       OnboardingModel(
         imagePath: AppAssets.onBoardingPg1,
@@ -100,8 +103,8 @@ class OnBoardingScreen extends StatelessWidget {
                     height: currentItem.isFirst ? double.infinity : null,
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(
-                      horizontal: context.width * 0.05,
-                      vertical: context.height * 0.05,
+                      horizontal:  width * 0.05,
+                      vertical:  height * 0.05,
                     ),
                     decoration: BoxDecoration(
                       color: currentItem.isFirst
@@ -189,18 +192,4 @@ class OnBoardingScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-extension ScreenUtils on BuildContext {
-  double get width =>
-      MediaQuery
-          .of(this)
-          .size
-          .width;
-
-  double get height =>
-      MediaQuery
-          .of(this)
-          .size
-          .height;
 }

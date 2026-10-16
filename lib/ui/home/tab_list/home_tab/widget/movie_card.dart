@@ -9,7 +9,7 @@ import '../../../../../utils/size_utils.dart';
 class MovieCard extends StatelessWidget {
   final String imagePath;
   final double rating;
-  final double ?width;
+  final double? width;
 
   final VoidCallback onTap;
 
@@ -18,23 +18,22 @@ class MovieCard extends StatelessWidget {
     required this.imagePath,
     required this.rating,
     required this.onTap,
-    this.width
+    this.width,
   });
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = SizeUtils.getWidth(context: context);
-    final screenHeight = SizeUtils.getHeight(context: context);
-
+    final height = context.height;
+    final width = context.width;
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
-        width:width ??screenWidth * 0.49,
-        height: screenHeight * 0.34,
+        width: width ?? width * 0.49,
+        height: height * 0.34,
         child: Stack(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(screenWidth * 0.04),
+              borderRadius: BorderRadius.circular(width * 0.04),
               child: CachedNetworkImage(
                 imageUrl: imagePath,
                 width: double.infinity,
@@ -49,24 +48,24 @@ class MovieCard extends StatelessWidget {
             ),
 
             Positioned(
-              top: screenHeight * 0.016,
-              right: screenWidth * 0.035,
+              top: height * 0.016,
+              right: width * 0.035,
               child: Container(
-                height: screenHeight * 0.037,
-                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.013),
+                height: height * 0.037,
+                padding: EdgeInsets.symmetric(horizontal: width * 0.013),
                 decoration: BoxDecoration(
                   color: AppColors.liteGrey,
-                  borderRadius: BorderRadius.circular(screenWidth * 0.025),
+                  borderRadius: BorderRadius.circular(width * 0.025),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset(
                       AppAssets.starIcon,
-                      width: screenWidth * 0.037,
-                      height: screenHeight * 0.018,
+                      width: width * 0.037,
+                      height: height * 0.018,
                     ),
-                    SizedBox(width: screenWidth * 0.01),
+                    SizedBox(width: width * 0.01),
                     Text('$rating', style: AppStyles.regular16White),
                   ],
                 ),

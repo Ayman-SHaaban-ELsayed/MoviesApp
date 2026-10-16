@@ -4,7 +4,6 @@ import 'package:movies_app/ui/home/tab_list/browse_tab/browse_tab.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/home_tab.dart';
 import 'package:movies_app/ui/home/tab_list/profile_tab/profile_tab.dart';
 import 'package:movies_app/ui/home/tab_list/search_tab/search_tab.dart';
- 
 
 import '../../../../utils/app_assets.dart';
 import '../../../../utils/app_colors.dart';
@@ -22,8 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = SizeUtils.getWidth(context: context);
-
+     final width = context.width;
     final List<Widget> tabs = [
       const HomeTab(),
       SearchTab(),
@@ -36,10 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: tabs[_currentIndex],
       extendBody: true,
       bottomNavigationBar: Container(
-        margin: EdgeInsets.all(screenWidth * 0.023),
+        margin: EdgeInsets.all(width * 0.023),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          color: AppColors.tabGray,
+          color: AppColors.darkGrey,
           borderRadius: BorderRadius.circular(16),
         ),
         child: BottomNavigationBar(

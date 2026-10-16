@@ -3,14 +3,15 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
-import 'package:movies_app/api/api_manager.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/cubit/cubit_home_view_model.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/cubit/home_states.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_card.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_gradient.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/section_header.dart';
 import 'package:movies_app/utils/app_assets.dart';
+
 import '../../../../../utils/app_colors.dart';
+import '../../../../../utils/app_styles.dart';
 import '../../../../../utils/size_utils.dart';
 
 class HomeTab extends StatefulWidget {
@@ -25,11 +26,10 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = SizeUtils.getWidth(context: context);
-    final screenHeight = SizeUtils.getHeight(context: context);
-
+    final height = context.height;
+    final width = context.width;
     return BlocProvider(
-      create: (context) => CubitHomeViewModel(ApiManager())..getHomeData(),
+      create: (context) => CubitHomeViewModel()..getHomeData(),
       child: Scaffold(
         backgroundColor: AppColors.primary,
         body: BlocBuilder<CubitHomeViewModel, HomeStates>(
@@ -40,10 +40,10 @@ class _HomeTabState extends State<HomeTab> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const CircularProgressIndicator(color: AppColors.yellow),
-                    SizedBox(height: screenHeight * 0.02),
+                    SizedBox(height: height * 0.02),
                     Text(
                       AppLocalizations.of(context)!.loading,
-                      style: const TextStyle(color: AppColors.white),
+                      style: AppStyles.regular16White,
                     ),
                   ],
                 ),
@@ -52,7 +52,7 @@ class _HomeTabState extends State<HomeTab> {
               return Center(
                 child: Text(
                   AppLocalizations.of(context)!.failedToLoadMovies,
-                  style: const TextStyle(color: AppColors.white),
+                  style: AppStyles.regular16White,
                 ),
               );
             } else if (state is HomeSuccess) {
@@ -67,7 +67,7 @@ class _HomeTabState extends State<HomeTab> {
                       top: 0,
                       left: 0,
                       right: 0,
-                      height: screenHeight * 0.65,
+                      height: height * 0.65,
                       child: CachedNetworkImage(
                         imageUrl: currentBgImage,
                         fit: BoxFit.cover,
@@ -80,20 +80,25 @@ class _HomeTabState extends State<HomeTab> {
                   SingleChildScrollView(
                     child: Column(
                       children: [
-                        SizedBox(height: screenHeight * 0.03),
-                        Image.asset(AppAssets.availableNow, fit: BoxFit.fill, height: screenHeight * 0.09),
-                        SizedBox(height: screenHeight * 0.03),
+                        SizedBox(height: height * 0.03),
+                        Image.asset(
+                          AppAssets.availableNow,
+                          fit: BoxFit.fill,
+                          height: height * 0.09,
+                        ),
+                        SizedBox(height: height * 0.03),
 
                         CarouselSlider(
                           options: CarouselOptions(
                             enlargeCenterPage: true,
                             autoPlay: true,
                             viewportFraction: 0.55,
-                            height: screenHeight * 0.38,onPageChanged: (index, reason) {
-                            setState(() {
-                              _currentCarouselIndex = index;
-                            });
-                          },
+                            height: height * 0.38,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                _currentCarouselIndex = index;
+                              });
+                            },
                           ),
                           items: state.latestMovies.map((movie) {
                             return MovieCard(
@@ -107,31 +112,42 @@ class _HomeTabState extends State<HomeTab> {
                           }).toList(),
                         ),
 
-                        SizedBox(height: screenHeight * 0.04),
-                        Image.asset(AppAssets.watchNow, fit: BoxFit.fill, height: screenHeight * 0.15),
-                        SizedBox(height: screenHeight * 0.02),
+                        SizedBox(height: height * 0.04),
+                        Image.asset(
+                          AppAssets.watchNow,
+                          fit: BoxFit.fill,
+                          height: height * 0.15,
+                        ),
+                        SizedBox(height: height * 0.02),
 
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SectionHeader(
                               title: state.dynamicCategory.categoryName,
-                              seeMoreText: AppLocalizations.of(context)!.seeMore,
+                              seeMoreText: AppLocalizations.of(context)!
+                                  .seeMore,
                               onSeeMoreTap: () {
                                 //todo
-                                print('See More ${state.dynamicCategory.categoryName}');
+                                print(
+                                  'See More ${state.dynamicCategory.categoryName}',
+                                );
                               },
                             ),
-                            SizedBox(height: screenHeight * 0.03),
+                            SizedBox(height: height * 0.03),
                             SizedBox(
-                              height: screenHeight * 0.34,
+                              height: height * 0.34,
                               child: ListView.separated(
-                                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.04,
+                                ),
                                 scrollDirection: Axis.horizontal,
                                 itemCount: state.dynamicCategory.movies.length,
-                                separatorBuilder: (context, index) => SizedBox(width: screenWidth * 0.03),
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(width: width * 0.03),
                                 itemBuilder: (context, index) {
-                                  final movie = state.dynamicCategory.movies[index];
+                                  final movie =
+                                      state.dynamicCategory.movies[index];
                                   return MovieCard(
                                     imagePath: movie.mediumCoverImage,
                                     rating: movie.rating.toDouble(),
@@ -146,7 +162,7 @@ class _HomeTabState extends State<HomeTab> {
                           ],
                         ),
 
-                        SizedBox(height: screenHeight * 0.15),
+                        SizedBox(height: height * 0.15),
                       ],
                     ),
                   ),
