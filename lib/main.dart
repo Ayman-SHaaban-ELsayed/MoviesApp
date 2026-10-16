@@ -7,6 +7,7 @@ import 'package:movies_app/ui/home/home_screen.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/profile_tab/update_profile_screen.dart';
 import 'package:movies_app/ui/login/login_Screen.dart';
 import 'package:movies_app/ui/register/register_Screen.dart';
+import 'package:movies_app/ui/onBoarding/onBoarding_screen.dart';
 import 'package:movies_app/utils/app_routes.dart';
 import 'package:movies_app/utils/locale_cubit.dart';
 import 'package:movies_app/utils/shared_pref_utils.dart';
@@ -44,19 +45,17 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             debugShowCheckedModeBanner: false,
-            initialRoute: initialRoute,
+            initialRoute: AppRoutes.onBoardingRouteName,
             routes: {
               AppRoutes.homeRouteName: (context) => const HomeScreen(),
               AppRoutes.loginRouteName: (context) => const LoginScreen(),
+              AppRoutes.onBoardingRouteName: (context) => OnBoardingScreen(),
               AppRoutes.registerRouteName: (context) => const RegisterScreen(),
               AppRoutes.forgotPasswordRouteName: (context) =>
                   const ForgotPasswordScreen(),
               AppRoutes.updateProfileRouteName: (context) =>
                   const UpdateProfileScreen(),
-            },
-          );
-        },
-      ),
+                },
     );
   }
 }
