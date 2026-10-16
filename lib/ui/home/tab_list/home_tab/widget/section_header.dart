@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/app_styles.dart';
 import '../../../../../utils/size_utils.dart';
@@ -21,6 +20,8 @@ class SectionHeader extends StatelessWidget {
     final screenWidth = SizeUtils.getWidth(context: context);
     final screenHeight = SizeUtils.getHeight(context: context);
 
+    final languageCode = Localizations.localeOf(context).languageCode;
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.043),
       child: Row(
@@ -31,7 +32,9 @@ class SectionHeader extends StatelessWidget {
             child: Row(
               children: [
                 Icon(
-                  Icons.arrow_back_rounded,
+                  languageCode == 'ar'
+                      ? Icons.arrow_back_rounded
+                      : Icons.arrow_forward_rounded,
                   color: AppColors.yellow,
                   size: screenHeight * 0.018,
                 ),

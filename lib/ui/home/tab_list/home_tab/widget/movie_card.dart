@@ -9,6 +9,8 @@ import '../../../../../utils/size_utils.dart';
 class MovieCard extends StatelessWidget {
   final String imagePath;
   final double rating;
+  final double ?width;
+
   final VoidCallback onTap;
 
   const MovieCard({
@@ -16,6 +18,7 @@ class MovieCard extends StatelessWidget {
     required this.imagePath,
     required this.rating,
     required this.onTap,
+    this.width
   });
 
   @override
@@ -26,7 +29,7 @@ class MovieCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
-        width: screenWidth * 0.49,
+        width:width ??screenWidth * 0.49,
         height: screenHeight * 0.34,
         child: Stack(
           children: [
