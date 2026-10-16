@@ -10,4 +10,6 @@ class AppColors {
   static const Color red = Color(0xffE82626);
   static const Color transparent = Colors.transparent;
   static const Color grey = Color(0xff808080);
+  static const Color tabGray = Color(0xff282A28);
+
 }

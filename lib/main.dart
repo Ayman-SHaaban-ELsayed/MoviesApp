@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             debugShowCheckedModeBanner: false,
-            initialRoute: AppRoutes.onBoardingRouteName,
+            initialRoute: AppRoutes.homeRouteName,
             routes: {
               AppRoutes.homeRouteName: (context) => const HomeScreen(),
               AppRoutes.loginRouteName: (context) => const LoginScreen(),
@@ -55,7 +55,10 @@ class MyApp extends StatelessWidget {
                   const ForgotPasswordScreen(),
               AppRoutes.updateProfileRouteName: (context) =>
                   const UpdateProfileScreen(),
-                },
+            },
+          );
+        },
+      ),
     );
   }
 }

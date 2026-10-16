@@ -9,14 +9,12 @@ class LocaleCubit extends Cubit<Locale> {
 
   static Locale _savedLocale() {
     final code = SharedPrefUtils.languageCode;
-    // لو مفيش لغة متسجلة في SharedPreferences يرجع اللغة الإنجليزية كافتراضي
-    if (code != null && supportedCodes.contains(code)) {
+     if (code != null && supportedCodes.contains(code)) {
       return Locale(code);
     }
     return const Locale('en');
   }
 
-  // Changes the language and saves it as the latest choice.
   Future<void> changeLanguage(String code) async {
     if (!supportedCodes.contains(code)) return;
     if (state.languageCode == code) return;

@@ -319,6 +319,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get seeAll => 'عرض الكل';
 
   @override
+  String get seeMore => 'مشاهدة المزيد';
+
+  @override
   String get retry => 'إعادة المحاولة';
 
   @override

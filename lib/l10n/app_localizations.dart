@@ -704,6 +704,12 @@ abstract class AppLocalizations {
   /// **'See All'**
   String get seeAll;
 
+  /// No description provided for @seeMore.
+  ///
+  /// In en, this message translates to:
+  /// **'see More'**
+  String get seeMore;
+
   /// No description provided for @retry.
   ///
   /// In en, this message translates to:
