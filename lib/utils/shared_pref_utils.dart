@@ -27,7 +27,7 @@ class SharedPrefUtils {
   static String? get languageCode {
     final code = _instance.getString(PrefKeys.languageCode);
     if (code == 'ar' || code == 'en') return code;
-    return null;
+    return null ;
   }
 
   static Future<bool> saveLanguageCode(String code) {
