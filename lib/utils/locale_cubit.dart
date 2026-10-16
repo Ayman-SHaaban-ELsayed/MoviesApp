@@ -13,8 +13,6 @@ class LocaleCubit extends Cubit<Locale?> {
     return code != null ? Locale(code) : null;
   }
 
-  // Changes the language and saves it as the latest choice.
-
   Future<void> changeLanguage(String code) async {
     if (!supportedCodes.contains(code)) return;
     if (state?.languageCode == code) return;

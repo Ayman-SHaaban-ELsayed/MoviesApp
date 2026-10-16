@@ -321,6 +321,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get seeAll => 'See All';
 
   @override
+  String get seeMore => 'see More';
+
+  @override
   String get retry => 'Retry';
 
   @override

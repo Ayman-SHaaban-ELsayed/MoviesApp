@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
             supportedLocales: AppLocalizations.supportedLocales,
             debugShowCheckedModeBanner: false,
             initialRoute: AppRoutes.homeRouteName,
-            routes: {AppRoutes.homeRouteName: (context) => HomeScreen()},
+            routes: {
+              AppRoutes.homeRouteName: (context) => HomeScreen(),
+            },
           );
         },
       ),
