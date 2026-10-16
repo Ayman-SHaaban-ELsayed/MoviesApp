@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,7 +14,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
 
       // 1. التحقق هل الإيميل مسجل مسبقاً في الـ Firestore (أو الـ Database بتاعتك)
       final querySnapshot = await FirebaseFirestore.instance
-          .collection('users')
+          .collection('Users')
           .where('email', isEqualTo: trimmedEmail)
           .get();
 
