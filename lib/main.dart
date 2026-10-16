@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/ui/home/home_screen.dart';
+import 'package:movies_app/ui/onBoarding/onBoarding_screen.dart';
 import 'package:movies_app/utils/app_routes.dart';
 import 'package:movies_app/utils/locale_cubit.dart';
 import 'package:movies_app/utils/shared_pref_utils.dart';
@@ -26,8 +27,11 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             debugShowCheckedModeBanner: false,
-            initialRoute: AppRoutes.homeRouteName,
-            routes: {AppRoutes.homeRouteName: (context) => HomeScreen()},
+            initialRoute: AppRoutes.onBoardingRouteName,
+            routes: {
+              AppRoutes.homeRouteName: (context) => HomeScreen(),
+              AppRoutes.onBoardingRouteName: (context) => OnBoardingScreen(),
+            },
           );
         },
       ),
