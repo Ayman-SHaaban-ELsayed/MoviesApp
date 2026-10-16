@@ -138,7 +138,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     children: [
                       SizedBox(height: height * .015),
 
-                      // ——— Avatar Carousel (Figma Style) ———
                       SizedBox(
                         height: height * .16,
                         child: PageView.builder(
@@ -177,7 +176,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       SizedBox(height: height * .008),
 
-                      // ——— Avatar Label ———
                       Center(
                         child: Text(
                           'Avatar',
@@ -186,7 +184,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       SizedBox(height: height * .02),
 
-                      // ——— Name Field ———
                       CustomTextFormField(
                         controller: nameController,
                         fill: true,
@@ -215,7 +212,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       SizedBox(height: height * .018),
 
-                      // ——— Email Field ———
                       CustomTextFormField(
                         controller: emailController,
                         fill: true,
@@ -249,7 +245,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       SizedBox(height: height * .018),
 
-                      // ——— Password Field ———
                       CustomTextFormField(
                         controller: passwordController,
                         fill: true,
@@ -295,7 +290,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       SizedBox(height: height * .018),
 
-                      // ——— Confirm Password Field ———
                       CustomTextFormField(
                         controller: rePasswordController,
                         fill: true,
@@ -341,7 +335,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       SizedBox(height: height * .018),
 
-                      // ——— Phone Number Field ———
                       CustomTextFormField(
                         controller: phoneController,
                         fill: true,
@@ -371,7 +364,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       SizedBox(height: height * .03),
 
-                      // ——— Create Account Button ———
                       ElevatedButtonReuse(
                         background: AppColors.yellow,
                         onpressed: isLoading
@@ -402,7 +394,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       SizedBox(height: height * .02),
 
-                      // ——— Already Have Account Link ———
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -421,7 +412,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       SizedBox(height: height * .025),
 
-                      // ——— Language Switcher ———
                       const Center(child: LanguageSwitchWidget()),
                       SizedBox(height: height * .03),
                     ],

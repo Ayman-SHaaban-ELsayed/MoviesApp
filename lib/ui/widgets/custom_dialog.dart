@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// أنواع الأزرار المتاحة
 enum AppButtonType { elevated, text, outlined }
 
-/// Reusable & Standalone Custom Dialog
-/// متوافق للعمل في أي مشروع Flutter (Light & Dark mode) بدون أي مكتبات خارجية
 class CustomDialog extends StatelessWidget {
   final String? title;
   final String? bodyText;
@@ -62,11 +59,7 @@ class CustomDialog extends StatelessWidget {
     this.borderRadius = 20.0,
   });
 
-  // ===========================================================================
-  // 🚀 طرق الاستدعاء المباشرة (Static Methods)
-  // ===========================================================================
 
-  /// 1. إظهار حالة التحميل (Loading)
   static Future<T?> showLoading<T>(
     BuildContext context, {
     String text = 'جاري التحميل...',
@@ -88,14 +81,12 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
-  /// 2. إغلاق الـ Dialog / Loading بأمان من أي مكان
   static void hide(BuildContext context) {
     if (Navigator.of(context, rootNavigator: true).canPop()) {
       Navigator.of(context, rootNavigator: true).pop();
     }
   }
 
-  /// 3. دايالوج مع زرارين (تأكيد وإلغاء)
   static Future<T?> showTwoButtons<T>({
     required BuildContext context,
     String? title,
@@ -144,7 +135,6 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
-  /// 4. دايالوج مع زرار واحد فقط (تنبيه أو إشعار)
   static Future<T?> showOneButton<T>({
     required BuildContext context,
     String? title,
@@ -183,7 +173,6 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
-  /// 5. دايالوج مع محتوى مخصص بالكامل (Custom Body)
   static Future<T?> showCustom<T>({
     required BuildContext context,
     String? title,
@@ -226,7 +215,6 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
-  /// 6. دايالوج سريع للأخطاء (Error Dialog)
   static Future<T?> showError<T>({
     required BuildContext context,
     String? title,
@@ -251,7 +239,6 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
-  /// 7. دايالوج سريع للنجاح (Success Dialog)
   static Future<T?> showSuccess<T>({
     required BuildContext context,
     String? title,
@@ -276,9 +263,6 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
-  // ===========================================================================
-  // 🎨 بناء التصميم (Build Logic)
-  // ===========================================================================
 
   @override
   Widget build(BuildContext context) {

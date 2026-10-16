@@ -26,7 +26,6 @@ class LanguageSwitchWidget extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // English Flag Button
               GestureDetector(
                 onTap: () {
                   if (isArabic) {

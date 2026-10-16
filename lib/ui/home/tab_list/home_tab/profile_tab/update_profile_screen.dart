@@ -185,7 +185,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               ),
                               const SizedBox(height: 16),
 
-                              // ——— Reset Password Link ———
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: TextButton(
@@ -220,7 +219,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               ),
                               const SizedBox(height: 14),
 
-                              // ——— Update Data Button (Yellow) ———
                               ElevatedButtonReuse(
                                 background: AppColors.yellow,
                                 onpressed: isUpdating

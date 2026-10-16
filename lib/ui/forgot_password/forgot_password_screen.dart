@@ -97,7 +97,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ),
                       SizedBox(height: height * .04),
 
-                      // ——— Title ———
                       Text(
                         local.forgetPassword,
                         style: AppStyles.bold24White,
@@ -105,7 +104,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ),
                       SizedBox(height: height * .012),
 
-                      // ——— Subtitle ———
                       Text(
                         local.passwordResetEmailSent
                             .replaceAll(RegExp(r'A password.*'), '')
@@ -120,7 +118,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ),
                       SizedBox(height: height * .04),
 
-                      // ——— Email Field ———
                       CustomTextFormField(
                         controller: emailController,
                         fill: true,
@@ -154,7 +151,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ),
                       SizedBox(height: height * .04),
 
-                      // ——— Send Reset Link Button ———
                       ElevatedButtonReuse(
                         background: AppColors.yellow,
                         onpressed: isLoading

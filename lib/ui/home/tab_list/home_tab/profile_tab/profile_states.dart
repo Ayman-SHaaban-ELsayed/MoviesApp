@@ -56,7 +56,6 @@ class ProfileLogoutSuccessState extends ProfileState {}
 
 class ProfileDeleteSuccessState extends ProfileState {}
 
-/// Simple UI Model for displaying movie cards in Watchlist & History tabs
 class MovieItemUiModel {
   final String id;
   final String title;

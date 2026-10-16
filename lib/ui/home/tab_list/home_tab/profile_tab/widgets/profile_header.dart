@@ -31,7 +31,6 @@ class ProfileHeader extends StatelessWidget {
         children: [
           Row(
             children: [
-              // User Avatar
               Container(
                 width: 80,
                 height: 80,
@@ -48,7 +47,6 @@ class ProfileHeader extends StatelessWidget {
               ),
               const SizedBox(width: 16),
 
-              // Name & Stats
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +59,6 @@ class ProfileHeader extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
 
-                    // Stats: Wish List & History
                     Row(
                       children: [
                         _buildStatItem(
@@ -82,10 +79,8 @@ class ProfileHeader extends StatelessWidget {
           ),
           const SizedBox(height: 18),
 
-          // Action Buttons: Edit Profile & Exit
           Row(
             children: [
-              // Edit Profile Button (Yellow)
               Expanded(
                 flex: 2,
                 child: ElevatedButton(

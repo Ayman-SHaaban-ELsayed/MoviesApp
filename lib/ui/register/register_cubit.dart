@@ -23,14 +23,12 @@ class RegisterCubit extends Cubit<RegisterState> {
   }) async {
     emit(RegisterLoadingState());
     try {
-      // 1. إنشاء الحساب في Firebase Auth
       final credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
 
-      // 2. تجهيز بيانات المستخدم
       MyUser user = MyUser(
         id: credential.user?.uid ?? '',
         name: name.trim(),
@@ -39,7 +37,6 @@ class RegisterCubit extends Cubit<RegisterState> {
         avatarId: selectedAvatarId,
       );
 
-      // 3. حفظ المستخدم في Cloud Firestore
       await FirebaseUtils.addUserToFireStore(user);
 
       emit(RegisterSuccessState(user: user));

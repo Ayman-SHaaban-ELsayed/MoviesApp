@@ -71,7 +71,6 @@ class _ProfileTabView extends StatelessWidget {
               length: 2,
               child: Column(
                 children: [
-                  // Top Profile Info Header
                   ProfileHeader(
                     user: user,
                     cubit: cubit,
@@ -81,10 +80,8 @@ class _ProfileTabView extends StatelessWidget {
 
                   const SizedBox(height: 16),
 
-                  // TabBar: Watch List & History
                   _buildTabBar(locale),
 
-                  // TabBarView: Watch List Content & History Content
                   Expanded(
                     child: TabBarView(
                       children: [

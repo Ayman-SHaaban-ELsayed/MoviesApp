@@ -8,8 +8,8 @@ import '../../utils/app_routes.dart';
 import '../../utils/app_styles.dart';
 import '../../utils/shared_pref_utils.dart';
 import '../../utils/size_utils.dart';
-import '../widgets/custom_dialog.dart';
 import '../register/register_Screen.dart';
+import '../widgets/custom_dialog.dart';
 import '../widgets/custom_text_form_field.dart';
 import '../widgets/elevated_button_reuse.dart';
 import '../widgets/language_switch_widget.dart';
@@ -96,7 +96,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: height * .05),
 
-                      // ——— Email Field ———
                       CustomTextFormField(
                         controller: emailController,
                         fill: true,
@@ -130,7 +129,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: height * .02),
 
-                      // ——— Password Field ———
                       BlocBuilder<LoginCubit, LoginState>(
                         builder: (context, state) {
                           return CustomTextFormField(
@@ -175,7 +173,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
 
-                      // ——— Forget Password Link ———
                       Align(
                         alignment: AlignmentDirectional.centerEnd,
                         child: TextButton(
@@ -193,7 +190,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: height * .02),
 
-                      // ——— Login Button ———
                       ElevatedButtonReuse(
                         background: AppColors.yellow,
                         onpressed: isLoading
@@ -222,7 +218,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: height * .025),
 
-                      // ——— Don't Have Account Link ———
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -246,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: height * .025),
 
-                      // ——— OR Divider ———
+
                       Row(
                         children: [
                           const Expanded(
@@ -273,7 +268,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: height * .025),
 
-                      // ——— Login With Google Button ———
                       ElevatedButtonReuse(
                         background: AppColors.yellow,
                         onpressed: isLoading
@@ -297,7 +291,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: height * .035),
 
-                      // ——— Language Switcher ———
                       const Center(child: LanguageSwitchWidget()),
                       SizedBox(height: height * .03),
                     ],

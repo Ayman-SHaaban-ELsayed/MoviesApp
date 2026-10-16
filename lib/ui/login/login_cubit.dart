@@ -22,13 +22,11 @@ class LoginCubit extends Cubit<LoginState> {
   }) async {
     emit(LoginLoadingState());
     try {
-      // 1. تسجيل الدخول عبر Firebase Auth
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
 
-      // 2. جلب بيانات المستخدم من Firestore
       final user = await FirebaseUtils.getUser(credential.user?.uid ?? '');
       if (user == null) {
         emit(LoginErrorState(errorMessage: 'User data not found'));
