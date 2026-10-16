@@ -17,10 +17,10 @@ class LanguageSwitchWidget extends StatelessWidget {
         final isArabic = currentCode == 'ar';
 
         return Container(
-          padding: const EdgeInsets.all(4),
+          // padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             color: AppColors.darkGrey,
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(25),
             border: Border.all(color: AppColors.yellow, width: 1.5),
           ),
           child: Row(
@@ -34,15 +34,15 @@ class LanguageSwitchWidget extends StatelessWidget {
                 },
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 250),
-                  padding: const EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
                     color: !isArabic ? AppColors.yellow : Colors.transparent,
                     shape: BoxShape.circle,
                   ),
                   child: Image.asset(
                     AppAssets.enLang,
-                    width: 24,
-                    height: 24,
+                    width: 30,
+                    height: 30,
                   ),
                 ),
               ),

@@ -6,6 +6,8 @@ class LoginInitialState extends LoginState {}
 
 class LoginLoadingState extends LoginState {}
 
+class GoogleLoginLoadingState extends LoginState {}
+
 class LoginSuccessState extends LoginState {
   final MyUser user;
   LoginSuccessState({required this.user});

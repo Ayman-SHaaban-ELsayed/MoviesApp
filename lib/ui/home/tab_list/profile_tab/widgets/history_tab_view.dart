@@ -15,10 +15,7 @@ class HistoryTabView extends StatelessWidget {
     final locale = AppLocalizations.of(context)!;
 
     if (cubit.historyMovies.isEmpty) {
-      return ProfileEmptyState(
-        title: locale.emptyHistory,
-        hint: locale.emptyHistoryHint,
-      );
+      return ProfileEmptyState();
     }
 
     return ProfileMovieGrid(movies: cubit.historyMovies);

@@ -26,59 +26,64 @@ class ProfileHeader extends StatelessWidget {
     final locale = AppLocalizations.of(context)!;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       child: Column(
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.yellow, width: 2.5),
-                ),
-                child: ClipOval(
-                  child: Image.asset(
-                    AvatarPickerBottomSheet.getAvatarPath(user.avatarId),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-
               Expanded(
+                flex: 3,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      user.name,
-                      style: AppStyles.bold20White,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: ClipOval(
+                        child: Image.asset(
+                          AvatarPickerBottomSheet.getAvatarPath(user.avatarId),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 12),
-
-                    Row(
-                      children: [
-                        _buildStatItem(
-                          count: '${cubit.watchListCount}',
-                          label: locale.watchList,
-                        ),
-                        const SizedBox(width: 28),
-                        _buildStatItem(
-                          count: '${cubit.historyCount}',
-                          label: locale.history,
-                        ),
-                      ],
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        user.name,
+                        style: AppStyles.bold20White.copyWith(fontSize: 14),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                      ),
                     ),
                   ],
                 ),
               ),
+
+              Expanded(
+                flex: 4,
+                child: _buildStatItem(
+                  count: '${cubit.watchListCount}',
+                  label: locale.watchList,
+                ),
+              ),
+
+              Expanded(
+                flex: 4,
+                child: _buildStatItem(
+                  count: '${cubit.historyCount}',
+                  label: locale.history,
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 18),
+          const SizedBox(height: 20),
 
+          // أزرار التحكم (Edit Profile & Exit)
           Row(
             children: [
               Expanded(
@@ -86,6 +91,7 @@ class ProfileHeader extends StatelessWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.yellow,
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
@@ -104,33 +110,33 @@ class ProfileHeader extends StatelessWidget {
                   },
                   child: Text(
                     locale.editProfile,
-                    style: AppStyles.bold20Black.copyWith(fontSize: 16),
+                    style: AppStyles.regular20Black,
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
-
-              // Exit Button (Red)
+              const SizedBox(width: 10),
               Expanded(
                 flex: 1,
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.red,
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 12),
                   ),
                   onPressed: onExitPressed,
+                  label: Text(
+                    locale.exit,
+                    style: AppStyles.bold20White.copyWith(fontSize: 16),
+                  ),
                   icon: const Icon(
                     Icons.exit_to_app_rounded,
                     color: AppColors.white,
                     size: 20,
                   ),
-                  label: Text(
-                    locale.exit,
-                    style: AppStyles.bold20White.copyWith(fontSize: 16),
-                  ),
+                  iconAlignment: IconAlignment.end,
                 ),
               ),
             ],
@@ -141,19 +147,23 @@ class ProfileHeader extends StatelessWidget {
   }
 
   Widget _buildStatItem({required String count, required String label}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(count, style: AppStyles.bold24White.copyWith(fontSize: 22)),
-        const SizedBox(height: 2),
-        Text(
-          label,
-          style: AppStyles.regular14White.copyWith(
-            color: AppColors.lightGrey,
-            fontSize: 13,
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            count,
+            style: AppStyles.bold36White,
           ),
-        ),
-      ],
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: AppStyles.bold24White,
+          ),
+        ],
+      ),
     );
   }
 }

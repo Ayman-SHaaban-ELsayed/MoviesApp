@@ -91,26 +91,23 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       Center(
                         child: Image.asset(
                           AppAssets.forgotPassword,
-                          height: height * .30,
-                          fit: BoxFit.contain,
+                          // height: height * .30,
+                          fit: BoxFit.fill,
+                          width: double.infinity,
                         ),
                       ),
-                      SizedBox(height: height * .04),
+                      // SizedBox(height: height * .04),
 
-                      Text(
-                        local.forgetPassword,
-                        style: AppStyles.bold24White,
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: height * .012),
-
+                      // Text(
+                      //   local.forgetPassword,
+                      //   style: AppStyles.bold24White,
+                      //   textAlign: TextAlign.center,
+                      // ),
+                      // SizedBox(height: height * .012),
                       Text(
                         local.passwordResetEmailSent
                             .replaceAll(RegExp(r'A password.*'), '')
-                            .trim()
-                            .isEmpty
-                            ? 'Enter your email and we\'ll send you a link to reset your password.'
-                            : 'Enter your email and we\'ll send you a link to reset your password.',
+                            .trim(),
                         style: AppStyles.regular16White.copyWith(
                           color: AppColors.white.withValues(alpha: .65),
                         ),
@@ -173,7 +170,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               )
                             : Text(
                                 local.verifyEmail,
-                                style: AppStyles.bold20Black,
+                                style: AppStyles.regular20Black,
                               ),
                       ),
                       SizedBox(height: height * .03),

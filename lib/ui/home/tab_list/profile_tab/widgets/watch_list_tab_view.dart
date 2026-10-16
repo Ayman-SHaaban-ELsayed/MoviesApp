@@ -15,10 +15,7 @@ class WatchListTabView extends StatelessWidget {
     final locale = AppLocalizations.of(context)!;
 
     if (cubit.watchListMovies.isEmpty) {
-      return ProfileEmptyState(
-        title: locale.emptyWatchList,
-        hint: locale.emptyWatchListHint,
-      );
+      return ProfileEmptyState();
     }
 
     return ProfileMovieGrid(movies: cubit.watchListMovies);

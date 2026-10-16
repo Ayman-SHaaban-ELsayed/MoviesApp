@@ -73,8 +73,9 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         builder: (context, state) {
           final cubit = context.read<LoginCubit>();
-          final isLoading = state is LoginLoadingState;
-
+          final isNormalLoading = state is LoginLoadingState;
+          final isGoogleLoading = state is GoogleLoginLoadingState;
+          final isAnyLoading = isNormalLoading || isGoogleLoading;
           return Scaffold(
             backgroundColor: AppColors.primary,
             body: SafeArea(
@@ -192,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       ElevatedButtonReuse(
                         background: AppColors.yellow,
-                        onpressed: isLoading
+                        onpressed: isAnyLoading
                             ? () {}
                             : () {
                                 if (formKey.currentState!.validate()) {
@@ -202,7 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   );
                                 }
                               },
-                        ChildType: isLoading
+                        ChildType: isNormalLoading
                             ? const SizedBox(
                                 height: 22,
                                 width: 22,
@@ -213,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               )
                             : Text(
                                 local.login,
-                                style: AppStyles.bold20Black,
+                          style: AppStyles.regular20Black,
                               ),
                       ),
                       SizedBox(height: height * .025),
@@ -244,10 +245,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       Row(
                         children: [
-                          const Expanded(
+                          Expanded(
                             child: Divider(
                               color: AppColors.yellow,
                               thickness: 1,
+
+                              indent: width * .06,
+
                             ),
                           ),
                           Padding(
@@ -258,10 +262,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: AppStyles.regular16Yellow,
                             ),
                           ),
-                          const Expanded(
+                          Expanded(
                             child: Divider(
                               color: AppColors.yellow,
                               thickness: 1,
+                              endIndent: width * .06,
                             ),
                           ),
                         ],
@@ -270,10 +275,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       ElevatedButtonReuse(
                         background: AppColors.yellow,
-                        onpressed: isLoading
+                        onpressed: isAnyLoading
                             ? () {}
                             : () => cubit.signInWithGoogle(),
-                        ChildType: Row(
+                        ChildType:
+                        isGoogleLoading
+                            ? const SizedBox(
+                          height: 22,
+                          width: 22,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: AppColors.primary,
+                          ),
+                        )
+                            :
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
@@ -284,7 +300,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             const SizedBox(width: 12),
                             Text(
                               local.loginWithGoogle,
-                              style: AppStyles.bold16Black,
+                              style: AppStyles.regular16Black,
                             ),
                           ],
                         ),
