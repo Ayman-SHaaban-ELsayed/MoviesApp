@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../fireStore/firebase_utils.dart';
-import '../../model/my_user.dart';
-import '../../utils/shared_pref_utils.dart';
+
+import '../../../../../fireStore/firebase_utils.dart';
+import '../../../../../model/my_user.dart';
+import '../../../../../utils/shared_pref_utils.dart';
 import 'profile_states.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
@@ -32,12 +33,9 @@ class ProfileCubit extends Cubit<ProfileState> {
           _emitLoaded();
           return;
         }
-      } catch (_) {
-        // Fallback to default user if network or Firestore fails
-      }
+      } catch (_) {}
     }
 
-    // Default mock user for standalone UI preview
     currentUser = MyUser(
       id: userId ?? 'preview_user',
       name: 'John Doe',
@@ -89,7 +87,6 @@ class ProfileCubit extends Cubit<ProfileState> {
         avatarId: avatarId,
       );
 
-      // Attempt Firestore update if user has a valid cloud ID
       if (updatedUser.id.isNotEmpty && updatedUser.id != 'preview_user') {
         await FirebaseUtils.updateUser(updatedUser);
       }

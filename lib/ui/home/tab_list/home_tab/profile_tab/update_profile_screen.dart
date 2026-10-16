@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../l10n/app_localizations.dart';
-import '../../model/my_user.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/app_styles.dart';
-import '../widgets/custom_text_form_field.dart';
-import '../widgets/elevated_button_reuse.dart';
-import '../widgets/custom_dialog.dart';
+
+import '../../../../../l10n/app_localizations.dart';
+import '../../../../../model/my_user.dart';
+import '../../../../../utils/app_colors.dart';
+import '../../../../../utils/app_styles.dart';
+import '../../../../widgets/custom_dialog.dart';
+import '../../../../widgets/custom_text_form_field.dart';
+import '../../../../widgets/elevated_button_reuse.dart';
 import 'profile_cubit.dart';
 import 'profile_states.dart';
 import 'widgets/avatar_picker_bottom_sheet.dart';
@@ -99,8 +100,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
               builder: (context, constraints) {
                 return SingleChildScrollView(
                   child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints(minHeight: constraints.maxHeight),
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
                     child: IntrinsicHeight(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -111,7 +113,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             children: [
                               const SizedBox(height: 24),
 
-                              // ——— Top Avatar (Clickable to open bottom sheet) ———
                               Center(
                                 child: GestureDetector(
                                   onTap: () {
@@ -145,7 +146,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               ),
                               const SizedBox(height: 36),
 
-                              // ——— Name Field ———
                               CustomTextFormField(
                                 controller: _nameController,
                                 fill: true,
@@ -165,7 +165,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                               ),
                               const SizedBox(height: 20),
 
-                              // ——— Phone Field ———
                               CustomTextFormField(
                                 controller: _phoneController,
                                 fill: true,
@@ -207,7 +206,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
                               const Spacer(),
 
-                              // ——— Delete Account Button (Red) ———
                               ElevatedButtonReuse(
                                 background: AppColors.red,
                                 onpressed: () => _confirmDeleteAccount(

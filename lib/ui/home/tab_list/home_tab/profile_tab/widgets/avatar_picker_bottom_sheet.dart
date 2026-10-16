@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../utils/app_assets.dart';
-import '../../../utils/app_colors.dart';
+
+import '../../../../../../utils/app_assets.dart';
+import '../../../../../../utils/app_colors.dart';
 
 class AvatarPickerBottomSheet extends StatelessWidget {
   static const List<String> avatarAssets = [
@@ -90,10 +91,7 @@ class AvatarPickerBottomSheet extends StatelessWidget {
                   width: isSelected ? 2.5 : 1.2,
                 ),
               ),
-              child: Image.asset(
-                avatarAssets[index],
-                fit: BoxFit.contain,
-              ),
+              child: Image.asset(avatarAssets[index], fit: BoxFit.contain),
             ),
           );
         },

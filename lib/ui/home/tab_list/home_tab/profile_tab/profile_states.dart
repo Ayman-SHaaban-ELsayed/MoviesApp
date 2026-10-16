@@ -1,4 +1,4 @@
-import '../../model/my_user.dart';
+import '../../../../../model/my_user.dart';
 
 abstract class ProfileState {}
 
@@ -42,11 +42,13 @@ class ProfileUpdatingState extends ProfileState {}
 
 class ProfileUpdatedSuccessState extends ProfileState {
   final MyUser user;
+
   ProfileUpdatedSuccessState({required this.user});
 }
 
 class ProfileErrorState extends ProfileState {
   final String errorMessage;
+
   ProfileErrorState({required this.errorMessage});
 }
 

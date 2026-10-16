@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../l10n/app_localizations.dart';
-import '../../model/my_user.dart';
-import '../../utils/app_assets.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/app_routes.dart';
-import '../../utils/app_styles.dart';
-import '../widgets/custom_dialog.dart';
+
+import '../../../../../l10n/app_localizations.dart';
+import '../../../../../model/my_user.dart';
+import '../../../../../utils/app_assets.dart';
+import '../../../../../utils/app_colors.dart';
+import '../../../../../utils/app_routes.dart';
+import '../../../../../utils/app_styles.dart';
+import '../../../../widgets/custom_dialog.dart';
 import 'profile_cubit.dart';
 import 'profile_states.dart';
 import 'widgets/history_tab_view.dart';
@@ -53,7 +54,8 @@ class _ProfileTabView extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        final user = cubit.currentUser ??
+        final user =
+            cubit.currentUser ??
             MyUser(
               id: 'preview_user',
               name: 'John Doe',

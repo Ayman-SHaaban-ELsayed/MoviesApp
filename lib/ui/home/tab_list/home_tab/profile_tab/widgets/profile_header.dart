@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../l10n/app_localizations.dart';
-import '../../../model/my_user.dart';
-import '../../../utils/app_colors.dart';
-import '../../../utils/app_styles.dart';
+
+import '../../../../../../l10n/app_localizations.dart';
+import '../../../../../../model/my_user.dart';
+import '../../../../../../utils/app_colors.dart';
+import '../../../../../../utils/app_styles.dart';
 import '../profile_cubit.dart';
 import '../update_profile_screen.dart';
 import 'avatar_picker_bottom_sheet.dart';
@@ -148,10 +149,7 @@ class ProfileHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          count,
-          style: AppStyles.bold24White.copyWith(fontSize: 22),
-        ),
+        Text(count, style: AppStyles.bold24White.copyWith(fontSize: 22)),
         const SizedBox(height: 2),
         Text(
           label,

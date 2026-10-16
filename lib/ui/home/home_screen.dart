@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/ui/profile/profile_tab.dart';
+import 'package:movies_app/ui/home/tab_list/home_tab/profile_tab/profile_tab.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

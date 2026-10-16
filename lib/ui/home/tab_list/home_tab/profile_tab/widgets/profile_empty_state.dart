@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import '../../../utils/app_assets.dart';
-import '../../../utils/app_colors.dart';
-import '../../../utils/app_styles.dart';
-import '../../../utils/size_utils.dart';
+
+import '../../../../../../utils/app_assets.dart';
+import '../../../../../../utils/app_colors.dart';
+import '../../../../../../utils/app_styles.dart';
+import '../../../../../../utils/size_utils.dart';
 
 class ProfileEmptyState extends StatelessWidget {
   final String title;
   final String hint;
 
-  const ProfileEmptyState({
-    super.key,
-    required this.title,
-    required this.hint,
-  });
+  const ProfileEmptyState({super.key, required this.title, required this.hint});
 
   @override
   Widget build(BuildContext context) {

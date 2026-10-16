@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
+
+import '../../../../../../utils/app_colors.dart';
+import '../../../../../../utils/app_styles.dart';
 import '../profile_states.dart';
-import '../../../utils/app_colors.dart';
-import '../../../utils/app_styles.dart';
 
 class ProfileMovieGrid extends StatelessWidget {
   final List<MovieItemUiModel> movies;
 
-  const ProfileMovieGrid({
-    super.key,
-    required this.movies,
-  });
+  const ProfileMovieGrid({super.key, required this.movies});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,10 @@ class ProfileMovieGrid extends StatelessWidget {
                 top: 6,
                 left: 6,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.primary.withValues(alpha: 0.75),
                     borderRadius: BorderRadius.circular(8),
