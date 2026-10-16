@@ -55,8 +55,8 @@ class OnBoardingScreen extends StatelessWidget {
           builder: (context, state) {
             final cubit = context.read<OnboardCubit>();
             final currentItem = onboardingItems[cubit.currentIndex];
-            final bool isLastPage = cubit.currentIndex ==
-                onboardingItems.length - 1;
+            final bool isLastPage =
+                cubit.currentIndex == onboardingItems.length - 1;
 
             return Stack(
               children: [
@@ -99,13 +99,10 @@ class OnBoardingScreen extends StatelessWidget {
                   child: Container(
                     height: currentItem.isFirst ? double.infinity : null,
                     width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: MediaQuery
-                        .of(context)
-                        .size
-                        .width * 0.05, vertical: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.05),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: context.width * 0.05,
+                      vertical: context.height * 0.05,
+                    ),
                     decoration: BoxDecoration(
                       color: currentItem.isFirst
                           ? AppColors.transparent
@@ -118,8 +115,8 @@ class OnBoardingScreen extends StatelessWidget {
                       ),
                     ),
                     child: Column(
-                      mainAxisAlignment: currentItem.isFirst ? MainAxisAlignment
-                          .end
+                      mainAxisAlignment: currentItem.isFirst
+                          ? MainAxisAlignment.end
                           : MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -174,7 +171,8 @@ class OnBoardingScreen extends StatelessWidget {
                                 ),
                               ),
                               onPressed: cubit.previousButtonTapped,
-                              child: Text(AppLocalizations.of(context)!.back,
+                              child: Text(
+                                AppLocalizations.of(context)!.back,
                                 style: AppStyles.semibold20Yellow,
                               ),
                             ),
@@ -189,10 +187,10 @@ class OnBoardingScreen extends StatelessWidget {
           },
         ),
       ),
-
     );
   }
 }
+
 extension ScreenUtils on BuildContext {
   double get width =>
       MediaQuery
