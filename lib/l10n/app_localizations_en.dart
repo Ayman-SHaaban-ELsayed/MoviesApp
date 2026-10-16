@@ -485,4 +485,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get tooManyRequests =>
       'Too many attempts. Please wait a moment and try again.';
+
+  @override
+  String get loginWithGoogle => 'Login With Google';
 }
