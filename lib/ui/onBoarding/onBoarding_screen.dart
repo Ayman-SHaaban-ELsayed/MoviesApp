@@ -103,8 +103,8 @@ class OnBoardingScreen extends StatelessWidget {
                     height: currentItem.isFirst ? double.infinity : null,
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(
-                      horizontal:  width * 0.05,
-                      vertical:  height * 0.05,
+                      horizontal: width * 0.05,
+                      vertical: height * 0.03,
                     ),
                     decoration: BoxDecoration(
                       color: currentItem.isFirst
@@ -112,9 +112,9 @@ class OnBoardingScreen extends StatelessWidget {
                           : AppColors.darkGrey,
                       borderRadius: currentItem.isFirst
                           ? null
-                          : const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
+                          : BorderRadius.only(
+                        topLeft: Radius.circular(width * 0.05),
+                        topRight: Radius.circular(width * 0.05),
                       ),
                     ),
                     child: Column(
@@ -128,7 +128,7 @@ class OnBoardingScreen extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: AppStyles.bold20White,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: height * 0.015),
                         if (currentItem.description.isNotEmpty) ...[
                           Text(
                             currentItem.description,
@@ -137,16 +137,17 @@ class OnBoardingScreen extends StatelessWidget {
                                 ? AppStyles.regular16grey
                                 : AppStyles.regular16White,
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: height * 0.025),
                         ],
                         SizedBox(
                           width: double.infinity,
-                          height: 48,
+                          height: height * 0.06,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.yellow,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(
+                                    width * 0.03),
                               ),
                             ),
                             onPressed: () =>
@@ -161,16 +162,17 @@ class OnBoardingScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        if (cubit.currentIndex > 0) ...[
-                          const SizedBox(height: 10),
+                        if (cubit.currentIndex > 1) ...[
+                          SizedBox(height: height * 0.015),
                           SizedBox(
                             width: double.infinity,
-                            height: 48,
+                            height: height * 0.06,
                             child: OutlinedButton(
                               style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: AppColors.yellow),
+                                side: const BorderSide(color: AppColors.yellow),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(
+                                      width * 0.03),
                                 ),
                               ),
                               onPressed: cubit.previousButtonTapped,
