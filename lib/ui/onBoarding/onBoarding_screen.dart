@@ -109,7 +109,7 @@ class OnBoardingScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: currentItem.isFirst
                           ? AppColors.transparent
-                          : AppColors.darkGrey,
+                          : AppColors.primary,
                       borderRadius: currentItem.isFirst
                           ? null
                           : BorderRadius.only(
