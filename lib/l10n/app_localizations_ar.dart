@@ -319,6 +319,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get seeAll => 'عرض الكل';
 
   @override
+  String get seeMore => 'مشاهدة المزيد';
+
+  @override
   String get retry => 'إعادة المحاولة';
 
   @override
@@ -480,4 +483,7 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get tooManyRequests =>
       'محاولات كثيرة. من فضلك انتظر قليلًا ثم حاول مرة أخرى.';
+
+  @override
+  String get loginWithGoogle => 'تسجيل الدخول بواسطة جوجل';
 }

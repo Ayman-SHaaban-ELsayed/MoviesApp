@@ -4,6 +4,7 @@ class PrefKeys {
   PrefKeys._();
 
   static const String languageCode = 'language_code';
+  static const String userId = 'user_id';
 }
 
 class SharedPrefUtils {
@@ -33,4 +34,12 @@ class SharedPrefUtils {
     if (code != 'ar' && code != 'en') return Future.value(false);
     return _instance.setString(PrefKeys.languageCode, code);
   }
+
+  static String? get userId => _instance.getString(PrefKeys.userId);
+
+  static Future<bool> saveUserId(String uid) =>
+      _instance.setString(PrefKeys.userId, uid);
+
+  static Future<bool> removeUserId() =>
+      _instance.remove(PrefKeys.userId);
 }
