@@ -34,17 +34,17 @@ class AppAssets {
 
   static const String playMovie = 'assets/images/playMovie.png';
 
-  static const String onBoardingPg1 = 'assets/images/onBoardingP1.png';
+  static const String onBoardingPg1 = 'assets/images/onBoardingPg1.png';
 
-  static const String onBoardingPg2 = 'assets/images/onBoardingP2.png';
+  static const String onBoardingPg2 = 'assets/images/onBoardingPg2.png';
 
-  static const String onBoardingPg3 = 'assets/images/onBoardingP3.png';
+  static const String onBoardingPg3 = 'assets/images/onBoardingPg3.png';
 
-  static const String onBoardingPg4 = 'assets/images/onBoardingP4.png';
+  static const String onBoardingPg4 = 'assets/images/onBoardingPg4.png';
 
-  static const String onBoardingPg5 = 'assets/images/onBoardingP5.png';
+  static const String onBoardingPg5 = 'assets/images/onBoardingPg5.png';
 
-  static const String onBoardingPg6 = 'assets/images/onBoardingP6.png';
+  static const String onBoardingPg6 = 'assets/images/onBoardingPg6.png';
 
   static const String homeIcon = 'assets/images/homeIcon.png';
 
