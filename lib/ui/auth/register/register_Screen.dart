@@ -202,7 +202,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         validator: (text) =>
-                            AppValidators.validateUsername(text),
+                            AppValidators.validateUsername(text!.trim()),
                       ),
                       SizedBox(height: height * .018),
 
@@ -226,7 +226,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             height: 20,
                           ),
                         ),
-                        validator: (text) => AppValidators.validateEmail(text),
+                        validator: (text) => AppValidators.validateEmail(text!.trim()),
                       ),
                       SizedBox(height: height * .018),
 
@@ -331,7 +331,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         validator: (text) =>
-                            AppValidators.validatePhoneNumber(text),
+                            AppValidators.validatePhoneNumber(text!.trim()),
                       ),
 
                       SizedBox(height: height * .03),

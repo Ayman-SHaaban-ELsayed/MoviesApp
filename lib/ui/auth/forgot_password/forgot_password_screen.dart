@@ -150,7 +150,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         },
                       ),
                       SizedBox(height: height * .04),
-
                       ElevatedButtonReuse(
                         background: AppColors.yellow,
                         onpressed: isLoading
