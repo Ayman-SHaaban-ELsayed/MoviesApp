@@ -8,8 +8,8 @@ import '../../../../../l10n/app_localizations.dart';
 import '../../../../../model/my_user.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/app_styles.dart';
-import 'profile_cubit.dart';
-import 'profile_states.dart';
+import 'cubit/profile_cubit.dart';
+import 'cubit/profile_states.dart';
 import 'widgets/avatar_picker_bottom_sheet.dart';
 
 class UpdateProfileScreen extends StatefulWidget {

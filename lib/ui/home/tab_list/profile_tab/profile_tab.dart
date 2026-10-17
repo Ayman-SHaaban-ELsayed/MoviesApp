@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
 import 'package:movies_app/ui/widgets/custom_dialog.dart';
 
 import '../../../../../l10n/app_localizations.dart';
@@ -8,9 +9,8 @@ import '../../../../../utils/app_assets.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/app_routes.dart';
 import '../../../../../utils/app_styles.dart';
-import 'profile_cubit.dart';
-import 'profile_states.dart';
-import 'widgets/history_tab_view.dart';
+import 'cubit/profile_cubit.dart';
+ import 'widgets/history_tab_view.dart';
 import 'widgets/profile_header.dart';
 import 'widgets/watch_list_tab_view.dart';
 

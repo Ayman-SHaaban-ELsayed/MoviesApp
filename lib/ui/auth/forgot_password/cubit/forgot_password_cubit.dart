@@ -12,7 +12,7 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     try {
       final trimmedEmail = email.trim();
 
-      // 1. التحقق هل الإيميل مسجل مسبقاً في الـ Firestore (أو الـ Database بتاعتك)
+      // 1. التحقق هل الإيميل مسجل مسبقاً في الـ Firestore
       final querySnapshot = await FirebaseFirestore.instance
           .collection('Users')
           .where('email', isEqualTo: trimmedEmail)

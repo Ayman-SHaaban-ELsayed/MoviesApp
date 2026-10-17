@@ -5,7 +5,7 @@ import '../../../../../../l10n/app_localizations.dart';
 import '../../../../../../model/my_user.dart';
 import '../../../../../../utils/app_colors.dart';
 import '../../../../../../utils/app_styles.dart';
-import '../profile_cubit.dart';
+import '../cubit/profile_cubit.dart';
 import '../update_profile_screen.dart';
 import 'avatar_picker_bottom_sheet.dart';
 

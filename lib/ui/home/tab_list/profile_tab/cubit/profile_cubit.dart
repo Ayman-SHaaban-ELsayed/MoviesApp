@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../fireStore/firebase_utils.dart';
-import '../../../../../model/my_user.dart';
-import '../../../../../utils/shared_pref_utils.dart';
+import '../../../../../../fireStore/firebase_utils.dart';
+import '../../../../../../model/my_user.dart';
+import '../../../../../../utils/shared_pref_utils.dart';
 import 'profile_states.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
