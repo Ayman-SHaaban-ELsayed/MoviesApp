@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/utils/app_validator.dart';
+
 import '../../../l10n/app_localizations.dart';
 import '../../../utils/app_assets.dart';
 import '../../../utils/app_colors.dart';
@@ -10,7 +12,6 @@ import '../../widgets/custom_text_form_field.dart';
 import '../../widgets/elevated_button_reuse.dart';
 import 'cubit/forgot_password_cubit.dart';
 import 'cubit/forgot_password_states.dart';
-
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -74,7 +75,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               backgroundColor: AppColors.primary,
               elevation: 0,
               iconTheme: const IconThemeData(color: AppColors.yellow),
-              title: Text(local.forgetPassword,style: AppStyles.regular16Yellow,),
+              title: Text(
+                local.forgetPassword,
+                style: AppStyles.regular16Yellow,
+              ),
               centerTitle: true,
             ),
             body: SafeArea(
@@ -106,9 +110,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
                       Text(
                         local.passwordResetEmailSent
-                            .replaceAll(RegExp(r'A password.*'), '')
-                            .trim()
-                            .isEmpty
+                                .replaceAll(RegExp(r'A password.*'), '')
+                                .trim()
+                                .isEmpty
                             ? 'Enter your email and we\'ll send you a link to reset your password.'
                             : 'Enter your email and we\'ll send you a link to reset your password.',
                         style: AppStyles.regular16White.copyWith(
@@ -138,16 +142,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             height: 20,
                           ),
                         ),
-                        validator: (text) {
-                          if (text == null || text.trim().isEmpty) {
-                            return local.emailRequired;
-                          }
-                          final isValid = RegExp(
-                            r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                          ).hasMatch(text.trim());
-                          if (!isValid) return local.emailInvalid;
-                          return null;
-                        },
+                        validator: (text) => AppValidators.validateEmail(text),
                       ),
                       SizedBox(height: height * .04),
                       ElevatedButtonReuse(
