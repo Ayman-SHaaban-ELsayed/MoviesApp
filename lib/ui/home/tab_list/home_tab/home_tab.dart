@@ -1,17 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/cubit/cubit_home_view_model.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/cubit/home_states.dart';
-import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_card.dart';
+import 'package:movies_app/ui/home/tab_list/home_tab/widget/error_widget.dart';
+import 'package:movies_app/ui/home/tab_list/home_tab/widget/latest_movies_carousel.dart';
+import 'package:movies_app/ui/home/tab_list/home_tab/widget/loading_widget.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_gradient.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_list_widget.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/section_header.dart';
 import 'package:movies_app/utils/app_assets.dart';
-import 'package:movies_app/ui/home/tab_list/home_tab/widget/loading_widget.dart';
-import 'package:movies_app/ui/home/tab_list/home_tab/widget/error_widget.dart';
 
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/size_utils.dart';
@@ -24,11 +23,11 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
+  int _currentCarouselIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    final screenWidth = context.width;
     final screenHeight = context.height;
-
     return BlocProvider(
       create: (context) => CubitHomeViewModel()..getHomeData(),
       child: Scaffold(
@@ -44,12 +43,23 @@ class _HomeTabState extends State<HomeTab> {
                 },
               );
             } else if (state is HomeSuccess) {
+              String currentBgImage = state.latestMovies.isNotEmpty
+                  ? state.latestMovies[_currentCarouselIndex].mediumCoverImage
+                  : '';
               return Stack(
                 children: [
-                  Image.asset(
-                    AppAssets.moviePosterBackground,
-                    fit: BoxFit.fill,
-                  ),
+                  if (currentBgImage.isNotEmpty)
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: screenHeight * 0.65,
+                      child: CachedNetworkImage(
+                        imageUrl: currentBgImage,
+                        fit: BoxFit.cover,
+                        errorWidget: (context, url, error) => const SizedBox(),
+                      ),
+                    ),
                   const MovieGradient(),
                   SingleChildScrollView(
                     child: Column(
@@ -62,23 +72,21 @@ class _HomeTabState extends State<HomeTab> {
                         ),
                         SizedBox(height: screenHeight * 0.03),
 
-                        CarouselSlider(
-                          options: CarouselOptions(
-                            enlargeCenterPage: true,
-                            autoPlay: true,
-                            viewportFraction: 0.55,
-                            height: screenHeight * 0.38,
-                          ),
-                          items: state.latestMovies.map((movie) {
-                            return MovieCard(
-                              imagePath: movie.mediumCoverImage,
-                              rating: movie.rating.toDouble(),
-                              onTap: () {
-                                //todo
-                                print('Clicked Carousel Movie: ${movie.title}');
-                              },
-                            );
-                          }).toList(),
+                        LatestMoviesCarousel(
+                          movies: state.latestMovies,
+                          imagePath: (movie) => movie.mediumCoverImage,
+                          rating: (movie) => movie.rating.toDouble(),
+                          title: (movie) => movie.title,
+                          height: screenHeight * 0.38,
+                          viewportFraction: 0.55,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              _currentCarouselIndex = index;
+                            });
+                          },
+                          onMovieTap: (movie) {
+                            print('Clicked: ${movie.title}');
+                          },
                         ),
 
                         SizedBox(height: screenHeight * 0.04),
@@ -105,7 +113,7 @@ class _HomeTabState extends State<HomeTab> {
                           widthCard: 146,
                           heightCard: 220,
                           onMovieTap: (movie) {
-                            debugPrint('Clicked: ${movie.title}');
+                            print('Clicked: ${movie.title}');
                             // TODO: Navigate to movie details.
                           },
                         ),

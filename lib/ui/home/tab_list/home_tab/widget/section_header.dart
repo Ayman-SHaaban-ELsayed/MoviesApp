@@ -34,15 +34,11 @@ class SectionHeader extends StatelessWidget {
               children: [
                 Text(seeMoreText, style: AppStyles.regular16Yellow),
                 SizedBox(width: width * 0.01),
-
                 Icon(
-                  languageCode == 'ar'
-                      ? Icons.arrow_back_rounded
-                      : Icons.arrow_forward_rounded,
+                  Icons.arrow_forward_rounded,
                   color: AppColors.yellow,
                   size: height * 0.018,
                 ),
-
               ],
             ),
           ),
