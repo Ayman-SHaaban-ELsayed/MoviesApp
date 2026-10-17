@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/ui/onBoarding/onBoarding_state.dart';
+import 'package:movies_app/ui/onBoarding/cubit/onBoarding_state.dart';
 
 class OnboardCubit extends Cubit<OnboardState> {
   OnboardCubit() : super(OnboardInitial(currentIndex: 0));

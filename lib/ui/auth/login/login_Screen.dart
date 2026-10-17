@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../l10n/app_localizations.dart';
-import '../../utils/app_assets.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/app_routes.dart';
-import '../../utils/app_styles.dart';
-import '../../utils/shared_pref_utils.dart';
-import '../../utils/size_utils.dart';
+
+import '../../../l10n/app_localizations.dart';
+import '../../../utils/app_assets.dart';
+import '../../../utils/app_colors.dart';
+import '../../../utils/app_routes.dart';
+import '../../../utils/app_styles.dart';
+import '../../../utils/app_validator.dart';
+import '../../../utils/shared_pref_utils.dart';
+import '../../../utils/size_utils.dart';
+
+import '../../widgets/custom_dialog.dart';
+import '../../widgets/custom_text_form_field.dart';
+import '../../widgets/elevated_button_reuse.dart';
+import '../../widgets/language_switch_widget.dart';
 import '../register/register_Screen.dart';
-import '../widgets/custom_dialog.dart';
-import '../widgets/custom_text_form_field.dart';
-import '../widgets/elevated_button_reuse.dart';
-import '../widgets/language_switch_widget.dart';
-import 'login_cubit.dart';
-import 'login_states.dart';
+import 'cubit/login_cubit.dart';
+import 'cubit/login_states.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -117,16 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 20,
                           ),
                         ),
-                        validator: (text) {
-                          if (text == null || text.trim().isEmpty) {
-                            return local.emailRequired;
-                          }
-                          final isValid = RegExp(
-                            r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                          ).hasMatch(text.trim());
-                          if (!isValid) return local.emailInvalid;
-                          return null;
-                        },
+                        validator: (text) =>AppValidators.validateEmail(text),
                       ),
                       SizedBox(height: height * .02),
 
@@ -161,15 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               onPressed: cubit.togglePasswordVisibility,
                             ),
-                            validator: (text) {
-                              if (text == null || text.isEmpty) {
-                                return local.passwordRequired;
-                              }
-                              if (text.length < 6) {
-                                return local.passwordRequired;
-                              }
-                              return null;
-                            },
+                            validator: (text) =>AppValidators.validatePassword(text),
                           );
                         },
                       ),
@@ -241,8 +227,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       SizedBox(height: height * .025),
-
-
                       Row(
                         children: [
                           Expanded(

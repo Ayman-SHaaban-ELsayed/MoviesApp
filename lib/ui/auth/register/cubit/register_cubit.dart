@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../fireStore/firebase_utils.dart';
-import '../../model/my_user.dart';
+import '../../../../fireStore/firebase_utils.dart';
+import '../../../../model/my_user.dart';
+
 import 'register_states.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {

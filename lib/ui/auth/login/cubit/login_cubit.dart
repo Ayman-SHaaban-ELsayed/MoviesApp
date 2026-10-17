@@ -2,8 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../fireStore/firebase_utils.dart';
-import '../../model/my_user.dart';
+import '../../../../fireStore/firebase_utils.dart';
+import '../../../../model/my_user.dart';
+
 import 'login_states.dart';
 
 class LoginCubit extends Cubit<LoginState> {

@@ -1,6 +1,7 @@
 class AppAssets {
   static const String routeLogo = 'assets/images/routeLogo.png';
   static const String appLogo = 'assets/images/appLogo.png';
+  static const String moviePosterBackground = 'assets/images/movie_poster_background.png';
 
   static const String googleLogo = 'assets/images/googleLogo.png';
 

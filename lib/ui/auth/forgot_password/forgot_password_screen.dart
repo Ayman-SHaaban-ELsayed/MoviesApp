@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../utils/app_assets.dart';
+import '../../../utils/app_colors.dart';
+import '../../../utils/app_styles.dart';
+import '../../../utils/size_utils.dart';
+import '../../widgets/custom_dialog.dart';
+import '../../widgets/custom_text_form_field.dart';
+import '../../widgets/elevated_button_reuse.dart';
+import 'cubit/forgot_password_cubit.dart';
+import 'cubit/forgot_password_states.dart';
 
-import '../../l10n/app_localizations.dart';
-import '../../utils/app_assets.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/app_styles.dart';
-import '../../utils/size_utils.dart';
-import '../widgets/custom_dialog.dart';
-import '../widgets/custom_text_form_field.dart';
-import '../widgets/elevated_button_reuse.dart';
-import 'forgot_password_cubit.dart';
-import 'forgot_password_states.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -91,23 +91,26 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       Center(
                         child: Image.asset(
                           AppAssets.forgotPassword,
-                          // height: height * .30,
-                          fit: BoxFit.fill,
-                          width: double.infinity,
+                          height: height * .30,
+                          fit: BoxFit.contain,
                         ),
                       ),
-                      // SizedBox(height: height * .04),
+                      SizedBox(height: height * .04),
 
-                      // Text(
-                      //   local.forgetPassword,
-                      //   style: AppStyles.bold24White,
-                      //   textAlign: TextAlign.center,
-                      // ),
-                      // SizedBox(height: height * .012),
+                      Text(
+                        local.forgetPassword,
+                        style: AppStyles.bold24White,
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: height * .012),
+
                       Text(
                         local.passwordResetEmailSent
                             .replaceAll(RegExp(r'A password.*'), '')
-                            .trim(),
+                            .trim()
+                            .isEmpty
+                            ? 'Enter your email and we\'ll send you a link to reset your password.'
+                            : 'Enter your email and we\'ll send you a link to reset your password.',
                         style: AppStyles.regular16White.copyWith(
                           color: AppColors.white.withValues(alpha: .65),
                         ),
@@ -170,7 +173,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               )
                             : Text(
                                 local.verifyEmail,
-                                style: AppStyles.regular20Black,
+                                style: AppStyles.bold20Black,
                               ),
                       ),
                       SizedBox(height: height * .03),

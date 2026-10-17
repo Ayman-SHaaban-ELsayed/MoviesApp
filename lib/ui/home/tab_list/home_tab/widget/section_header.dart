@@ -23,14 +23,18 @@ class SectionHeader extends StatelessWidget {
     final languageCode = Localizations.localeOf(context).languageCode;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: width * 0.043),
+      padding: EdgeInsets.symmetric(horizontal: width * 0.015),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Text(title, style: AppStyles.regular20White),
           GestureDetector(
             onTap: onSeeMoreTap,
             child: Row(
               children: [
+                Text(seeMoreText, style: AppStyles.regular16Yellow),
+                SizedBox(width: width * 0.01),
+
                 Icon(
                   languageCode == 'ar'
                       ? Icons.arrow_back_rounded
@@ -38,12 +42,10 @@ class SectionHeader extends StatelessWidget {
                   color: AppColors.yellow,
                   size: height * 0.018,
                 ),
-                SizedBox(width: width * 0.005),
-                Text(seeMoreText, style: AppStyles.regular16Yellow),
+
               ],
             ),
           ),
-          Text(title, style: AppStyles.regular20White),
         ],
       ),
     );

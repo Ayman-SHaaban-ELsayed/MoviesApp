@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../l10n/app_localizations.dart';
-import '../../utils/app_assets.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/app_routes.dart';
-import '../../utils/app_styles.dart';
-import '../../utils/shared_pref_utils.dart';
-import '../../utils/size_utils.dart';
-import '../widgets/custom_dialog.dart';
-import '../widgets/custom_text_form_field.dart';
-import '../widgets/elevated_button_reuse.dart';
-import '../widgets/language_switch_widget.dart';
-import 'register_cubit.dart';
-import 'register_states.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../utils/app_assets.dart';
+
+import '../../../utils/app_colors.dart';
+import '../../../utils/app_routes.dart';
+import '../../../utils/app_styles.dart';
+import '../../../utils/app_validator.dart';
+import '../../../utils/shared_pref_utils.dart';
+import '../../../utils/size_utils.dart';
+import '../../widgets/custom_dialog.dart';
+import '../../widgets/custom_text_form_field.dart';
+import '../../widgets/elevated_button_reuse.dart';
+import '../../widgets/language_switch_widget.dart';
+import 'cubit/register_cubit.dart';
+import 'cubit/register_states.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -123,10 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 icon: const Icon(Icons.arrow_back, color: AppColors.yellow),
                 onPressed: () => Navigator.pop(context),
               ),
-              title: Text(
-                local.register,
-                style: AppStyles.regular16Yellow,
-              ),
+              title: Text(local.register, style: AppStyles.regular16Yellow),
             ),
             body: SafeArea(
               child: SingleChildScrollView(
@@ -163,7 +162,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 250),
                                   width: isCenter ? height * .15 : height * .10,
-                                  height: isCenter ? height * .15 : height * .10,
+                                  height: isCenter
+                                      ? height * .15
+                                      : height * .10,
                                   child: Image.asset(
                                     _avatarAssets[index],
                                     fit: BoxFit.contain,
@@ -177,10 +178,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       SizedBox(height: height * .008),
 
                       Center(
-                        child: Text(
-                          'Avatar',
-                          style: AppStyles.regular16White,
-                        ),
+                        child: Text('Avatar', style: AppStyles.regular16White),
                       ),
                       SizedBox(height: height * .02),
 
@@ -203,12 +201,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             height: 20,
                           ),
                         ),
-                        validator: (text) {
-                          if (text == null || text.trim().isEmpty) {
-                            return local.nameRequired;
-                          }
-                          return null;
-                        },
+                        validator: (text) =>
+                            AppValidators.validateUsername(text),
                       ),
                       SizedBox(height: height * .018),
 
@@ -232,16 +226,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             height: 20,
                           ),
                         ),
-                        validator: (text) {
-                          if (text == null || text.trim().isEmpty) {
-                            return local.emailRequired;
-                          }
-                          final isValid = RegExp(
-                            r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                          ).hasMatch(text.trim());
-                          if (!isValid) return local.emailInvalid;
-                          return null;
-                        },
+                        validator: (text) => AppValidators.validateEmail(text),
                       ),
                       SizedBox(height: height * .018),
 
@@ -278,15 +263,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             });
                           },
                         ),
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return local.passwordRequired;
-                          }
-                          if (text.length < 6) {
-                            return local.passwordRequired;
-                          }
-                          return null;
-                        },
+                        validator: (text) =>
+                            AppValidators.validatePassword(text),
                       ),
                       SizedBox(height: height * .018),
 
@@ -323,16 +301,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             });
                           },
                         ),
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return local.confirmPasswordRequired;
-                          }
-                          if (text != passwordController.text) {
-                            return local.passwordsDoNotMatch;
-                          }
-                          return null;
-                        },
+                        validator: (text) =>
+                            AppValidators.validateConfirmPassword(
+                              text,
+                              rePasswordController.text,
+                            ),
                       ),
+
                       SizedBox(height: height * .018),
 
                       CustomTextFormField(
@@ -355,13 +330,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             height: 20,
                           ),
                         ),
-                        validator: (text) {
-                          if (text == null || text.trim().isEmpty) {
-                            return local.phoneRequired;
-                          }
-                          return null;
-                        },
+                        validator: (text) =>
+                            AppValidators.validatePhoneNumber(text),
                       ),
+
                       SizedBox(height: height * .03),
 
                       ElevatedButtonReuse(
@@ -426,8 +398,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   String _getLocalizedErrorMessage(
-      String error, AppLocalizations localizations) {
-    if (error.contains('email-already-in-use') || error.contains('already exists')) {
+    String error,
+    AppLocalizations localizations,
+  ) {
+    if (error.contains('email-already-in-use') ||
+        error.contains('already exists')) {
       return localizations.emailAlreadyInUse;
     }
     if (error.contains('invalid-email')) {
