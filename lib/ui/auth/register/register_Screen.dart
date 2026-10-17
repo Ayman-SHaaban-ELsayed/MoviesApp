@@ -83,6 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         listener: (context, state) {
           if (state is RegisterSuccessState) {
             SharedPrefUtils.saveUserId(state.user.id);
+            SharedPrefUtils.saveOnboardingSeen(true);
             bool navigated = false;
             void navigateHome() {
               if (!navigated && context.mounted) {

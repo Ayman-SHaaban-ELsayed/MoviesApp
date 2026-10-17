@@ -50,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state is LoginSuccessState) {
             SharedPrefUtils.saveUserId(state.user.id);
+            SharedPrefUtils.saveOnboardingSeen(true);
             bool navigated = false;
             void navigateHome() {
               if (!navigated && context.mounted) {

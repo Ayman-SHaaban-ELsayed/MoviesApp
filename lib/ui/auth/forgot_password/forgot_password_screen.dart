@@ -95,30 +95,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       Center(
                         child: Image.asset(
                           AppAssets.forgotPassword,
-                          height: height * .30,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      SizedBox(height: height * .04),
 
-                      Text(
-                        local.forgetPassword,
-                        style: AppStyles.bold24White,
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: height * .012),
-
-                      Text(
-                        local.passwordResetEmailSent
-                                .replaceAll(RegExp(r'A password.*'), '')
-                                .trim()
-                                .isEmpty
-                            ? 'Enter your email and we\'ll send you a link to reset your password.'
-                            : 'Enter your email and we\'ll send you a link to reset your password.',
-                        style: AppStyles.regular16White.copyWith(
-                          color: AppColors.white.withValues(alpha: .65),
+                          fit: BoxFit.fill,
                         ),
-                        textAlign: TextAlign.center,
                       ),
                       SizedBox(height: height * .04),
 
