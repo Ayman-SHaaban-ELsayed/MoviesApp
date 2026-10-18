@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../fireStore/firebase_utils.dart';
-import '../../../../model/my_user.dart';
-
-import 'register_states.dart';
+import 'package:movies_app/fireStore/firebase_utils.dart';
+import 'package:movies_app/model/my_user.dart';
+import 'package:movies_app/ui/auth/register/cubit/register_states.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
   RegisterCubit() : super(RegisterInitialState());

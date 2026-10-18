@@ -12,20 +12,17 @@ class ForgotPasswordCubit extends Cubit<ForgotPasswordState> {
     try {
       final trimmedEmail = email.trim();
 
-      // 1. التحقق هل الإيميل مسجل مسبقاً في الـ Firestore
       final querySnapshot = await FirebaseFirestore.instance
           .collection('Users')
           .where('email', isEqualTo: trimmedEmail)
           .get();
 
       if (querySnapshot.docs.isEmpty) {
-        // لو الداتا خالية، معناه إن الإيميل مش مسجل
         emit(ForgotPasswordErrorState(
             errorMessage: 'No account found with this email'));
         return;
       }
 
-      // 2. لو الإيميل موجود، يتم إرسال رابط إعادة التعيين
       await FirebaseAuth.instance.sendPasswordResetEmail(
         email: trimmedEmail,
       );

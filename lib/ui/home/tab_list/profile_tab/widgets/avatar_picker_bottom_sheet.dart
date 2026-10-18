@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../../../../../../utils/app_assets.dart';
-import '../../../../../../utils/app_colors.dart';
+import 'package:movies_app/utils/app_assets.dart';
+import 'package:movies_app/utils/app_colors.dart';
 
 class AvatarPickerBottomSheet extends StatelessWidget {
   static const List<String> avatarAssets = [

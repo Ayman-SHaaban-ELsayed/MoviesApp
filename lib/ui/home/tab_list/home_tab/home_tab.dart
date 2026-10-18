@@ -11,9 +11,8 @@ import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_gradient.dart'
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_list_widget.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/section_header.dart';
 import 'package:movies_app/utils/app_assets.dart';
-
-import '../../../../../utils/app_colors.dart';
-import '../../../../../utils/size_utils.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/size_utils.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});

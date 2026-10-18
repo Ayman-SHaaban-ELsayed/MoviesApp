@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/model/my_user.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_cubit.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/widgets/avatar_picker_bottom_sheet.dart';
 import 'package:movies_app/ui/widgets/custom_dialog.dart';
 import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
 import 'package:movies_app/ui/widgets/elevated_button_reuse.dart';
-
-import '../../../../../l10n/app_localizations.dart';
-import '../../../../../model/my_user.dart';
-import '../../../../../utils/app_colors.dart';
-import '../../../../../utils/app_styles.dart';
-import 'cubit/profile_cubit.dart';
-import 'cubit/profile_states.dart';
-import 'widgets/avatar_picker_bottom_sheet.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_styles.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   final MyUser? user;
@@ -150,7 +149,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 controller: _nameController,
                                 fill: true,
                                 filledColor: AppColors.darkGrey,
-                                hinttext: local.name,
+                                hintText: local.name,
                                 prefixIcon: const Icon(
                                   Icons.person,
                                   color: AppColors.white,
@@ -169,12 +168,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 controller: _phoneController,
                                 fill: true,
                                 filledColor: AppColors.darkGrey,
-                                hinttext: local.phoneNumber,
+                                hintText: local.phoneNumber,
                                 prefixIcon: const Icon(
                                   Icons.phone,
                                   color: AppColors.white,
                                 ),
-                                keyboradtype: TextInputType.phone,
+                                keyboardType: TextInputType.phone,
                                 style: AppStyles.bold20White,
                                 validator: (value) {
                                   if (value == null || value.trim().isEmpty) {

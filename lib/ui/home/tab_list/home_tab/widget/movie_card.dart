@@ -1,10 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../../utils/app_assets.dart';
-import '../../../../../utils/app_colors.dart';
-import '../../../../../utils/app_styles.dart';
-import '../../../../../utils/size_utils.dart';
+import 'package:movies_app/utils/app_assets.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_styles.dart';
+import 'package:movies_app/utils/size_utils.dart';
 
 class MovieCard extends StatelessWidget {
   final String imagePath;

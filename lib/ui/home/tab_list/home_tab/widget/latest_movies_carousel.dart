@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-
-import 'movie_card.dart';
+import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_card.dart';
 
 class LatestMoviesCarousel<T> extends StatelessWidget {
   final List<T> movies;

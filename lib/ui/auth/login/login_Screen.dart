@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-
-import '../../../l10n/app_localizations.dart';
-import '../../../utils/app_assets.dart';
-import '../../../utils/app_colors.dart';
-import '../../../utils/app_routes.dart';
-import '../../../utils/app_styles.dart';
-import '../../../utils/app_validator.dart';
-import '../../../utils/shared_pref_utils.dart';
-import '../../../utils/size_utils.dart';
-
-import '../../widgets/custom_dialog.dart';
-import '../../widgets/custom_text_form_field.dart';
-import '../../widgets/elevated_button_reuse.dart';
-import '../../widgets/language_switch_widget.dart';
-import '../register/register_Screen.dart';
-import 'cubit/login_cubit.dart';
-import 'cubit/login_states.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/ui/auth/login/cubit/login_cubit.dart';
+import 'package:movies_app/ui/auth/login/cubit/login_states.dart';
+import 'package:movies_app/ui/auth/register/register_Screen.dart';
+import 'package:movies_app/ui/widgets/custom_dialog.dart';
+import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
+import 'package:movies_app/ui/widgets/elevated_button_reuse.dart';
+import 'package:movies_app/ui/widgets/language_switch_widget.dart';
+import 'package:movies_app/utils/app_assets.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_routes.dart';
+import 'package:movies_app/utils/app_styles.dart';
+import 'package:movies_app/utils/app_validator.dart';
+import 'package:movies_app/utils/shared_pref_utils.dart';
+import 'package:movies_app/utils/size_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -105,14 +102,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: emailController,
                         fill: true,
                         filledColor: AppColors.darkGrey,
-                        hinttext: local.email,
-                        hintstyle: AppStyles.regular16White.copyWith(
+                        hintText: local.email,
+                        hintStyle: AppStyles.regular16White.copyWith(
                           color: AppColors.white.withValues(alpha: .7),
                         ),
                         style: AppStyles.regular16White,
                         borderColor: AppColors.darkGrey,
-                        cursercolor: AppColors.yellow,
-                        keyboradtype: TextInputType.emailAddress,
+                        curserColor: AppColors.yellow,
+                        keyboardType: TextInputType.emailAddress,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(14),
                           child: Image.asset(
@@ -131,14 +128,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             controller: passwordController,
                             fill: true,
                             filledColor: AppColors.darkGrey,
-                            hinttext: local.password,
-                            hintstyle: AppStyles.regular16White.copyWith(
+                            hintText: local.password,
+                            hintStyle: AppStyles.regular16White.copyWith(
                               color: AppColors.white.withValues(alpha: .7),
                             ),
                             style: AppStyles.regular16White,
                             borderColor: AppColors.darkGrey,
-                            cursercolor: AppColors.yellow,
-                            obscuretext: !cubit.isPasswordVisible,
+                            curserColor: AppColors.yellow,
+                            obscureText: !cubit.isPasswordVisible,
                             prefixIcon: Padding(
                               padding: const EdgeInsets.all(14),
                               child: Image.asset(
@@ -147,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 20,
                               ),
                             ),
-                            sufixIcon: IconButton(
+                            suffixIcon: IconButton(
                               icon: Icon(
                                 cubit.isPasswordVisible
                                     ? Icons.visibility

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../../../../../../l10n/app_localizations.dart';
-import '../cubit/profile_cubit.dart';
-import 'profile_empty_state.dart';
-import 'profile_movie_grid.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_cubit.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/widgets/profile_empty_state.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/widgets/profile_movie_grid.dart';
 
 class HistoryTabView extends StatelessWidget {
   final ProfileCubit cubit;
