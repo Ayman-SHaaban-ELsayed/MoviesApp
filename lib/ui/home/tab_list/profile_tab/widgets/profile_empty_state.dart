@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/utils/app_assets.dart';
+import 'package:movies_app/utils/size_utils.dart';
 
-import '../../../../../../utils/app_assets.dart';
-import '../../../../../../utils/size_utils.dart';
 
 class ProfileEmptyState extends StatelessWidget {
 

@@ -6,6 +6,7 @@ import 'package:movies_app/ui/onBoarding/cubit/onBoarding_cubit.dart';
 import 'package:movies_app/ui/onBoarding/cubit/onBoarding_state.dart';
 import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_routes.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/size_utils.dart';
 
@@ -54,7 +55,14 @@ class OnBoardingScreen extends StatelessWidget {
       create: (context) => OnboardCubit(),
       child: Scaffold(
         backgroundColor: AppColors.primary,
-        body: BlocBuilder<OnboardCubit, OnboardState>(
+        body: BlocConsumer<OnboardCubit, OnboardState>(
+          listener: (context, state) {
+            if (state is OnboardNavigateToLoginState) {
+              Navigator.pushReplacementNamed(context, AppRoutes.loginRouteName);
+            }
+          },
+          buildWhen: (previous, current) =>
+          current is! OnboardNavigateToLoginState,
           builder: (context, state) {
             final cubit = context.read<OnboardCubit>();
             final currentItem = onboardingItems[cubit.currentIndex];

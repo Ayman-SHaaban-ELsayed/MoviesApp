@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/model/my_user.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_cubit.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/widgets/history_tab_view.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/widgets/profile_header.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/widgets/watch_list_tab_view.dart';
 import 'package:movies_app/ui/widgets/custom_dialog.dart';
-
-import '../../../../../l10n/app_localizations.dart';
-import '../../../../../model/my_user.dart';
-import '../../../../../utils/app_assets.dart';
-import '../../../../../utils/app_colors.dart';
-import '../../../../../utils/app_routes.dart';
-import '../../../../../utils/app_styles.dart';
-import 'profile_cubit.dart';
-import 'profile_states.dart';
-import 'widgets/history_tab_view.dart';
-import 'widgets/profile_header.dart';
-import 'widgets/watch_list_tab_view.dart';
+import 'package:movies_app/utils/app_assets.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_routes.dart';
+import 'package:movies_app/utils/app_styles.dart';
 
 class ProfileTab extends StatelessWidget {
   final MyUser? user;
@@ -113,16 +112,16 @@ class _ProfileTabView extends StatelessWidget {
         labelColor: AppColors.yellow,
         unselectedLabelColor: AppColors.white,
         labelStyle: AppStyles.bold14Yellow,
-        unselectedLabelStyle: AppStyles.regular16White,
+        unselectedLabelStyle: AppStyles.regular14White,
         tabs: [
           Tab(
-            child: Row(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
                   AppAssets.watchListIcon,
-                  width: 22,
-                  height: 22,
+                  width: 18,
+                  height: 18,
                   color: AppColors.yellow,
                 ),
                 const SizedBox(width: 8),
@@ -131,13 +130,13 @@ class _ProfileTabView extends StatelessWidget {
             ),
           ),
           Tab(
-            child: Row(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
                   AppAssets.historyIcon,
-                  width: 22,
-                  height: 22,
+                  width: 18,
+                  height: 18,
                   color: AppColors.yellow,
                 ),
                 const SizedBox(width: 8),

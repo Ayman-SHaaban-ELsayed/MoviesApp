@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../../../../../l10n/app_localizations.dart';
-import '../../../../../../model/my_user.dart';
-import '../../../../../../utils/app_colors.dart';
-import '../../../../../../utils/app_styles.dart';
-import '../profile_cubit.dart';
-import '../update_profile_screen.dart';
-import 'avatar_picker_bottom_sheet.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/model/my_user.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_cubit.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/update_profile_screen.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/widgets/avatar_picker_bottom_sheet.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_styles.dart';
+import 'package:movies_app/utils/size_utils.dart';
 
 class ProfileHeader extends StatelessWidget {
   final MyUser user;
@@ -26,7 +26,10 @@ class ProfileHeader extends StatelessWidget {
     final locale = AppLocalizations.of(context)!;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      padding: EdgeInsets.symmetric(
+        horizontal: context.width * 0.03,
+        vertical: context.height * 0.015,
+      ),
       child: Column(
         children: [
           Row(
@@ -38,8 +41,8 @@ class ProfileHeader extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      width: 100,
-                      height: 100,
+                      width: context.width * 0.25,
+                      height: context.width * 0.25,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                       ),
@@ -50,12 +53,12 @@ class ProfileHeader extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: context.height * 0.015),
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
                         user.name,
-                        style: AppStyles.bold20White.copyWith(fontSize: 14),
+                        style: AppStyles.bold20White,
                         textAlign: TextAlign.center,
                         maxLines: 1,
                       ),
@@ -67,6 +70,7 @@ class ProfileHeader extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: _buildStatItem(
+                  context: context,
                   count: '${cubit.watchListCount}',
                   label: locale.watchList,
                 ),
@@ -75,15 +79,15 @@ class ProfileHeader extends StatelessWidget {
               Expanded(
                 flex: 4,
                 child: _buildStatItem(
+                  context: context,
                   count: '${cubit.historyCount}',
                   label: locale.history,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: context.height * 0.025),
 
-          // أزرار التحكم (Edit Profile & Exit)
           Row(
             children: [
               Expanded(
@@ -95,7 +99,9 @@ class ProfileHeader extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: EdgeInsets.symmetric(
+                      vertical: context.height * 0.015,
+                    ),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -110,11 +116,11 @@ class ProfileHeader extends StatelessWidget {
                   },
                   child: Text(
                     locale.editProfile,
-                    style: AppStyles.regular20Black,
+                    style: AppStyles.regular16Black,
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: context.width * 0.025),
               Expanded(
                 flex: 1,
                 child: ElevatedButton.icon(
@@ -124,17 +130,19 @@ class ProfileHeader extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    padding: EdgeInsets.symmetric(
+                      vertical: context.height * 0.015,
+                    ),
                   ),
                   onPressed: onExitPressed,
                   label: Text(
                     locale.exit,
-                    style: AppStyles.bold20White.copyWith(fontSize: 16),
+                    style: AppStyles.regular16White,
                   ),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.exit_to_app_rounded,
                     color: AppColors.white,
-                    size: 20,
+                    size: context.width * 0.05,
                   ),
                   iconAlignment: IconAlignment.end,
                 ),
@@ -146,23 +154,32 @@ class ProfileHeader extends StatelessWidget {
     );
   }
 
-  Widget _buildStatItem({required String count, required String label}) {
-    return FittedBox(
-      fit: BoxFit.scaleDown,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            count,
-            style: AppStyles.bold36White,
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: AppStyles.bold24White,
-          ),
-        ],
+  Widget _buildStatItem({
+    required BuildContext context,
+    required String count,
+    required String label,
+  }) {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: context.height * 0.05,
+        left: context.width * 0.04,
+      ),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              count,
+              style: AppStyles.bold24White,
+            ),
+            SizedBox(height: context.height * 0.012),
+            Text(
+              label,
+              style: AppStyles.bold24White,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
-import '../../../../../../utils/app_colors.dart';
-import '../../../../../../utils/app_styles.dart';
-import '../profile_states.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_styles.dart';
 
 class ProfileMovieGrid extends StatelessWidget {
   final List<MovieItemUiModel> movies;

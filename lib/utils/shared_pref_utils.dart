@@ -5,6 +5,7 @@ class PrefKeys {
 
   static const String languageCode = 'language_code';
   static const String userId = 'user_id';
+  static const String isOnboardingSeen = 'is_onboarding_seen';
 }
 
 class SharedPrefUtils {
@@ -42,4 +43,10 @@ class SharedPrefUtils {
 
   static Future<bool> removeUserId() =>
       _instance.remove(PrefKeys.userId);
+
+  static bool get isOnboardingSeen =>
+      _instance.getBool(PrefKeys.isOnboardingSeen) ?? false;
+
+  static Future<bool> saveOnboardingSeen(bool isSeen) =>
+      _instance.setBool(PrefKeys.isOnboardingSeen, isSeen);
 }
