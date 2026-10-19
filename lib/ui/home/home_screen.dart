@@ -18,12 +18,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+  void _onTabChanged(int index) {
+    if (index == _currentIndex) return;
 
+    setState(() {
+      _currentIndex = index;
+    });
+  }
   @override
   Widget build(BuildContext context) {
      final width = context.width;
     final List<Widget> tabs = [
-      HomeTab(),
+      HomeTab(key: UniqueKey()),
       SearchTab(),
       BrowseTab(),
       ProfileTab(),
@@ -42,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: BottomNavigationBar(
           currentIndex: _currentIndex,
-          onTap: (index) => setState(() => _currentIndex = index),
+          onTap: _onTabChanged,
           backgroundColor: AppColors.transparent,
           type: BottomNavigationBarType.fixed,
           elevation: 0,
