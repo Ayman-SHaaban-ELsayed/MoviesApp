@@ -1,15 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/l10n/app_localizations.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/cubit/cubit_home_view_model.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/cubit/home_states.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/error_widget.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/latest_movies_carousel.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/loading_widget.dart';
+import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_category_widget.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_gradient.dart';
-import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_list_widget.dart';
-import 'package:movies_app/ui/home/tab_list/home_tab/widget/section_header.dart';
 import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/size_utils.dart';
@@ -42,23 +40,22 @@ class _HomeTabState extends State<HomeTab> {
                 },
               );
             } else if (state is HomeSuccess) {
-              String currentBgImage = state.latestMovies.isNotEmpty
-                  ? state.latestMovies[_currentCarouselIndex].mediumCoverImage
-                  : '';
+              String currentBgImage =
+                  state.latestMovies[_currentCarouselIndex].mediumCoverImage;
               return Stack(
                 children: [
-                  if (currentBgImage.isNotEmpty)
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      height: screenHeight * 0.65,
-                      child: CachedNetworkImage(
-                        imageUrl: currentBgImage,
-                        fit: BoxFit.cover,
-                        errorWidget: (context, url, error) => const SizedBox(),
-                      ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: screenHeight * 0.65,
+                    child: CachedNetworkImage(
+                      imageUrl: currentBgImage,
+                      fit: BoxFit.cover,
+                      errorWidget: (context, url, error) =>
+                          Icon(Icons.error, color: AppColors.white),
                     ),
+                  ),
                   const MovieGradient(),
                   SingleChildScrollView(
                     child: Column(
@@ -87,35 +84,29 @@ class _HomeTabState extends State<HomeTab> {
                             print('Clicked: ${movie.title}');
                           },
                         ),
-
-                        SizedBox(height: screenHeight * 0.04),
                         Image.asset(
                           AppAssets.watchNow,
                           fit: BoxFit.fill,
                           height: screenHeight * 0.15,
                         ),
-                        SizedBox(height: screenHeight * 0.02),
-                        SectionHeader(
-                          title: state.dynamicCategory.categoryName,
-                          seeMoreText: AppLocalizations.of(context)!.seeMore,
-                          onSeeMoreTap: () {
-                            //todo
-                            print(
-                              'See More ${state.dynamicCategory.categoryName}',
-                            );
-                          },
-                        ),
-                        SizedBox(height: screenHeight * 0.03),
-                        MovieListWidget(
-                          movies: state.dynamicCategory.movies,
-                          height: screenHeight * 0.34,
-                          widthCard: 146,
-                          heightCard: 220,
-                          onMovieTap: (movie) {
-                            print('Clicked: ${movie.title}');
-                            // TODO: Navigate to movie details.
-                          },
-                        ),
+                        ...List.generate(state.categories.length, (index) {
+                          final category = state.categories[index];
+
+                          return MovieCategoryWidget(
+                            categoryName: category.categoryName,
+                            movies: category.movies,
+                            height: screenHeight * 0.34,
+                            widthCard: 146,
+                            heightCard: 220,
+                            onSeeMoreTap: () {
+                              print('See More ${category.categoryName}');
+                            },
+                            onMovieTap: (movie) {
+                              print('Clicked: ${movie.title}');
+                              // TODO: Navigate to movie details.
+                            },
+                          );
+                        }),
                       ],
                     ),
                   ),
