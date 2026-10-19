@@ -1,0 +1,173 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/ui/auth/forgot_password/cubit/forgot_password_cubit.dart';
+import 'package:movies_app/ui/auth/forgot_password/cubit/forgot_password_states.dart';
+import 'package:movies_app/ui/widgets/custom_dialog.dart';
+import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
+import 'package:movies_app/ui/widgets/elevated_button_reuse.dart';
+import 'package:movies_app/utils/app_assets.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_styles.dart';
+import 'package:movies_app/utils/app_validator.dart';
+import 'package:movies_app/utils/size_utils.dart';
+
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
+
+  @override
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  final emailController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final height = context.height;
+    final width = context.width;
+    final local = AppLocalizations.of(context)!;
+
+    return BlocProvider(
+      create: (_) => ForgotPasswordCubit(),
+      child: BlocConsumer<ForgotPasswordCubit, ForgotPasswordState>(
+        listener: (context, state) {
+          if (state is ForgotPasswordSuccessState) {
+            bool navigated = false;
+            void navigateBack() {
+              if (!navigated && context.mounted) {
+                navigated = true;
+                CustomDialog.hide(context);
+                Navigator.pop(context);
+              }
+            }
+
+            CustomDialog.showSuccess(
+              context: context,
+              message: local.passwordResetEmailSent,
+              buttonText: local.close,
+            ).then((_) => navigateBack());
+
+            Future.delayed(const Duration(milliseconds: 900), navigateBack);
+          } else if (state is ForgotPasswordErrorState) {
+            CustomDialog.showError(
+              context: context,
+              message: _getLocalizedError(state.errorMessage, local),
+              buttonText: local.close,
+            );
+          }
+        },
+        builder: (context, state) {
+          final cubit = context.read<ForgotPasswordCubit>();
+          final isLoading = state is ForgotPasswordLoadingState;
+
+          return Scaffold(
+            backgroundColor: AppColors.primary,
+            appBar: AppBar(
+              backgroundColor: AppColors.primary,
+              elevation: 0,
+              iconTheme: const IconThemeData(color: AppColors.yellow),
+              title: Text(
+                local.forgetPassword,
+                style: AppStyles.regular16Yellow,
+              ),
+              centerTitle: true,
+            ),
+            body: SafeArea(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: width * .06),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(height: height * .02),
+                      Center(
+                        child: Image.asset(
+                          AppAssets.forgotPassword,
+
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      SizedBox(height: height * .04),
+
+                      CustomTextFormField(
+                        controller: emailController,
+                        fill: true,
+                        filledColor: AppColors.darkGrey,
+                        hintText: local.email,
+                        hintStyle: AppStyles.regular16White.copyWith(
+                          color: AppColors.white.withValues(alpha: .7),
+                        ),
+                        style: AppStyles.regular16White,
+                        borderColor: AppColors.darkGrey,
+                        curserColor: AppColors.yellow,
+                        keyboardType: TextInputType.emailAddress,
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.all(14),
+                          child: Image.asset(
+                            AppAssets.emailIcon,
+                            width: 20,
+                            height: 20,
+                          ),
+                        ),
+                        validator: (text) => AppValidators.validateEmail(text),
+                      ),
+                      SizedBox(height: height * .04),
+                      ElevatedButtonReuse(
+                        background: AppColors.yellow,
+                        onpressed: isLoading
+                            ? () {}
+                            : () {
+                                if (formKey.currentState!.validate()) {
+                                  cubit.sendResetLink(
+                                    email: emailController.text,
+                                  );
+                                }
+                              },
+                        ChildType: isLoading
+                            ? const SizedBox(
+                                height: 22,
+                                width: 22,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2.5,
+                                  color: AppColors.primary,
+                                ),
+                              )
+                            : Text(
+                                local.verifyEmail,
+                                style: AppStyles.bold20Black,
+                              ),
+                      ),
+                      SizedBox(height: height * .03),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  String _getLocalizedError(String error, AppLocalizations local) {
+    if (error.contains('No account') || error.contains('user-not-found')) {
+      return local.userNotFound;
+    }
+    if (error.contains('internet') || error.contains('network')) {
+      return local.noInternetConnection;
+    }
+    if (error.contains('attempts') || error.contains('too-many-requests')) {
+      return local.tooManyRequests;
+    }
+    return local.somethingWentWrong;
+  }
+}

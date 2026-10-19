@@ -44,7 +44,7 @@
   "home": "Home",
   "profile": "Profile",
   "browse": "Browse",
-  "watchList": "Watch List",
+  "watchList": "Wish List",
   "history": "History",
   "deleteAccount": "Delete Account",
   "updateData": "Update Data",
@@ -101,6 +101,7 @@
   "no": "No",
   "close": "Close",
   "seeAll": "See All",
+  "seeMore": "see More",
   "retry": "Retry",
   "tryAgain": "Try Again",
   "loading": "Loading...",
@@ -151,5 +152,6 @@
   "failedToLoadMovies": "Failed to load movies",
   "failedToLoadMovieDetails": "Failed to load movie details",
   "permissionDenied": "Permission denied",
-  "tooManyRequests": "Too many attempts. Please wait a moment and try again."
+  "tooManyRequests": "Too many attempts. Please wait a moment and try again.",
+  "loginWithGoogle": "Login With Google"
 }
