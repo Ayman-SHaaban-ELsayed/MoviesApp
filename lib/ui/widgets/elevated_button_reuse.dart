@@ -24,7 +24,7 @@ class ElevatedButtonReuse extends StatelessWidget {
       ),
       onPressed: onpressed,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: height * .02),
+        padding: EdgeInsets.symmetric(vertical: height * .01),
         child: ChildType,
       ),
     );

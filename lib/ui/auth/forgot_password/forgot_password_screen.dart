@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../l10n/app_localizations.dart';
-import '../../utils/app_assets.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/app_styles.dart';
-import '../../utils/size_utils.dart';
-import '../widgets/custom_dialog.dart';
-import '../widgets/custom_text_form_field.dart';
-import '../widgets/elevated_button_reuse.dart';
-import 'forgot_password_cubit.dart';
-import 'forgot_password_states.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/ui/auth/forgot_password/cubit/forgot_password_cubit.dart';
+import 'package:movies_app/ui/auth/forgot_password/cubit/forgot_password_states.dart';
+import 'package:movies_app/ui/widgets/custom_dialog.dart';
+import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
+import 'package:movies_app/ui/widgets/elevated_button_reuse.dart';
+import 'package:movies_app/utils/app_assets.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_styles.dart';
+import 'package:movies_app/utils/app_validator.dart';
+import 'package:movies_app/utils/size_utils.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -74,7 +74,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               backgroundColor: AppColors.primary,
               elevation: 0,
               iconTheme: const IconThemeData(color: AppColors.yellow),
-              title: Text(local.forgetPassword,style: AppStyles.regular16Yellow,),
+              title: Text(
+                local.forgetPassword,
+                style: AppStyles.regular16Yellow,
+              ),
               centerTitle: true,
             ),
             body: SafeArea(
@@ -86,35 +89,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       SizedBox(height: height * .02),
-
-                      // ——— Illustration ———
                       Center(
                         child: Image.asset(
                           AppAssets.forgotPassword,
-                          height: height * .30,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      SizedBox(height: height * .04),
 
-                      Text(
-                        local.forgetPassword,
-                        style: AppStyles.bold24White,
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: height * .012),
-
-                      Text(
-                        local.passwordResetEmailSent
-                            .replaceAll(RegExp(r'A password.*'), '')
-                            .trim()
-                            .isEmpty
-                            ? 'Enter your email and we\'ll send you a link to reset your password.'
-                            : 'Enter your email and we\'ll send you a link to reset your password.',
-                        style: AppStyles.regular16White.copyWith(
-                          color: AppColors.white.withValues(alpha: .65),
+                          fit: BoxFit.fill,
                         ),
-                        textAlign: TextAlign.center,
                       ),
                       SizedBox(height: height * .04),
 
@@ -122,14 +102,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         controller: emailController,
                         fill: true,
                         filledColor: AppColors.darkGrey,
-                        hinttext: local.email,
-                        hintstyle: AppStyles.regular16White.copyWith(
+                        hintText: local.email,
+                        hintStyle: AppStyles.regular16White.copyWith(
                           color: AppColors.white.withValues(alpha: .7),
                         ),
                         style: AppStyles.regular16White,
                         borderColor: AppColors.darkGrey,
-                        cursercolor: AppColors.yellow,
-                        keyboradtype: TextInputType.emailAddress,
+                        curserColor: AppColors.yellow,
+                        keyboardType: TextInputType.emailAddress,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(14),
                           child: Image.asset(
@@ -138,19 +118,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             height: 20,
                           ),
                         ),
-                        validator: (text) {
-                          if (text == null || text.trim().isEmpty) {
-                            return local.emailRequired;
-                          }
-                          final isValid = RegExp(
-                            r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                          ).hasMatch(text.trim());
-                          if (!isValid) return local.emailInvalid;
-                          return null;
-                        },
+                        validator: (text) => AppValidators.validateEmail(text),
                       ),
                       SizedBox(height: height * .04),
-
                       ElevatedButtonReuse(
                         background: AppColors.yellow,
                         onpressed: isLoading

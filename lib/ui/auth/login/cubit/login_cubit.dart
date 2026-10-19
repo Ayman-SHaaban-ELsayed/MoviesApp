@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-import '../../fireStore/firebase_utils.dart';
-import '../../model/my_user.dart';
-import 'login_states.dart';
+import 'package:movies_app/fireStore/firebase_utils.dart';
+import 'package:movies_app/model/my_user.dart';
+import 'package:movies_app/ui/auth/login/cubit/login_states.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(LoginInitialState());
@@ -52,7 +51,7 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> signInWithGoogle() async {
-    emit(LoginLoadingState());
+    emit(GoogleLoginLoadingState());
     try {
       final GoogleSignIn googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();

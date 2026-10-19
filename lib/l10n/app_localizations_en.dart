@@ -147,7 +147,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get browse => 'Browse';
 
   @override
-  String get watchList => 'Watch List';
+  String get watchList => 'Wish List';
 
   @override
   String get history => 'History';

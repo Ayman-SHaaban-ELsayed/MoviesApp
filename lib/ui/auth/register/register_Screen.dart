@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../l10n/app_localizations.dart';
-import '../../utils/app_assets.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/app_routes.dart';
-import '../../utils/app_styles.dart';
-import '../../utils/shared_pref_utils.dart';
-import '../../utils/size_utils.dart';
-import '../widgets/custom_dialog.dart';
-import '../widgets/custom_text_form_field.dart';
-import '../widgets/elevated_button_reuse.dart';
-import '../widgets/language_switch_widget.dart';
-import 'register_cubit.dart';
-import 'register_states.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/ui/auth/register/cubit/register_cubit.dart';
+import 'package:movies_app/ui/auth/register/cubit/register_states.dart';
+import 'package:movies_app/ui/widgets/custom_dialog.dart';
+import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
+import 'package:movies_app/ui/widgets/elevated_button_reuse.dart';
+import 'package:movies_app/ui/widgets/language_switch_widget.dart';
+import 'package:movies_app/utils/app_assets.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_routes.dart';
+import 'package:movies_app/utils/app_styles.dart';
+import 'package:movies_app/utils/app_validator.dart';
+import 'package:movies_app/utils/shared_pref_utils.dart';
+import 'package:movies_app/utils/size_utils.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -81,6 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         listener: (context, state) {
           if (state is RegisterSuccessState) {
             SharedPrefUtils.saveUserId(state.user.id);
+            SharedPrefUtils.saveOnboardingSeen(true);
             bool navigated = false;
             void navigateHome() {
               if (!navigated && context.mounted) {
@@ -123,10 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 icon: const Icon(Icons.arrow_back, color: AppColors.yellow),
                 onPressed: () => Navigator.pop(context),
               ),
-              title: Text(
-                local.register,
-                style: AppStyles.regular16Yellow,
-              ),
+              title: Text(local.register, style: AppStyles.regular16Yellow),
             ),
             body: SafeArea(
               child: SingleChildScrollView(
@@ -163,7 +161,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 child: AnimatedContainer(
                                   duration: const Duration(milliseconds: 250),
                                   width: isCenter ? height * .15 : height * .10,
-                                  height: isCenter ? height * .15 : height * .10,
+                                  height: isCenter
+                                      ? height * .15
+                                      : height * .10,
                                   child: Image.asset(
                                     _avatarAssets[index],
                                     fit: BoxFit.contain,
@@ -177,10 +177,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       SizedBox(height: height * .008),
 
                       Center(
-                        child: Text(
-                          'Avatar',
-                          style: AppStyles.regular16White,
-                        ),
+                        child: Text('Avatar', style: AppStyles.regular16White),
                       ),
                       SizedBox(height: height * .02),
 
@@ -188,13 +185,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: nameController,
                         fill: true,
                         filledColor: AppColors.darkGrey,
-                        hinttext: local.name,
-                        hintstyle: AppStyles.regular16White.copyWith(
+                        hintText: local.name,
+                        hintStyle: AppStyles.regular16White.copyWith(
                           color: AppColors.white.withValues(alpha: .7),
                         ),
                         style: AppStyles.regular16White,
                         borderColor: AppColors.darkGrey,
-                        cursercolor: AppColors.yellow,
+                        curserColor: AppColors.yellow,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(14),
                           child: Image.asset(
@@ -203,12 +200,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             height: 20,
                           ),
                         ),
-                        validator: (text) {
-                          if (text == null || text.trim().isEmpty) {
-                            return local.nameRequired;
-                          }
-                          return null;
-                        },
+                        validator: (text) =>
+                            AppValidators.validateUsername(text!.trim()),
                       ),
                       SizedBox(height: height * .018),
 
@@ -216,14 +209,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: emailController,
                         fill: true,
                         filledColor: AppColors.darkGrey,
-                        hinttext: local.email,
-                        hintstyle: AppStyles.regular16White.copyWith(
+                        hintText: local.email,
+                        hintStyle: AppStyles.regular16White.copyWith(
                           color: AppColors.white.withValues(alpha: .7),
                         ),
                         style: AppStyles.regular16White,
                         borderColor: AppColors.darkGrey,
-                        cursercolor: AppColors.yellow,
-                        keyboradtype: TextInputType.emailAddress,
+                        curserColor: AppColors.yellow,
+                        keyboardType: TextInputType.emailAddress,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(14),
                           child: Image.asset(
@@ -232,16 +225,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             height: 20,
                           ),
                         ),
-                        validator: (text) {
-                          if (text == null || text.trim().isEmpty) {
-                            return local.emailRequired;
-                          }
-                          final isValid = RegExp(
-                            r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                          ).hasMatch(text.trim());
-                          if (!isValid) return local.emailInvalid;
-                          return null;
-                        },
+                        validator: (text) => AppValidators.validateEmail(text!.trim()),
                       ),
                       SizedBox(height: height * .018),
 
@@ -249,14 +233,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: passwordController,
                         fill: true,
                         filledColor: AppColors.darkGrey,
-                        hinttext: local.password,
-                        hintstyle: AppStyles.regular16White.copyWith(
+                        hintText: local.password,
+                        hintStyle: AppStyles.regular16White.copyWith(
                           color: AppColors.white.withValues(alpha: .7),
                         ),
                         style: AppStyles.regular16White,
                         borderColor: AppColors.darkGrey,
-                        cursercolor: AppColors.yellow,
-                        obscuretext: !_isPasswordVisible,
+                        curserColor: AppColors.yellow,
+                        obscureText: !_isPasswordVisible,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(14),
                           child: Image.asset(
@@ -265,7 +249,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             height: 20,
                           ),
                         ),
-                        sufixIcon: IconButton(
+                        suffixIcon: IconButton(
                           icon: Icon(
                             _isPasswordVisible
                                 ? Icons.visibility
@@ -278,15 +262,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             });
                           },
                         ),
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return local.passwordRequired;
-                          }
-                          if (text.length < 6) {
-                            return local.passwordRequired;
-                          }
-                          return null;
-                        },
+                        validator: (text) =>
+                            AppValidators.validatePassword(text),
                       ),
                       SizedBox(height: height * .018),
 
@@ -294,14 +271,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: rePasswordController,
                         fill: true,
                         filledColor: AppColors.darkGrey,
-                        hinttext: local.confirmPassword,
-                        hintstyle: AppStyles.regular16White.copyWith(
+                        hintText: local.confirmPassword,
+                        hintStyle: AppStyles.regular16White.copyWith(
                           color: AppColors.white.withValues(alpha: .7),
                         ),
                         style: AppStyles.regular16White,
                         borderColor: AppColors.darkGrey,
-                        cursercolor: AppColors.yellow,
-                        obscuretext: !_isRePasswordVisible,
+                        curserColor: AppColors.yellow,
+                        obscureText: !_isRePasswordVisible,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(14),
                           child: Image.asset(
@@ -310,7 +287,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             height: 20,
                           ),
                         ),
-                        sufixIcon: IconButton(
+                        suffixIcon: IconButton(
                           icon: Icon(
                             _isRePasswordVisible
                                 ? Icons.visibility
@@ -323,30 +300,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             });
                           },
                         ),
-                        validator: (text) {
-                          if (text == null || text.isEmpty) {
-                            return local.confirmPasswordRequired;
-                          }
-                          if (text != passwordController.text) {
-                            return local.passwordsDoNotMatch;
-                          }
-                          return null;
-                        },
+                        validator: (text) =>
+                            AppValidators.validateConfirmPassword(
+                              text,
+                              rePasswordController.text,
+                            ),
                       ),
+
                       SizedBox(height: height * .018),
 
                       CustomTextFormField(
                         controller: phoneController,
                         fill: true,
                         filledColor: AppColors.darkGrey,
-                        hinttext: local.phoneNumber,
-                        hintstyle: AppStyles.regular16White.copyWith(
+                        hintText: local.phoneNumber,
+                        hintStyle: AppStyles.regular16White.copyWith(
                           color: AppColors.white.withValues(alpha: .7),
                         ),
                         style: AppStyles.regular16White,
                         borderColor: AppColors.darkGrey,
-                        cursercolor: AppColors.yellow,
-                        keyboradtype: TextInputType.phone,
+                        curserColor: AppColors.yellow,
+                        keyboardType: TextInputType.phone,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(14),
                           child: Image.asset(
@@ -355,13 +329,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             height: 20,
                           ),
                         ),
-                        validator: (text) {
-                          if (text == null || text.trim().isEmpty) {
-                            return local.phoneRequired;
-                          }
-                          return null;
-                        },
+                        validator: (text) =>
+                            AppValidators.validatePhoneNumber(text!.trim()),
                       ),
+
                       SizedBox(height: height * .03),
 
                       ElevatedButtonReuse(
@@ -426,8 +397,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   String _getLocalizedErrorMessage(
-      String error, AppLocalizations localizations) {
-    if (error.contains('email-already-in-use') || error.contains('already exists')) {
+    String error,
+    AppLocalizations localizations,
+  ) {
+    if (error.contains('email-already-in-use') ||
+        error.contains('already exists')) {
       return localizations.emailAlreadyInUse;
     }
     if (error.contains('invalid-email')) {

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
-import '../../../../../utils/app_colors.dart';
-import '../../../../../utils/app_styles.dart';
-import '../../../../../utils/size_utils.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_styles.dart';
+import 'package:movies_app/utils/size_utils.dart';
 
 class SectionHeader extends StatelessWidget {
   final String title;
@@ -23,27 +22,25 @@ class SectionHeader extends StatelessWidget {
     final languageCode = Localizations.localeOf(context).languageCode;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: width * 0.043),
+      padding: EdgeInsets.symmetric(horizontal: width * 0.015),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Text(title, style: AppStyles.regular20White),
           GestureDetector(
             onTap: onSeeMoreTap,
             child: Row(
               children: [
+                Text(seeMoreText, style: AppStyles.regular16Yellow),
+                SizedBox(width: width * 0.01),
                 Icon(
-                  languageCode == 'ar'
-                      ? Icons.arrow_back_rounded
-                      : Icons.arrow_forward_rounded,
+                  Icons.arrow_forward_rounded,
                   color: AppColors.yellow,
                   size: height * 0.018,
                 ),
-                SizedBox(width: width * 0.005),
-                Text(seeMoreText, style: AppStyles.regular16Yellow),
               ],
             ),
           ),
-          Text(title, style: AppStyles.regular20White),
         ],
       ),
     );

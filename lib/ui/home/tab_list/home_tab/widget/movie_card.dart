@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../../utils/app_assets.dart';
-import '../../../../../utils/app_colors.dart';
-import '../../../../../utils/app_styles.dart';
-import '../../../../../utils/size_utils.dart';
+import 'package:movies_app/utils/app_assets.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_styles.dart';
+import 'package:movies_app/utils/size_utils.dart';
 
 class MovieCard extends StatelessWidget {
   final String imagePath;
   final double rating;
-  final double? width;
+  final double? widthCard;
+  final double? heightCard;
 
   final VoidCallback onTap;
 
@@ -18,7 +18,7 @@ class MovieCard extends StatelessWidget {
     required this.imagePath,
     required this.rating,
     required this.onTap,
-    this.width,
+    this.widthCard,this.heightCard
   });
 
   @override
@@ -28,17 +28,15 @@ class MovieCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
-        width: width ?? width * 0.49,
-        height: height * 0.34,
+        width: widthCard ,
+        height:heightCard ,
         child: Stack(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(width * 0.04),
               child: CachedNetworkImage(
                 imageUrl: imagePath,
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
                 placeholder: (context, url) => const Center(
                   child: CircularProgressIndicator(color: Colors.white),
                 ),

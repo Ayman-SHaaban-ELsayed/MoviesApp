@@ -5,3 +5,5 @@ class OnboardInitial extends OnboardState {
 
   OnboardInitial({required this.currentIndex});
 }
+
+class OnboardNavigateToLoginState extends OnboardState {}

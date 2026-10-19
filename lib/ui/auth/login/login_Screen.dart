@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../l10n/app_localizations.dart';
-import '../../utils/app_assets.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/app_routes.dart';
-import '../../utils/app_styles.dart';
-import '../../utils/shared_pref_utils.dart';
-import '../../utils/size_utils.dart';
-import '../register/register_Screen.dart';
-import '../widgets/custom_dialog.dart';
-import '../widgets/custom_text_form_field.dart';
-import '../widgets/elevated_button_reuse.dart';
-import '../widgets/language_switch_widget.dart';
-import 'login_cubit.dart';
-import 'login_states.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/ui/auth/login/cubit/login_cubit.dart';
+import 'package:movies_app/ui/auth/login/cubit/login_states.dart';
+import 'package:movies_app/ui/auth/register/register_Screen.dart';
+import 'package:movies_app/ui/widgets/custom_dialog.dart';
+import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
+import 'package:movies_app/ui/widgets/elevated_button_reuse.dart';
+import 'package:movies_app/ui/widgets/language_switch_widget.dart';
+import 'package:movies_app/utils/app_assets.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_routes.dart';
+import 'package:movies_app/utils/app_styles.dart';
+import 'package:movies_app/utils/app_validator.dart';
+import 'package:movies_app/utils/shared_pref_utils.dart';
+import 'package:movies_app/utils/size_utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -47,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
         listener: (context, state) {
           if (state is LoginSuccessState) {
             SharedPrefUtils.saveUserId(state.user.id);
+            SharedPrefUtils.saveOnboardingSeen(true);
             bool navigated = false;
             void navigateHome() {
               if (!navigated && context.mounted) {
@@ -73,8 +74,9 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         builder: (context, state) {
           final cubit = context.read<LoginCubit>();
-          final isLoading = state is LoginLoadingState;
-
+          final isNormalLoading = state is LoginLoadingState;
+          final isGoogleLoading = state is GoogleLoginLoadingState;
+          final isAnyLoading = isNormalLoading || isGoogleLoading;
           return Scaffold(
             backgroundColor: AppColors.primary,
             body: SafeArea(
@@ -100,14 +102,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: emailController,
                         fill: true,
                         filledColor: AppColors.darkGrey,
-                        hinttext: local.email,
-                        hintstyle: AppStyles.regular16White.copyWith(
+                        hintText: local.email,
+                        hintStyle: AppStyles.regular16White.copyWith(
                           color: AppColors.white.withValues(alpha: .7),
                         ),
                         style: AppStyles.regular16White,
                         borderColor: AppColors.darkGrey,
-                        cursercolor: AppColors.yellow,
-                        keyboradtype: TextInputType.emailAddress,
+                        curserColor: AppColors.yellow,
+                        keyboardType: TextInputType.emailAddress,
                         prefixIcon: Padding(
                           padding: const EdgeInsets.all(14),
                           child: Image.asset(
@@ -116,16 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: 20,
                           ),
                         ),
-                        validator: (text) {
-                          if (text == null || text.trim().isEmpty) {
-                            return local.emailRequired;
-                          }
-                          final isValid = RegExp(
-                            r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                          ).hasMatch(text.trim());
-                          if (!isValid) return local.emailInvalid;
-                          return null;
-                        },
+                        validator: (text) =>AppValidators.validateEmail(text),
                       ),
                       SizedBox(height: height * .02),
 
@@ -135,14 +128,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             controller: passwordController,
                             fill: true,
                             filledColor: AppColors.darkGrey,
-                            hinttext: local.password,
-                            hintstyle: AppStyles.regular16White.copyWith(
+                            hintText: local.password,
+                            hintStyle: AppStyles.regular16White.copyWith(
                               color: AppColors.white.withValues(alpha: .7),
                             ),
                             style: AppStyles.regular16White,
                             borderColor: AppColors.darkGrey,
-                            cursercolor: AppColors.yellow,
-                            obscuretext: !cubit.isPasswordVisible,
+                            curserColor: AppColors.yellow,
+                            obscureText: !cubit.isPasswordVisible,
                             prefixIcon: Padding(
                               padding: const EdgeInsets.all(14),
                               child: Image.asset(
@@ -151,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 height: 20,
                               ),
                             ),
-                            sufixIcon: IconButton(
+                            suffixIcon: IconButton(
                               icon: Icon(
                                 cubit.isPasswordVisible
                                     ? Icons.visibility
@@ -160,15 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               onPressed: cubit.togglePasswordVisibility,
                             ),
-                            validator: (text) {
-                              if (text == null || text.isEmpty) {
-                                return local.passwordRequired;
-                              }
-                              if (text.length < 6) {
-                                return local.passwordRequired;
-                              }
-                              return null;
-                            },
+                            validator: (text) =>AppValidators.validatePassword(text),
                           );
                         },
                       ),
@@ -192,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       ElevatedButtonReuse(
                         background: AppColors.yellow,
-                        onpressed: isLoading
+                        onpressed: isAnyLoading
                             ? () {}
                             : () {
                                 if (formKey.currentState!.validate()) {
@@ -202,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   );
                                 }
                               },
-                        ChildType: isLoading
+                        ChildType: isNormalLoading
                             ? const SizedBox(
                                 height: 22,
                                 width: 22,
@@ -213,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               )
                             : Text(
                                 local.login,
-                                style: AppStyles.bold20Black,
+                          style: AppStyles.regular20Black,
                               ),
                       ),
                       SizedBox(height: height * .025),
@@ -240,14 +225,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       ),
                       SizedBox(height: height * .025),
-
-
                       Row(
                         children: [
-                          const Expanded(
+                          Expanded(
                             child: Divider(
                               color: AppColors.yellow,
                               thickness: 1,
+
+                              indent: width * .06,
+
                             ),
                           ),
                           Padding(
@@ -258,10 +244,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: AppStyles.regular16Yellow,
                             ),
                           ),
-                          const Expanded(
+                          Expanded(
                             child: Divider(
                               color: AppColors.yellow,
                               thickness: 1,
+                              endIndent: width * .06,
                             ),
                           ),
                         ],
@@ -270,10 +257,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       ElevatedButtonReuse(
                         background: AppColors.yellow,
-                        onpressed: isLoading
+                        onpressed: isAnyLoading
                             ? () {}
                             : () => cubit.signInWithGoogle(),
-                        ChildType: Row(
+                        ChildType:
+                        isGoogleLoading
+                            ? const SizedBox(
+                          height: 22,
+                          width: 22,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.5,
+                            color: AppColors.primary,
+                          ),
+                        )
+                            :
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(
@@ -284,7 +282,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             const SizedBox(width: 12),
                             Text(
                               local.loginWithGoogle,
-                              style: AppStyles.bold16Black,
+                              style: AppStyles.regular16Black,
                             ),
                           ],
                         ),

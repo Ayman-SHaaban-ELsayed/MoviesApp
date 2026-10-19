@@ -365,7 +365,7 @@ abstract class AppLocalizations {
   /// No description provided for @watchList.
   ///
   /// In en, this message translates to:
-  /// **'Watch List'**
+  /// **'Wish List'**
   String get watchList;
 
   /// No description provided for @history.

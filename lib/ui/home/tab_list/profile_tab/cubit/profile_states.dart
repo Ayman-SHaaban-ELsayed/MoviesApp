@@ -1,4 +1,4 @@
-import '../../../../../model/my_user.dart';
+import 'package:movies_app/model/my_user.dart';
 
 abstract class ProfileState {}
 

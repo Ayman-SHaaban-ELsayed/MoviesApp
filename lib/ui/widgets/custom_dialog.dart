@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
 
 enum AppButtonType { elevated, text, outlined }
 
@@ -45,7 +46,7 @@ class CustomDialog extends StatelessWidget {
     this.onCancel,
     this.cancelButtonType = AppButtonType.text,
     this.isLoading = false,
-    this.loadingText = 'جاري التحميل...',
+    this.loadingText = 'Loading...',
     this.autoDismiss = true,
     this.backgroundColor,
     this.titleColor,
@@ -62,7 +63,7 @@ class CustomDialog extends StatelessWidget {
 
   static Future<T?> showLoading<T>(
     BuildContext context, {
-    String text = 'جاري التحميل...',
+        String? text,
     Color? progressColor,
     Color? backgroundColor,
     Color? textColor,
@@ -73,7 +74,7 @@ class CustomDialog extends StatelessWidget {
       barrierDismissible: barrierDismissible,
       builder: (_) => CustomDialog(
         isLoading: true,
-        loadingText: text,
+        loadingText: text ?? AppLocalizations.of(context)!.loading,
         progressIndicatorColor: progressColor,
         backgroundColor: backgroundColor,
         bodyColor: textColor,
@@ -231,7 +232,7 @@ class CustomDialog extends StatelessWidget {
       body: message,
       icon: Icons.error_outline_rounded,
       iconColor: iconColor ?? const Color(0xffE82626),
-      buttonText: buttonText ?? 'حسناً',
+      buttonText: buttonText ?? AppLocalizations.of(context)!.ok,
       buttonColor: buttonColor ?? const Color(0xffE82626),
       buttonTextColor: Colors.white,
       onTap: onTap,
@@ -255,7 +256,7 @@ class CustomDialog extends StatelessWidget {
       body: message,
       icon: Icons.check_circle_outline_rounded,
       iconColor: iconColor ?? const Color(0xff57AA53),
-      buttonText: buttonText ?? 'حسناً',
+      buttonText: buttonText ?? AppLocalizations.of(context)!.ok,
       buttonColor: buttonColor ?? const Color(0xff57AA53),
       buttonTextColor: Colors.white,
       onTap: onTap,

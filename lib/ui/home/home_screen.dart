@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
      final width = context.width;
     final List<Widget> tabs = [
-      const HomeTab(),
+      HomeTab(),
       SearchTab(),
       BrowseTab(),
       ProfileTab(),

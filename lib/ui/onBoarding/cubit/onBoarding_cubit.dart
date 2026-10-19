@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies_app/ui/onBoarding/onBoarding_state.dart';
+import 'package:movies_app/ui/onBoarding/cubit/onBoarding_state.dart';
+import 'package:movies_app/utils/shared_pref_utils.dart';
 
 class OnboardCubit extends Cubit<OnboardState> {
   OnboardCubit() : super(OnboardInitial(currentIndex: 0));
@@ -13,14 +14,15 @@ class OnboardCubit extends Cubit<OnboardState> {
     emit(OnboardInitial(currentIndex: currentIndex));
   }
 
-  void nextButtonTapped(int totalItems) {
+  Future<void> nextButtonTapped(int totalItems) async {
     if (currentIndex < totalItems - 1) {
       pageController.nextPage(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
     } else {
-      //Todo :  Go to home_screen & save the statue in shared pref #walid
+      await SharedPrefUtils.saveOnboardingSeen(true);
+      emit(OnboardNavigateToLoginState());
     }
   }
 

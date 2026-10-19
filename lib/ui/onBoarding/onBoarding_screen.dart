@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/data/models/onBoarding_model.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
-import 'package:movies_app/ui/onBoarding/onBoarding_cubit.dart';
-import 'package:movies_app/ui/onBoarding/onBoarding_state.dart';
+import 'package:movies_app/ui/onBoarding/cubit/onBoarding_cubit.dart';
+import 'package:movies_app/ui/onBoarding/cubit/onBoarding_state.dart';
 import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/app_routes.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/size_utils.dart';
 
@@ -54,7 +55,14 @@ class OnBoardingScreen extends StatelessWidget {
       create: (context) => OnboardCubit(),
       child: Scaffold(
         backgroundColor: AppColors.primary,
-        body: BlocBuilder<OnboardCubit, OnboardState>(
+        body: BlocConsumer<OnboardCubit, OnboardState>(
+          listener: (context, state) {
+            if (state is OnboardNavigateToLoginState) {
+              Navigator.pushReplacementNamed(context, AppRoutes.loginRouteName);
+            }
+          },
+          buildWhen: (previous, current) =>
+          current is! OnboardNavigateToLoginState,
           builder: (context, state) {
             final cubit = context.read<OnboardCubit>();
             final currentItem = onboardingItems[cubit.currentIndex];
@@ -103,18 +111,18 @@ class OnBoardingScreen extends StatelessWidget {
                     height: currentItem.isFirst ? double.infinity : null,
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(
-                      horizontal:  width * 0.05,
-                      vertical:  height * 0.05,
+                      horizontal: width * 0.05,
+                      vertical: height * 0.03,
                     ),
                     decoration: BoxDecoration(
                       color: currentItem.isFirst
                           ? AppColors.transparent
-                          : AppColors.darkGrey,
+                          : AppColors.primary,
                       borderRadius: currentItem.isFirst
                           ? null
-                          : const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
+                          : BorderRadius.only(
+                        topLeft: Radius.circular(width * 0.05),
+                        topRight: Radius.circular(width * 0.05),
                       ),
                     ),
                     child: Column(
@@ -128,7 +136,7 @@ class OnBoardingScreen extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: AppStyles.bold20White,
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: height * 0.015),
                         if (currentItem.description.isNotEmpty) ...[
                           Text(
                             currentItem.description,
@@ -137,16 +145,17 @@ class OnBoardingScreen extends StatelessWidget {
                                 ? AppStyles.regular16grey
                                 : AppStyles.regular16White,
                           ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: height * 0.025),
                         ],
                         SizedBox(
                           width: double.infinity,
-                          height: 48,
+                          height: height * 0.06,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.yellow,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(
+                                    width * 0.03),
                               ),
                             ),
                             onPressed: () =>
@@ -161,16 +170,17 @@ class OnBoardingScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        if (cubit.currentIndex > 0) ...[
-                          const SizedBox(height: 10),
+                        if (cubit.currentIndex > 1) ...[
+                          SizedBox(height: height * 0.015),
                           SizedBox(
                             width: double.infinity,
-                            height: 48,
+                            height: height * 0.06,
                             child: OutlinedButton(
                               style: OutlinedButton.styleFrom(
-                                side: BorderSide(color: AppColors.yellow),
+                                side: const BorderSide(color: AppColors.yellow),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(
+                                      width * 0.03),
                                 ),
                               ),
                               onPressed: cubit.previousButtonTapped,
