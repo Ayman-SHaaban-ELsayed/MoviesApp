@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/api/model/movie/movie.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_card.dart';
 
+// غيّر مسار الموديل حسب مكانه في مشروعك.
+import 'package:movies_app/api/model/movie/movie.dart';
 
 class MovieListWidget extends StatelessWidget {
   final List<Movie> movies;
@@ -21,16 +22,12 @@ class MovieListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery
-        .sizeOf(context)
-        .width;
+    final screenWidth = MediaQuery.sizeOf(context).width;
 
     return SizedBox(
       height: height,
       child: ListView.separated(
-        padding: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.04,
-        ),
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
         scrollDirection: Axis.horizontal,
         itemCount: movies.length,
         separatorBuilder: (context, index) =>
@@ -52,4 +49,3 @@ class MovieListWidget extends StatelessWidget {
     );
   }
 }
-

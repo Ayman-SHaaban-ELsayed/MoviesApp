@@ -2,6 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/api/dio_manager.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/cubit/home_states.dart';
 
+import '../../../../../api/model/movie/movie.dart';
+
 class CubitHomeViewModel extends Cubit<HomeStates> {
   CubitHomeViewModel() : super(HomeInitial());
 
@@ -16,9 +18,7 @@ class CubitHomeViewModel extends Cubit<HomeStates> {
     'Drama',
     'Adventure',
   ];
-
-  static int _genreIndex = 0;
-
+  static int _currentGenreStartIndex = 0;
   void getHomeData() async {
     emit(HomeLoading());
     try {
@@ -27,25 +27,24 @@ class CubitHomeViewModel extends Cubit<HomeStates> {
         sortBy: 'date_added',
       );
 
-      String currentGenre = _allGenres[_genreIndex % _allGenres.length];
-      _genreIndex++;
+      final selectedGenres = List.generate(3, (index) =>
+            _allGenres[(_currentGenreStartIndex + index) % _allGenres.length],);
 
-      final genreFuture = DioManager.getMovies(genre: currentGenre, limit: 10);
+      _currentGenreStartIndex = (_currentGenreStartIndex + 3) % _allGenres.length;
 
-      final results = await Future.wait([latestFuture, genreFuture]);
+      final categoriesFuture = Future.wait(
+        selectedGenres.map((genre) async {
+          final movies = await DioManager.getMovies(genre: genre, limit: 10);
 
-      final latestMovies = results[0];
-      final dynamicCategory = MovieCategory(
-        categoryName: currentGenre,
-        movies: results[1],
+          return MovieCategory(categoryName: genre, movies: movies);
+        }),
       );
 
-      emit(
-        HomeSuccess(
-          latestMovies: latestMovies,
-          dynamicCategory: dynamicCategory,
-        ),
-      );
+      final results = await Future.wait([latestFuture, categoriesFuture]);
+
+      final latestMovies = results[0] as List<Movie>;
+      final categories = results[1] as List<MovieCategory>;
+      emit(HomeSuccess(latestMovies: latestMovies, categories: categories));
     } catch (e) {
       emit(HomeError(errorMessage: e.toString()));
     }
