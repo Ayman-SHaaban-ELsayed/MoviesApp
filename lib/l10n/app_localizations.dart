@@ -365,7 +365,7 @@ abstract class AppLocalizations {
   /// No description provided for @watchList.
   ///
   /// In en, this message translates to:
-  /// **'Watch List'**
+  /// **'Wish List'**
   String get watchList;
 
   /// No description provided for @history.
@@ -704,6 +704,12 @@ abstract class AppLocalizations {
   /// **'See All'**
   String get seeAll;
 
+  /// No description provided for @seeMore.
+  ///
+  /// In en, this message translates to:
+  /// **'see More'**
+  String get seeMore;
+
   /// No description provided for @retry.
   ///
   /// In en, this message translates to:
@@ -1009,6 +1015,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Too many attempts. Please wait a moment and try again.'**
   String get tooManyRequests;
+
+  /// No description provided for @loginWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Login With Google'**
+  String get loginWithGoogle;
 }
 
 class _AppLocalizationsDelegate
