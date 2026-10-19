@@ -13,9 +13,9 @@ class MovieCategory {
 
 class HomeSuccess extends HomeStates {
   final List<Movie> latestMovies;
-  final MovieCategory dynamicCategory;
+  final List<MovieCategory>categories;
 
-  HomeSuccess({required this.latestMovies, required this.dynamicCategory});
+  HomeSuccess({required this.latestMovies, required this.categories});
 }
 
 class HomeError extends HomeStates {

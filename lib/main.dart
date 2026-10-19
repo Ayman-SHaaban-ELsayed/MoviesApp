@@ -8,11 +8,9 @@ import 'package:movies_app/ui/auth/register/register_Screen.dart';
 import 'package:movies_app/ui/home/home_screen.dart';
 import 'package:movies_app/ui/home/tab_list/profile_tab/update_profile_screen.dart';
 import 'package:movies_app/ui/onBoarding/onBoarding_screen.dart';
-
 import 'package:movies_app/utils/app_routes.dart';
 import 'package:movies_app/utils/locale_cubit.dart';
 import 'package:movies_app/utils/shared_pref_utils.dart';
-
 import 'firebase_options.dart';
 
 Future<void> main() async {

@@ -20,10 +20,9 @@ class SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final height = context.height;
     final width = context.width;
-    final languageCode = Localizations.localeOf(context).languageCode;
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: width * 0.015),
+      padding: EdgeInsets.symmetric(horizontal: width * 0.025),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
