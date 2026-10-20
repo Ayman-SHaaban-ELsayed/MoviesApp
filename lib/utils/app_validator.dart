@@ -24,14 +24,12 @@ class AppValidators {
       return "Please enter password";
     }
 
-    if (text.length < 6) {
-      return "Password must be at least 6 characters";
-    }
+    final passwordRegex = RegExp(
+      r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};:",.<>/?\\|`~])[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};:",.<>/?\\|`~]{8,}$',
+    );
 
-    if (!RegExp(
-      r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[@#&*]).+$',
-    ).hasMatch(text)) {
-      return "Password must contain uppercase, lowercase, number and one of @ # & *";
+    if (!passwordRegex.hasMatch(text)) {
+      return "Password must be at least 8 characters and\ncontain uppercase , lowercase , number , and\nspecial character.";
     }
 
     return null;

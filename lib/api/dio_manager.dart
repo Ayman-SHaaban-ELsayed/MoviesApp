@@ -1,16 +1,79 @@
 import 'package:dio/dio.dart';
-import 'package:movies_app/api/model/api/api_constants.dart';
-import 'package:movies_app/api/model/api/api_end_points.dart';
+import 'package:flutter/foundation.dart';
+import 'package:movies_app/api/start_point_constants/api_constants.dart';
+import 'package:movies_app/api/start_point_constants/api_end_points.dart';
 import 'package:movies_app/api/model/movie/movie.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+
+
+import 'api_error_handler/api_error_handler.dart';
+import 'model/ movie_suggestions/Movie_suggestions.dart';
+import 'model/movie_details/Details_response.dart';
 
 class DioManager {
-  static final Dio dio = Dio(
-    BaseOptions(
-      baseUrl: ApiConstants.baseUrl,
-      connectTimeout: const Duration(seconds: 20),
-      receiveTimeout: const Duration(seconds: 20),
-    ),
-  );
+  // TODO: Implement the DioManager singleton instance initialization.
+  DioManager._();
+
+  static DioManager? _instance;
+
+  static DioManager getInstance() {
+    _instance ??= DioManager._();
+    return _instance!;
+  }
+
+  static final Dio dio =
+      Dio(
+          BaseOptions(
+            baseUrl: ApiConstants.baseUrl,
+            receiveTimeout: Duration(seconds: 3),
+            connectTimeout: Duration(seconds: 5),
+          ),
+        )
+        ..interceptors.add(
+          PrettyDioLogger(
+            requestBody: true,
+            responseHeader: true,
+            responseBody: true,
+            maxWidth: 90,
+            enabled: kDebugMode,
+          ),
+        );
+
+  //todo https://movies-api.accel.li/api/v2/movie_details.json?movie_id=1
+  static Future<DetailsResponse> getMovieDetailsBySourceId({required int sourceId,}) async {
+    try {
+      var detailsResponse = await dio.get(
+        ApiConstants.movieDetails,
+        queryParameters: {"movie_id": sourceId},
+      );
+      return DetailsResponse.fromJson(detailsResponse.data);
+    } on DioException catch (e) {
+      throw ApiErrorHandler.handleDioException(e);
+    }
+  }
+
+  //todo https://movies-api.accel.li/api/v2/movie_suggestions.json?movie_i=10
+  static Future< MovieSuggestions>getMovieSuggestions({required int sourceId,}) async {
+    try {
+      var detailsResponse = await dio.get(
+        ApiEndPoints.movieSuggestions,
+        queryParameters: {"movie_id": sourceId},
+      );
+      return  MovieSuggestions.fromJson(detailsResponse.data);
+    } on DioException catch (e) {
+      throw ApiErrorHandler.handleDioException(e);
+    }
+  }
+
+
+
+
+
+
+
+
+
+
 
   static Future<List<Movie>> getMovies({
     String? genre,

@@ -12,6 +12,9 @@ import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/size_utils.dart';
 
+import '../../../../api/dio_manager.dart';
+import '../../../../utils/app_routes.dart';
+
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
 
@@ -22,6 +25,7 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   int _currentCarouselIndex = 0;
 
+  @override
   @override
   Widget build(BuildContext context) {
     final screenHeight = context.height;
@@ -81,7 +85,8 @@ class _HomeTabState extends State<HomeTab> {
                             });
                           },
                           onMovieTap: (movie) {
-                            print('Clicked: ${movie.title}');
+                            // TODO: Navigate to movie details.
+                            Navigator.of(context).pushNamed(AppRoutes.detailsRouteName, arguments: movie.id,);
                           },
                         ),
                         Image.asset(
@@ -91,7 +96,6 @@ class _HomeTabState extends State<HomeTab> {
                         ),
                         ...List.generate(state.categories.length, (index) {
                           final category = state.categories[index];
-
                           return MovieCategoryWidget(
                             categoryName: category.categoryName,
                             movies: category.movies,
@@ -99,12 +103,14 @@ class _HomeTabState extends State<HomeTab> {
                             widthCard: 146,
                             heightCard: 220,
                             onSeeMoreTap: () {
+                              // Navigator.of(context).pushNamed(AppRoutes.detailsRouteName, arguments: category.movies,);
                               print('See More ${category.categoryName}');
                             },
                             onMovieTap: (movie) {
-                              print('Clicked: ${movie.title}');
                               // TODO: Navigate to movie details.
-                            },
+                              var moviesId = category.movies[index].id;
+                              Navigator.of(context).pushNamed(AppRoutes.detailsRouteName, arguments: moviesId,);
+                              },
                           );
                         }),
                       ],
