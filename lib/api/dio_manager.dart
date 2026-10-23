@@ -90,7 +90,6 @@ class DioManager {
         throw Exception(response.data['status_message'] ?? 'Failed to load movie details');
       }
     } on DioException catch (error) {
-      // نفس معالجة الأخطاء الموجودة في الكود الخاص بك
       throw Exception("Error fetching details: ${error.message}");
     }
   }

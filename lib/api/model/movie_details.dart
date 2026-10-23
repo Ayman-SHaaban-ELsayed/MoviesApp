@@ -6,7 +6,6 @@ class MovieDetails {
   final int runtime;
   final int likeCount;
   final String largeCoverImage;
-  final String description;
   final List<String> screenshots;
 
   MovieDetails({
@@ -17,30 +16,20 @@ class MovieDetails {
     required this.runtime,
     required this.likeCount,
     required this.largeCoverImage,
-    required this.description,
     required this.screenshots,
   });
 
   factory MovieDetails.fromJson(Map<String, dynamic> json) {
-    List<String> screenshots = [];
-
-    // دالة صغيرة تتأكد إن اللينك موجود ومش فاضي
-    void addScreenshot(String? url) {
-      if (url != null && url.isNotEmpty) {
-        screenshots.add(url);
-      }
+    // بنجمع صور السكرين شوت اللي موجودة
+    final List<String> shots = [];
+    if (json['medium_screenshot_image1'] != null) {
+      shots.add(json['medium_screenshot_image1']);
     }
-
-    // بنحاول نجيب الصور بجميع أحجامها المتاحة
-    addScreenshot(json['medium_screenshot_image1']?.toString());
-    addScreenshot(json['medium_screenshot_image2']?.toString());
-    addScreenshot(json['medium_screenshot_image3']?.toString());
-
-    // لو مفيش ميديم، بنجرب ناخد لارج
-    if (screenshots.isEmpty) {
-      addScreenshot(json['large_screenshot_image1']?.toString());
-      addScreenshot(json['large_screenshot_image2']?.toString());
-      addScreenshot(json['large_screenshot_image3']?.toString());
+    if (json['medium_screenshot_image2'] != null) {
+      shots.add(json['medium_screenshot_image2']);
+    }
+    if (json['medium_screenshot_image3'] != null) {
+      shots.add(json['medium_screenshot_image3']);
     }
 
     return MovieDetails(
@@ -51,8 +40,7 @@ class MovieDetails {
       runtime: json['runtime'] ?? 0,
       likeCount: json['like_count'] ?? 0,
       largeCoverImage: json['large_cover_image'] ?? '',
-      description: json['description_full'] ?? '',
-      screenshots: screenshots,
+      screenshots: shots,
     );
   }
 }
