@@ -70,4 +70,24 @@ class MovieItemUiModel {
     required this.imagePath,
     required this.year,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'rating': rating,
+      'imagePath': imagePath,
+      'year': year,
+    };
+  }
+
+  factory MovieItemUiModel.fromJson(Map<String, dynamic> json) {
+    return MovieItemUiModel(
+      id: json['id']?.toString() ?? '',
+      title: json['title']?.toString() ?? '',
+      rating: json['rating']?.toString() ?? '0.0',
+      imagePath: json['imagePath']?.toString() ?? '',
+      year: json['year']?.toString() ?? '',
+    );
+  }
 }

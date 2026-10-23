@@ -1,10 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:movies_app/ui/movie_details/movie_details_screen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movies_app/api/model/movie_details.dart';
 import 'package:movies_app/api/dio_manager.dart';
+import 'package:movies_app/fireStore/firebase_utils.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
 import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
+import 'package:movies_app/utils/shared_pref_utils.dart';
 import 'package:movies_app/utils/size_utils.dart';
 import 'package:movies_app/ui/widgets/elevated_button_reuse.dart';
 
@@ -18,11 +22,85 @@ class MovieDetailsScreen extends StatefulWidget {
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   late Future<MovieDetails> _movieDetailsFuture;
+  bool _isInWatchlist = false;
 
   @override
   void initState() {
     super.initState();
     _movieDetailsFuture = DioManager.getMovieDetails(widget.movieId);
+    _checkWatchlistStatus();
+  }
+
+  void _checkWatchlistStatus() async {
+    final userId =
+        FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
+    if (userId != null && userId.isNotEmpty && userId != 'preview_user') {
+      final inList = await FirebaseUtils.isMovieInWatchlist(
+        userId,
+        widget.movieId.toString(),
+      );
+      if (mounted) {
+        setState(() {
+          _isInWatchlist = inList;
+        });
+      }
+    }
+  }
+
+  Future<void> _toggleWatchlist(MovieDetails movie) async {
+    final userId =
+        FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
+    if (userId == null || userId.isEmpty || userId == 'preview_user') {
+      Fluttertoast.showToast(msg: "Please login first");
+      return;
+    }
+
+    final movieItem = MovieItemUiModel(
+      id: movie.id.toString(),
+      title: movie.title,
+      rating: movie.rating.toString(),
+      imagePath: movie.largeCoverImage,
+      year: movie.year.toString(),
+    );
+
+    try {
+      if (_isInWatchlist) {
+        await FirebaseUtils.removeFromWatchlist(userId, movie.id.toString());
+        if (mounted) {
+          setState(() => _isInWatchlist = false);
+          Fluttertoast.showToast(msg: "Removed from Watch List");
+        }
+      } else {
+        await FirebaseUtils.addToWatchlist(userId, movieItem);
+        if (mounted) {
+          setState(() => _isInWatchlist = true);
+          Fluttertoast.showToast(msg: "Added to Watch List");
+        }
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: "Error: $e");
+    }
+  }
+
+  Future<void> _addToHistory(MovieDetails movie) async {
+    final userId =
+        FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
+    if (userId == null || userId.isEmpty || userId == 'preview_user') {
+      return;
+    }
+
+    final movieItem = MovieItemUiModel(
+      id: movie.id.toString(),
+      title: movie.title,
+      rating: movie.rating.toString(),
+      imagePath: movie.largeCoverImage,
+      year: movie.year.toString(),
+    );
+
+    try {
+      await FirebaseUtils.addToHistory(userId, movieItem);
+      Fluttertoast.showToast(msg: "Added to History");
+    } catch (_) {}
   }
 
   @override
@@ -42,7 +120,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           }
           if (snapshot.hasError) {
             return Center(
-              child: Text('Error loading movie', style: AppStyles.regular16White),
+              child: Text(
+                'Error loading movie',
+                style: AppStyles.regular16White,
+              ),
             );
           }
 
@@ -61,7 +142,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     );
                   },
                   errorBuilder: (context, error, stackTrace) => const Center(
-                    child: Icon(Icons.broken_image, color: AppColors.white, size: 50),
+                    child: Icon(
+                      Icons.broken_image,
+                      color: AppColors.white,
+                      size: 50,
+                    ),
                   ),
                 ),
               ),
@@ -97,19 +182,22 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
-                              icon: const Icon(Icons.arrow_back_ios, color: AppColors.white),
+                              icon: const Icon(
+                                Icons.arrow_back_ios,
+                                color: AppColors.white,
+                              ),
                               onPressed: () => Navigator.pop(context),
                             ),
                             IconButton(
                               icon: Image.asset(
                                 AppAssets.watchListIcon,
-                                color: AppColors.white,
+                                color: _isInWatchlist
+                                    ? AppColors.yellow
+                                    : AppColors.white,
                                 width: 24,
                                 height: 24,
                               ),
-                              onPressed: () {
-                                // إضافة للـ Watchlist
-                              },
+                              onPressed: () => _toggleWatchlist(movie),
                             ),
                           ],
                         ),
@@ -118,8 +206,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       SizedBox(height: height * 0.25),
 
                       GestureDetector(
-                        onTap: () {
-                        },
+                        onTap: () => _addToHistory(movie),
                         child: Image.asset(
                           AppAssets.playMovie,
                           width: 100,
@@ -149,7 +236,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
                             ElevatedButtonReuse(
                               background: AppColors.red,
-                              onpressed: () {},
+                              onpressed: () => _addToHistory(movie),
                               ChildType: Text(
                                 'Watch',
                                 style: AppStyles.bold20White,
