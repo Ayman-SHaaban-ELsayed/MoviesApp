@@ -15,7 +15,7 @@ import 'package:movies_app/utils/size_utils.dart';
 // 👇 ضيف الـ import ده عشان الشاشة تتعرف عليها 👇
 
 
-import '../../../../api/model/movie_details_screen.dart';
+import '../../../movie_details/movie_details_screen.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
