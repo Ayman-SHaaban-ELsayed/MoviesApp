@@ -1,0 +1,46 @@
+class MovieDetails {
+  final int id;
+  final String title;
+  final int year;
+  final double rating;
+  final int runtime;
+  final int likeCount;
+  final String largeCoverImage;
+  final List<String> screenshots;
+
+  MovieDetails({
+    required this.id,
+    required this.title,
+    required this.year,
+    required this.rating,
+    required this.runtime,
+    required this.likeCount,
+    required this.largeCoverImage,
+    required this.screenshots,
+  });
+
+  factory MovieDetails.fromJson(Map<String, dynamic> json) {
+    // بنجمع صور السكرين شوت اللي موجودة
+    final List<String> shots = [];
+    if (json['medium_screenshot_image1'] != null) {
+      shots.add(json['medium_screenshot_image1']);
+    }
+    if (json['medium_screenshot_image2'] != null) {
+      shots.add(json['medium_screenshot_image2']);
+    }
+    if (json['medium_screenshot_image3'] != null) {
+      shots.add(json['medium_screenshot_image3']);
+    }
+
+    return MovieDetails(
+      id: json['id'] ?? 0,
+      title: json['title'] ?? '',
+      year: json['year'] ?? 0,
+      rating: (json['rating'] ?? 0).toDouble(),
+      runtime: json['runtime'] ?? 0,
+      likeCount: json['like_count'] ?? 0,
+      largeCoverImage: json['large_cover_image'] ?? '',
+      screenshots: shots,
+    );
+  }
+}

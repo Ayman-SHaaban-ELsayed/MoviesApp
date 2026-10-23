@@ -4,7 +4,6 @@ import 'package:movies_app/ui/home/tab_list/browse_tab/browse_tab.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/home_tab.dart';
 import 'package:movies_app/ui/home/tab_list/profile_tab/profile_tab.dart';
 import 'package:movies_app/ui/home/tab_list/search_tab/search_tab.dart';
-
 import '../../../../utils/app_assets.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/size_utils.dart';
