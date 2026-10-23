@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:movies_app/api/model/api/api_constants.dart';
 import 'package:movies_app/api/model/api/api_end_points.dart';
 import 'package:movies_app/api/model/movie/movie.dart';
+import '../../../../api/model/movie_details.dart';
+import 'model/movie_details.dart';
 
 class DioManager {
   static final Dio dio = Dio(
@@ -73,6 +75,23 @@ class DioManager {
       throw Exception("Unknown Error");
     } catch (e) {
       rethrow;
+    }
+  }
+  static Future<MovieDetails> getMovieDetails(int movieId) async {
+    try {
+      final response = await dio.get(
+        ApiEndPoints.movieDetails,
+        queryParameters: {'movie_id': movieId},
+      );
+
+      if (response.statusCode == 200 && response.data['status'] == 'ok') {
+        return MovieDetails.fromJson(response.data['data']['movie']);
+      } else {
+        throw Exception(response.data['status_message'] ?? 'Failed to load movie details');
+      }
+    } on DioException catch (error) {
+      // نفس معالجة الأخطاء الموجودة في الكود الخاص بك
+      throw Exception("Error fetching details: ${error.message}");
     }
   }
 }
