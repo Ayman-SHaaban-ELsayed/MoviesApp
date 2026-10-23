@@ -1,7 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:movies_app/model/my_user.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
 
 class FirebaseUtils {
+  static const String watchlistCollectionName = 'watchlist';
+  static const String historyCollectionName = 'history';
+
   static CollectionReference<MyUser> getUserCollection() {
     return FirebaseFirestore.instance
         .collection(MyUser.collectionName)
@@ -28,4 +32,66 @@ class FirebaseUtils {
   static Future<void> deleteUser(String userId) {
     return getUserCollection().doc(userId).delete();
   }
+
+  // --- Watchlist ---
+  static CollectionReference<MovieItemUiModel> getWatchlistCollection(
+      String userId,) {
+    return FirebaseFirestore.instance
+        .collection(MyUser.collectionName)
+        .doc(userId)
+        .collection(watchlistCollectionName)
+        .withConverter<MovieItemUiModel>(
+      fromFirestore: (snapshot, options) =>
+          MovieItemUiModel.fromJson(snapshot.data()!),
+      toFirestore: (movie, options) => movie.toJson(),
+    );
+  }
+
+  static Future<void> addToWatchlist(String userId, MovieItemUiModel movie) {
+    return getWatchlistCollection(userId).doc(movie.id).set(movie);
+  }
+
+  static Future<void> removeFromWatchlist(String userId, String movieId) {
+    return getWatchlistCollection(userId).doc(movieId).delete();
+  }
+
+  static Future<bool> isMovieInWatchlist(String userId, String movieId) async {
+    try {
+      final doc = await getWatchlistCollection(userId).doc(movieId).get();
+      return doc.exists;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  static Stream<List<MovieItemUiModel>> getWatchlistStream(String userId) {
+    return getWatchlistCollection(userId).snapshots().map(
+          (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
+    );
+  }
+
+  // --- History ---
+  static CollectionReference<MovieItemUiModel> getHistoryCollection(
+      String userId,) {
+    return FirebaseFirestore.instance
+        .collection(MyUser.collectionName)
+        .doc(userId)
+        .collection(historyCollectionName)
+        .withConverter<MovieItemUiModel>(
+      fromFirestore: (snapshot, options) =>
+          MovieItemUiModel.fromJson(snapshot.data()!),
+      toFirestore: (movie, options) => movie.toJson(),
+    );
+  }
+
+  static Future<void> addToHistory(String userId, MovieItemUiModel movie) {
+    return getHistoryCollection(userId).doc(movie.id).set(movie);
+  }
+
+  static Stream<List<MovieItemUiModel>> getHistoryStream(String userId) {
+    return getHistoryCollection(userId).snapshots().map(
+          (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
+    );
+  }
 }
+
