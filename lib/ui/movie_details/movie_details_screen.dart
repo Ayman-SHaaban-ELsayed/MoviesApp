@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/ui/movie_details/movie_details_screen.dart';
-import 'package:movies_app/api/model/movie_details.dart';
 import 'package:movies_app/api/dio_manager.dart';
+import 'package:movies_app/api/model/movie/movie.dart';
+import 'package:movies_app/api/model/movie_details.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/ui/movie_details/similar_movies_section.dart';
+import 'package:movies_app/ui/widgets/elevated_button_reuse.dart';
 import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/size_utils.dart';
-import 'package:movies_app/ui/widgets/elevated_button_reuse.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
@@ -18,11 +20,13 @@ class MovieDetailsScreen extends StatefulWidget {
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   late Future<MovieDetails> _movieDetailsFuture;
+  late Future<List<Movie>> _similarMoviesFuture;
 
   @override
   void initState() {
     super.initState();
     _movieDetailsFuture = DioManager.getMovieDetails(widget.movieId);
+    _similarMoviesFuture = DioManager.getSimilarMovies(widget.movieId);
   }
 
   @override
@@ -180,7 +184,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                               Align(
                                 alignment: AlignmentDirectional.centerStart,
                                 child: Text(
-                                  'Screenshots',
+                                  AppLocalizations.of(context)!.screenShots,
                                   style: AppStyles.bold20White,
                                 ),
                               ),
@@ -222,6 +226,41 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           ],
                         ),
                       ),
+
+                      // Hello there <3 its me walid and this's my section don't play with it please , thanks .
+                      //Similar Section :
+                      SimilarMoviesSection(
+                        movieId: widget.movieId,
+                      ),
+                      //Summary Section :
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional.centerStart,
+                              child: Text(
+                                AppLocalizations.of(context)!.summary,
+                                style: AppStyles.bold24White,
+                              ),
+                            ),
+                            SizedBox(height: height * 0.015),
+                            Align(
+                              alignment: AlignmentDirectional.centerStart,
+                              child: Text(
+                                movie.summary
+                                    .trim()
+                                    .isEmpty
+                                    ? AppLocalizations.of(context)!
+                                    .noSummaryAvailable
+                                    : movie.summary,
+                                style: AppStyles.regular16White,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: height * 0.015),
                     ],
                   ),
                 ),

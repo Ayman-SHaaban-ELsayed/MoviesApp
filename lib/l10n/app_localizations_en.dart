@@ -488,4 +488,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loginWithGoogle => 'Login With Google';
+
+  @override
+  String get failedToLoadSimilarMovies => 'Failed to load similar movies';
 }

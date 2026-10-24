@@ -153,5 +153,7 @@
   "failedToLoadMovieDetails": "فشل تحميل تفاصيل الفيلم",
   "permissionDenied": "تم رفض الإذن",
   "tooManyRequests": "محاولات كثيرة. من فضلك انتظر قليلًا ثم حاول مرة أخرى.",
-  "loginWithGoogle": "تسجيل الدخول بواسطة جوجل"
+  "loginWithGoogle": "تسجيل الدخول بواسطة جوجل",
+  "failedToLoadSimilarMovies": "فشل في العثور علي افلام مشابهة"
+
 }

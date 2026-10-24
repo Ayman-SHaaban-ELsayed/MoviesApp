@@ -7,6 +7,7 @@ class MovieDetails {
   final int likeCount;
   final String largeCoverImage;
   final List<String> screenshots;
+  final String summary;
 
   MovieDetails({
     required this.id,
@@ -17,11 +18,12 @@ class MovieDetails {
     required this.likeCount,
     required this.largeCoverImage,
     required this.screenshots,
+    required this.summary,
   });
 
   factory MovieDetails.fromJson(Map<String, dynamic> json) {
-    // بنجمع صور السكرين شوت اللي موجودة
     final List<String> shots = [];
+
     if (json['medium_screenshot_image1'] != null) {
       shots.add(json['medium_screenshot_image1']);
     }
@@ -41,6 +43,7 @@ class MovieDetails {
       likeCount: json['like_count'] ?? 0,
       largeCoverImage: json['large_cover_image'] ?? '',
       screenshots: shots,
+      summary: json['description_full']?.toString() ?? '',
     );
   }
 }
