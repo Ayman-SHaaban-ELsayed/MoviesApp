@@ -4,13 +4,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movies_app/api/model/movie_details.dart';
 import 'package:movies_app/api/dio_manager.dart';
 import 'package:movies_app/fireStore/firebase_utils.dart';
+import 'package:movies_app/model/movie_item_ui_model.dart'; // الكلاس الجديد
 import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
 import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/shared_pref_utils.dart';
 import 'package:movies_app/utils/size_utils.dart';
-import 'package:movies_app/ui/widgets/elevated_button_reuse.dart';
+import 'web_view_screen.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
@@ -32,8 +33,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   }
 
   void _checkWatchlistStatus() async {
-    final userId =
-        FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
+    final userId = FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
     if (userId != null && userId.isNotEmpty && userId != 'preview_user') {
       final inList = await FirebaseUtils.isMovieInWatchlist(
         userId,
@@ -48,8 +48,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   }
 
   Future<void> _toggleWatchlist(MovieDetails movie) async {
-    final userId =
-        FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
+    final userId = FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
     if (userId == null || userId.isEmpty || userId == 'preview_user') {
       Fluttertoast.showToast(msg: "Please login first");
       return;
@@ -83,8 +82,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   }
 
   Future<void> _addToHistory(MovieDetails movie) async {
-    final userId =
-        FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
+    final userId = FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
     if (userId == null || userId.isEmpty || userId == 'preview_user') {
       return;
     }
@@ -99,7 +97,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
     try {
       await FirebaseUtils.addToHistory(userId, movieItem);
-      Fluttertoast.showToast(msg: "Added to History");
     } catch (_) {}
   }
 
@@ -131,26 +128,18 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
           return Stack(
             children: [
+              // 1. صورة الخلفية
               Positioned.fill(
                 child: Image.network(
                   movie.largeCoverImage,
                   fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return const Center(
-                      child: CircularProgressIndicator(color: AppColors.yellow),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) => const Center(
-                    child: Icon(
-                      Icons.broken_image,
-                      color: AppColors.white,
-                      size: 50,
-                    ),
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    color: AppColors.darkGrey,
                   ),
                 ),
               ),
 
+              // 2. التدرج اللوني
               Positioned.fill(
                 child: Container(
                   decoration: BoxDecoration(
@@ -159,25 +148,24 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       end: Alignment.bottomCenter,
                       colors: [
                         AppColors.primary.withValues(alpha: 0.1),
-                        AppColors.primary.withValues(alpha: 0.6),
+                        AppColors.primary.withValues(alpha: 0.8),
                         AppColors.primary,
                         AppColors.primary,
                       ],
-                      stops: const [0.0, 0.4, 0.75, 1.0],
+                      stops: const [0.0, 0.4, 0.7, 1.0],
                     ),
                   ),
                 ),
               ),
 
+              // 3. المحتوى
               SafeArea(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      // الشريط العلوي
                       Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: width * 0.04,
-                          vertical: height * 0.01,
-                        ),
+                        padding: EdgeInsets.symmetric(horizontal: width * 0.04),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -190,12 +178,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             ),
                             IconButton(
                               icon: Image.asset(
-                                AppAssets.watchListIcon,
-                                color: _isInWatchlist
-                                    ? AppColors.yellow
-                                    : AppColors.white,
+                                AppAssets.favouriteIcon,
+                                color: _isInWatchlist ? AppColors.yellow : AppColors.white, // بيتلون أصفر
                                 width: 24,
-                                height: 24,
                               ),
                               onPressed: () => _toggleWatchlist(movie),
                             ),
@@ -203,29 +188,33 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         ),
                       ),
 
-                      SizedBox(height: height * 0.25),
+                      SizedBox(height: height * 0.15),
 
+                      // زر التشغيل (بيسجل في الـ History)
                       GestureDetector(
                         onTap: () => _addToHistory(movie),
                         child: Image.asset(
                           AppAssets.playMovie,
-                          width: 100,
-                          height: 100,
+                          width: 90,
+                          height: 90,
                         ),
                       ),
 
-                      SizedBox(height: height * 0.05),
+                      SizedBox(height: height * 0.04),
 
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: width * 0.05),
                         child: Column(
                           children: [
+                            // اسم الفيلم
                             Text(
                               movie.title,
                               textAlign: TextAlign.center,
                               style: AppStyles.bold24White,
                             ),
                             SizedBox(height: height * 0.01),
+
+                            // السنة
                             Text(
                               '${movie.year}',
                               style: AppStyles.regular16White.copyWith(
@@ -234,35 +223,68 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             ),
                             SizedBox(height: height * 0.03),
 
-                            ElevatedButtonReuse(
-                              background: AppColors.red,
-                              onpressed: () => _addToHistory(movie),
-                              ChildType: Text(
-                                'Watch',
-                                style: AppStyles.bold20White,
+                             SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xffE82626),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  padding: EdgeInsets.symmetric(vertical: height * 0.015),
+                                ),
+                                onPressed: () {
+                                  _addToHistory(movie); // تسجيل في التاريخ
+                                  if (movie.url.isNotEmpty) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => WebViewScreen(
+                                          url: movie.url,
+                                          title: movie.title,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                child: Text(
+                                  'Watch',
+                                  style: AppStyles.bold20White,
+                                ),
                               ),
                             ),
+
                             SizedBox(height: height * 0.03),
 
+                            // شريط الإحصائيات
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                _buildStatChip(
-                                  iconPath: AppAssets.likeIcon,
-                                  text: '${movie.likeCount}',
+                                Expanded(
+                                  child: _buildStatChip(
+                                    iconPath: AppAssets.likeIcon,
+                                    text: '${movie.likeCount}',
+                                  ),
                                 ),
-                                _buildStatChip(
-                                  iconPath: AppAssets.durationIcon,
-                                  text: '${movie.runtime}',
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: _buildStatChip(
+                                    iconPath: AppAssets.durationIcon,
+                                    text: '${movie.runtime}',
+                                  ),
                                 ),
-                                _buildStatChip(
-                                  iconPath: AppAssets.starIcon,
-                                  text: '${movie.rating}',
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: _buildStatChip(
+                                    iconPath: AppAssets.starIcon,
+                                    text: '${movie.rating}',
+                                  ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: height * 0.03),
 
+                            SizedBox(height: height * 0.04),
+
+                            // قسم السكرين شوت (عمودي وبعرض الشاشة)
                             if (movie.screenshots.isNotEmpty) ...[
                               Align(
                                 alignment: AlignmentDirectional.centerStart,
@@ -272,40 +294,32 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 ),
                               ),
                               SizedBox(height: height * 0.015),
-                              SizedBox(
-                                height: height * 0.15,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: movie.screenshots.length,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsetsDirectional.only(
-                                        end: 10,
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(12),
-                                        child: Image.network(
-                                          movie.screenshots[index],
-                                          width: width * 0.4,
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return Container(
-                                              width: width * 0.4,
-                                              color: AppColors.darkGrey,
-                                              child: const Icon(
-                                                Icons.broken_image,
-                                                color: AppColors.white,
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                              SizedBox(height: height * 0.03),
+
+                              ...movie.screenshots.map((url) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 16.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Image.network(
+                                      url,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Container(
+                                          height: 150,
+                                          color: AppColors.darkGrey,
+                                          child: const Icon(
+                                            Icons.broken_image,
+                                            color: AppColors.white,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
                             ],
+                            SizedBox(height: height * 0.05),
                           ],
                         ),
                       ),
@@ -320,23 +334,26 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
     );
   }
 
-  Widget _buildStatChip({
-    required String iconPath,
-    required String text,
-  }) {
+  Widget _buildStatChip({required String iconPath, required String text}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
         color: AppColors.darkGrey,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(iconPath, color: AppColors.yellow, width: 20, height: 20),
+          Image.asset(
+            iconPath,
+            color: AppColors.yellow,
+            width: 20,
+            height: 20,
+          ),
           const SizedBox(width: 8),
           Text(
             text,
-            style: AppStyles.bold16Black.copyWith(color: AppColors.white),
+            style: AppStyles.regular16White,
           ),
         ],
       ),
