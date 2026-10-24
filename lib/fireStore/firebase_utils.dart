@@ -1,14 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:movies_app/model/my_user.dart';
 import 'package:movies_app/model/movie_item_ui_model.dart';
-import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
+import 'package:movies_app/model/my_user.dart';
 
 class FirebaseUtils {
-// الكود بعد التعديل:
   static const String watchlistCollectionName = 'Watchlist';
   static const String historyCollectionName = 'History';
 
-  // --- History ---
   static CollectionReference<MovieItemUiModel> getHistoryCollection(
       String userId,) {
     return FirebaseFirestore.instance
@@ -30,7 +27,6 @@ class FirebaseUtils {
           toFirestore: (user, options) => user.toJson(),
         );
   }
-  // --- Watchlist ---
   static CollectionReference<MovieItemUiModel> getWatchlistCollection(
       String userId,) {
     return FirebaseFirestore.instance
@@ -69,7 +65,6 @@ class FirebaseUtils {
     return doc.exists;
   }
 
-  // 2. إضافة فيلم للـ Watchlist
   static Future<void> addToWatchlist(String userId, MovieItemUiModel  movie) async {
     await FirebaseFirestore.instance
         .collection('Users')
@@ -79,7 +74,6 @@ class FirebaseUtils {
         .set(movie.toJson());
   }
 
-  // 3. مسح فيلم من الـ Watchlist
   static Future<void> removeFromWatchlist(String userId, String movieId) async {
     await FirebaseFirestore.instance
         .collection('Users')
@@ -98,7 +92,6 @@ class FirebaseUtils {
           (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
     );
   }
-  // 4. إضافة فيلم للـ History
   static Future<void> addToHistory(String userId, MovieItemUiModel movie) async {
     await FirebaseFirestore.instance
         .collection('Users')

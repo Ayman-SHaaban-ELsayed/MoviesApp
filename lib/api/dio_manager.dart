@@ -2,8 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:movies_app/api/model/api/api_constants.dart';
 import 'package:movies_app/api/model/api/api_end_points.dart';
 import 'package:movies_app/api/model/movie/movie.dart';
-
-import 'model/movie_details.dart';
 import 'package:movies_app/api/model/movie_details.dart';
 
 class DioManager {

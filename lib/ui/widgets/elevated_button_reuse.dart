@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-
-import '../../utils/size_utils.dart';
+import 'package:movies_app/utils/size_utils.dart';
 
 class ElevatedButtonReuse extends StatelessWidget {
-  final Widget ChildType;
-  final VoidCallback onpressed;
+  final Widget childType;
+  final VoidCallback onPressed;
   final Color? background;
 
   const ElevatedButtonReuse({
     super.key,
-    required this.ChildType,
-    required this.onpressed,
+    required this.childType,
+    required this.onPressed,
     this.background,
   });
 
@@ -22,10 +21,10 @@ class ElevatedButtonReuse extends StatelessWidget {
         backgroundColor: background ?? Theme.of(context).cardColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
-      onPressed: onpressed,
+      onPressed: onPressed,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: height * .01),
-        child: ChildType,
+        child: childType,
       ),
     );
   }

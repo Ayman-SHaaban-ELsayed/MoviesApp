@@ -89,7 +89,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       SizedBox(height: height * .03),
 
-                      // ——— App Logo ———
                       Center(
                         child: Image.asset(
                           AppAssets.appLogo,
@@ -177,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       ElevatedButtonReuse(
                         background: AppColors.yellow,
-                        onpressed: isAnyLoading
+                        onPressed: isAnyLoading
                             ? () {}
                             : () {
                                 if (formKey.currentState!.validate()) {
@@ -187,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   );
                                 }
                               },
-                        ChildType: isNormalLoading
+                        childType: isNormalLoading
                             ? const SizedBox(
                                 height: 22,
                                 width: 22,
@@ -257,10 +256,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       ElevatedButtonReuse(
                         background: AppColors.yellow,
-                        onpressed: isAnyLoading
+                        onPressed: isAnyLoading
                             ? () {}
                             : () => cubit.signInWithGoogle(),
-                        ChildType:
+                        childType:
                         isGoogleLoading
                             ? const SizedBox(
                           height: 22,

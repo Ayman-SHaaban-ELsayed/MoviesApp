@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../../utils/app_assets.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/locale_cubit.dart';
+import 'package:movies_app/utils/app_assets.dart';
+import 'package:movies_app/utils/app_colors.dart';
+import 'package:movies_app/utils/locale_cubit.dart';
 
 class LanguageSwitchWidget extends StatelessWidget {
   const LanguageSwitchWidget({super.key});
@@ -30,7 +29,6 @@ class LanguageSwitchWidget extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // English Flag Button
                 GestureDetector(
                   onTap: () {
                     if (isArabic) {
@@ -50,7 +48,6 @@ class LanguageSwitchWidget extends StatelessWidget {
 
                 const SizedBox(width: 6),
 
-                // Arabic Flag Button
                 GestureDetector(
                   onTap: () {
                     if (!isArabic) {
