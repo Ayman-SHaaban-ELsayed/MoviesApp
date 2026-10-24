@@ -1,26 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:movies_app/api/dio_manager.dart';
-import 'package:movies_app/api/model/movie/movie.dart';
-import 'package:movies_app/api/model/movie_details.dart';
-import 'package:movies_app/l10n/app_localizations.dart';
-import 'package:movies_app/ui/movie_details/similar_movies_section.dart';
-import 'package:movies_app/ui/widgets/elevated_button_reuse.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:movies_app/api/dio_manager.dart';
 import 'package:movies_app/api/model/movie_details.dart';
 import 'package:movies_app/fireStore/firebase_utils.dart';
-import 'package:movies_app/model/movie_item_ui_model.dart'; 
-import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/model/movie_item_ui_model.dart';
+import 'package:movies_app/ui/movie_details/similar_movies_section.dart';
 import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/shared_pref_utils.dart';
 import 'package:movies_app/utils/size_utils.dart';
+
 import 'web_view_screen.dart';
 
- 
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
+
   const MovieDetailsScreen({super.key, required this.movieId});
 
   @override
@@ -29,20 +26,18 @@ class MovieDetailsScreen extends StatefulWidget {
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   late Future<MovieDetails> _movieDetailsFuture;
-  late Future<List<Movie>> _similarMoviesFuture;
   bool _isInWatchlist = false;
 
   @override
   void initState() {
     super.initState();
     _movieDetailsFuture = DioManager.getMovieDetails(widget.movieId);
-    _similarMoviesFuture = DioManager.getSimilarMovies(widget.movieId);
-
     _checkWatchlistStatus();
   }
 
   void _checkWatchlistStatus() async {
-    final userId = FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
+    final userId =
+        FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
     if (userId != null && userId.isNotEmpty && userId != 'preview_user') {
       final inList = await FirebaseUtils.isMovieInWatchlist(
         userId,
@@ -57,7 +52,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   }
 
   Future<void> _toggleWatchlist(MovieDetails movie) async {
-    final userId = FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
+    final userId =
+        FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
     if (userId == null || userId.isEmpty || userId == 'preview_user') {
       Fluttertoast.showToast(msg: "Please login first");
       return;
@@ -91,7 +87,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   }
 
   Future<void> _addToHistory(MovieDetails movie) async {
-    final userId = FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
+    final userId =
+        FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
     if (userId == null || userId.isEmpty || userId == 'preview_user') {
       return;
     }
@@ -142,9 +139,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                 child: Image.network(
                   movie.largeCoverImage,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    color: AppColors.darkGrey,
-                  ),
+                  errorBuilder: (context, error, stackTrace) =>
+                      Container(color: AppColors.darkGrey),
                 ),
               ),
 
@@ -188,7 +184,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             IconButton(
                               icon: Image.asset(
                                 AppAssets.favouriteIcon,
-                                color: _isInWatchlist ? AppColors.yellow : AppColors.white, // بيتلون أصفر
+                                color: _isInWatchlist
+                                    ? AppColors.yellow
+                                    : AppColors.white, // بيتلون أصفر
                                 width: 24,
                               ),
                               onPressed: () => _toggleWatchlist(movie),
@@ -232,7 +230,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             ),
                             SizedBox(height: height * 0.03),
 
-                             SizedBox(
+                            SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
@@ -240,7 +238,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
-                                  padding: EdgeInsets.symmetric(vertical: height * 0.015),
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: height * 0.015,
+                                  ),
                                 ),
                                 onPressed: () {
                                   _addToHistory(movie); // تسجيل في التاريخ
@@ -313,16 +313,17 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                       url,
                                       width: double.infinity,
                                       fit: BoxFit.cover,
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return Container(
-                                          height: 150,
-                                          color: AppColors.darkGrey,
-                                          child: const Icon(
-                                            Icons.broken_image,
-                                            color: AppColors.white,
-                                          ),
-                                        );
-                                      },
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                            return Container(
+                                              height: 150,
+                                              color: AppColors.darkGrey,
+                                              child: const Icon(
+                                                Icons.broken_image,
+                                                color: AppColors.white,
+                                              ),
+                                            );
+                                          },
                                     ),
                                   ),
                                 );
@@ -333,10 +334,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         ),
                       ),
 
-                       //Similar Section :
-                      SimilarMoviesSection(
-                        movieId: widget.movieId,
-                      ),
+                      //Similar Section :
+                      SimilarMoviesSection(movieId: widget.movieId),
                       //Summary Section :
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: width * 0.05),
@@ -353,11 +352,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             Align(
                               alignment: AlignmentDirectional.centerStart,
                               child: Text(
-                                movie.summary
-                                    .trim()
-                                    .isEmpty
+                                movie.summary.trim().isEmpty
                                     ? AppLocalizations.of(context)!
-                                    .noSummaryAvailable
+                                          .noSummaryAvailable
                                     : movie.summary,
                                 style: AppStyles.regular16White,
                               ),
@@ -387,17 +384,9 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            iconPath,
-            color: AppColors.yellow,
-            width: 20,
-            height: 20,
-          ),
+          Image.asset(iconPath, color: AppColors.yellow, width: 20, height: 20),
           const SizedBox(width: 8),
-          Text(
-            text,
-            style: AppStyles.regular16White,
-          ),
+          Text(text, style: AppStyles.regular16White),
         ],
       ),
     );
