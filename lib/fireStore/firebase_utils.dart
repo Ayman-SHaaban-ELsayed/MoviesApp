@@ -4,8 +4,10 @@ import 'package:movies_app/model/movie_item_ui_model.dart';
 import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
 
 class FirebaseUtils {
-  static const String watchlistCollectionName = 'watchlist';
-  static const String historyCollectionName = 'history';
+// الكود بعد التعديل:
+  static const String watchlistCollectionName = 'Watchlist';
+  static const String historyCollectionName = 'History';
+
   // --- History ---
   static CollectionReference<MovieItemUiModel> getHistoryCollection(
       String userId,) {

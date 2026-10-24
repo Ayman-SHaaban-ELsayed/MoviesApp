@@ -36,6 +36,18 @@ class ProfileCubit extends Cubit<ProfileState> {
         final fetchedUser = await FirebaseUtils.getUser(userId);
         if (fetchedUser != null) {
           currentUser = fetchedUser;
+          final firebaseUser = FirebaseAuth.instance.currentUser;
+          final googleName = firebaseUser?.displayName?.trim();
+          final isGoogleUser = firebaseUser?.providerData
+              .any((p) => p.providerId == 'google.com') ??
+              false;
+          if (isGoogleUser &&
+              googleName != null &&
+              googleName.isNotEmpty &&
+              currentUser!.name != googleName) {
+            currentUser!.name = googleName;
+            unawaited(FirebaseUtils.updateUser(currentUser!));
+          }
           _subscribeToWatchlistAndHistory(currentUser!.id);
           _emitLoaded();
           return;
