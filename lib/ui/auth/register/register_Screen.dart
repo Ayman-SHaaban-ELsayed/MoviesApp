@@ -23,11 +23,11 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final rePasswordController = TextEditingController();
-  final phoneController = TextEditingController();
+  final nameController = TextEditingController(text: 'samih asaad tawfeek');
+  final emailController = TextEditingController(text: 'sam@gmail.com');
+  final passwordController = TextEditingController(text: 'Ss12345678#');
+  final rePasswordController = TextEditingController(text: 'Ss12345678#');
+  final phoneController = TextEditingController(text: '01221952339');
   final formKey = GlobalKey<FormState>();
 
   bool _isPasswordVisible = false;
@@ -201,7 +201,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         validator: (text) =>
-                            AppValidators.validateUsername(text!.trim()),
+                            AppValidators.validateName(text),
                       ),
                       SizedBox(height: height * .018),
 
@@ -303,7 +303,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         validator: (text) =>
                             AppValidators.validateConfirmPassword(
                               text,
-                              rePasswordController.text,
+                              passwordController.text,
                             ),
                       ),
 
