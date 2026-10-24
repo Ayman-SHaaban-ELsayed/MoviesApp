@@ -12,11 +12,6 @@ import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/size_utils.dart';
 
-// 👇 ضيف الـ import ده عشان الشاشة تتعرف عليها 👇
-
-
-import '../../../movie_details/movie_details_screen.dart';
-
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
 
@@ -86,13 +81,7 @@ class _HomeTabState extends State<HomeTab> {
                             });
                           },
                           onMovieTap: (movie) {
-                            // 👇 هنا كود النقل للفيلم اللي في الكاروسيل 👇
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MovieDetailsScreen(movieId: movie.id),
-                              ),
-                            );
+                            print('Clicked: ${movie.title}');
                           },
                         ),
                         Image.asset(
@@ -113,13 +102,8 @@ class _HomeTabState extends State<HomeTab> {
                               print('See More ${category.categoryName}');
                             },
                             onMovieTap: (movie) {
-                              // 👇 وهنا كود النقل للفيلم اللي في الكاتيجوري 👇
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MovieDetailsScreen(movieId: movie.id),
-                                ),
-                              );
+                              print('Clicked: ${movie.title}');
+                              // TODO: Navigate to movie details.
                             },
                           );
                         }),
