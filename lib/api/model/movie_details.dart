@@ -35,10 +35,10 @@ class MovieDetails {
     if (json['medium_screenshot_image3'] != null) {
       shots.add(json['medium_screenshot_image3']);
     }
-
-    addShot('medium_screenshot_image1');
-    addShot('medium_screenshot_image2');
-    addShot('medium_screenshot_image3');
+    //
+    // addShot('medium_screenshot_image1');
+    // addShot('medium_screenshot_image2');
+    // addShot('medium_screenshot_image3');
 
     return MovieDetails(
       id: json['id'] ?? 0,

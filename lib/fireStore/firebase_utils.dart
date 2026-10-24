@@ -6,7 +6,19 @@ import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dar
 class FirebaseUtils {
   static const String watchlistCollectionName = 'watchlist';
   static const String historyCollectionName = 'history';
-
+  // --- History ---
+  static CollectionReference<MovieItemUiModel> getHistoryCollection(
+      String userId,) {
+    return FirebaseFirestore.instance
+        .collection(MyUser.collectionName)
+        .doc(userId)
+        .collection(historyCollectionName)
+        .withConverter<MovieItemUiModel>(
+      fromFirestore: (snapshot, options) =>
+          MovieItemUiModel.fromJson(snapshot.data()!),
+      toFirestore: (movie, options) => movie.toJson(),
+    );
+  }
   static CollectionReference<MyUser> getUserCollection() {
     return FirebaseFirestore.instance
         .collection(MyUser.collectionName)
@@ -16,7 +28,19 @@ class FirebaseUtils {
           toFirestore: (user, options) => user.toJson(),
         );
   }
-
+  // --- Watchlist ---
+  static CollectionReference<MovieItemUiModel> getWatchlistCollection(
+      String userId,) {
+    return FirebaseFirestore.instance
+        .collection(MyUser.collectionName)
+        .doc(userId)
+        .collection(watchlistCollectionName)
+        .withConverter<MovieItemUiModel>(
+      fromFirestore: (snapshot, options) =>
+          MovieItemUiModel.fromJson(snapshot.data()!),
+      toFirestore: (movie, options) => movie.toJson(),
+    );
+  }
   static Future<void> addUserToFireStore(MyUser user) {
     return getUserCollection().doc(user.id).set(user);
   }
@@ -44,7 +68,7 @@ class FirebaseUtils {
   }
 
   // 2. إضافة فيلم للـ Watchlist
-  static Future<void> addToWatchlist(String userId, MovieItemUiModel movie) async {
+  static Future<void> addToWatchlist(String userId, MovieItemUiModel  movie) async {
     await FirebaseFirestore.instance
         .collection('Users')
         .doc(userId)
@@ -62,7 +86,16 @@ class FirebaseUtils {
         .doc(movieId)
         .delete();
   }
-
+  static Stream<List<MovieItemUiModel>> getWatchlistStream(String userId) {
+    return getWatchlistCollection(userId).snapshots().map(
+          (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
+    );
+  }
+  static Stream<List<MovieItemUiModel>> getHistoryStream(String userId) {
+    return getHistoryCollection(userId).snapshots().map(
+          (snapshot) => snapshot.docs.map((doc) => doc.data()).toList(),
+    );
+  }
   // 4. إضافة فيلم للـ History
   static Future<void> addToHistory(String userId, MovieItemUiModel movie) async {
     await FirebaseFirestore.instance

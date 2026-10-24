@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/fireStore/firebase_utils.dart';
+import 'package:movies_app/model/movie_item_ui_model.dart';
 import 'package:movies_app/model/my_user.dart';
 import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
 import 'package:movies_app/utils/shared_pref_utils.dart';
