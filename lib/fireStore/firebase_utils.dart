@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:movies_app/model/my_user.dart';
 import 'package:movies_app/model/movie_item_ui_model.dart';
+import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
 
 class FirebaseUtils {
+  static const String watchlistCollectionName = 'watchlist';
+  static const String historyCollectionName = 'history';
+
   static CollectionReference<MyUser> getUserCollection() {
     return FirebaseFirestore.instance
         .collection(MyUser.collectionName)
@@ -69,3 +73,4 @@ class FirebaseUtils {
         .set(movie.toJson());
   }
 }
+

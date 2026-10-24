@@ -5,6 +5,7 @@ import 'package:movies_app/api/model/movie_details.dart';
 import 'package:movies_app/api/dio_manager.dart';
 import 'package:movies_app/fireStore/firebase_utils.dart';
 import 'package:movies_app/model/movie_item_ui_model.dart'; // الكلاس الجديد
+import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
 import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
@@ -96,7 +97,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
 
     try {
       await FirebaseUtils.addToHistory(userId, movieItem);
-      // Fluttertoast.showToast(msg: "Added to History"); // ممكن تشيلها عشان متزعجش اليوزر
     } catch (_) {}
   }
 
@@ -117,7 +117,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           }
           if (snapshot.hasError) {
             return Center(
-              child: Text('Error loading movie', style: AppStyles.regular16White),
+              child: Text(
+                'Error loading movie',
+                style: AppStyles.regular16White,
+              ),
             );
           }
 
@@ -167,7 +170,10 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
-                              icon: const Icon(Icons.arrow_back_ios, color: AppColors.white),
+                              icon: const Icon(
+                                Icons.arrow_back_ios,
+                                color: AppColors.white,
+                              ),
                               onPressed: () => Navigator.pop(context),
                             ),
                             IconButton(
@@ -176,7 +182,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                                 color: _isInWatchlist ? AppColors.yellow : AppColors.white, // بيتلون أصفر
                                 width: 24,
                               ),
-                              onPressed: () => _toggleWatchlist(movie), // بينفذ الحفظ
+                              onPressed: () => _toggleWatchlist(movie),
                             ),
                           ],
                         ),
@@ -217,8 +223,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                             ),
                             SizedBox(height: height * 0.03),
 
-                            // زر Watch (بيسجل في الـ History ويفتح الـ WebView)
-                            SizedBox(
+                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
