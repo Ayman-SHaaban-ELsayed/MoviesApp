@@ -6,6 +6,7 @@ class MovieDetails {
   final int runtime;
   final int likeCount;
   final String largeCoverImage;
+  final String url;
   final List<String> screenshots;
   final String summary;
 
@@ -17,6 +18,7 @@ class MovieDetails {
     required this.runtime,
     required this.likeCount,
     required this.largeCoverImage,
+    required this.url,
     required this.screenshots,
     required this.summary,
   });
@@ -34,6 +36,10 @@ class MovieDetails {
       shots.add(json['medium_screenshot_image3']);
     }
 
+    addShot('medium_screenshot_image1');
+    addShot('medium_screenshot_image2');
+    addShot('medium_screenshot_image3');
+
     return MovieDetails(
       id: json['id'] ?? 0,
       title: json['title'] ?? '',
@@ -42,6 +48,7 @@ class MovieDetails {
       runtime: json['runtime'] ?? 0,
       likeCount: json['like_count'] ?? 0,
       largeCoverImage: json['large_cover_image'] ?? '',
+      url: json['url'] ?? '',
       screenshots: shots,
       summary: json['description_full']?.toString() ?? '',
     );

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/fireStore/firebase_utils.dart';
@@ -9,26 +10,32 @@ class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(ProfileInitialState());
 
   MyUser? currentUser;
-  int watchListCount = 12;
-  int historyCount = 10;
+  int watchListCount = 0;
+  int historyCount = 0;
   List<MovieItemUiModel> watchListMovies = [];
   List<MovieItemUiModel> historyMovies = [];
+
+  StreamSubscription<List<MovieItemUiModel>>? _watchListSubscription;
+  StreamSubscription<List<MovieItemUiModel>>? _historySubscription;
 
   Future<void> loadUser([MyUser? initialUser]) async {
     emit(ProfileLoadingState());
 
     if (initialUser != null) {
       currentUser = initialUser;
+      _subscribeToWatchlistAndHistory(currentUser!.id);
       _emitLoaded();
       return;
     }
 
-    final userId = SharedPrefUtils.userId;
+    final userId =
+        FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
     if (userId != null && userId.isNotEmpty) {
       try {
         final fetchedUser = await FirebaseUtils.getUser(userId);
         if (fetchedUser != null) {
           currentUser = fetchedUser;
+          _subscribeToWatchlistAndHistory(currentUser!.id);
           _emitLoaded();
           return;
         }
@@ -43,7 +50,43 @@ class ProfileCubit extends Cubit<ProfileState> {
       avatarId: 1,
     );
 
+    _subscribeToWatchlistAndHistory(currentUser!.id);
     _emitLoaded();
+  }
+
+  void _subscribeToWatchlistAndHistory(String userId) {
+    _watchListSubscription?.cancel();
+    _historySubscription?.cancel();
+
+    if (userId.isEmpty || userId == 'preview_user') {
+      watchListMovies = [];
+      watchListCount = 0;
+      historyMovies = [];
+      historyCount = 0;
+      return;
+    }
+
+    _watchListSubscription = FirebaseUtils.getWatchlistStream(userId).listen(
+          (movies) {
+        watchListMovies = movies;
+        watchListCount = movies.length;
+        if (currentUser != null) {
+          _emitLoaded();
+        }
+      },
+      onError: (_) {},
+    );
+
+    _historySubscription = FirebaseUtils.getHistoryStream(userId).listen(
+          (movies) {
+        historyMovies = movies;
+        historyCount = movies.length;
+        if (currentUser != null) {
+          _emitLoaded();
+        }
+      },
+      onError: (_) {},
+    );
   }
 
   void _emitLoaded() {
@@ -135,5 +178,12 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(ProfileErrorState(errorMessage: e.toString()));
       _emitLoaded();
     }
+  }
+
+  @override
+  Future<void> close() {
+    _watchListSubscription?.cancel();
+    _historySubscription?.cancel();
+    return super.close();
   }
 }
