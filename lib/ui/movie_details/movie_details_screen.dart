@@ -1,10 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:movies_app/api/dio_manager.dart';
+import 'package:movies_app/api/model/movie/movie.dart';
+import 'package:movies_app/api/model/movie_details.dart';
+import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/ui/movie_details/similar_movies_section.dart';
+import 'package:movies_app/ui/widgets/elevated_button_reuse.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:movies_app/api/model/movie_details.dart';
-import 'package:movies_app/api/dio_manager.dart';
 import 'package:movies_app/fireStore/firebase_utils.dart';
-import 'package:movies_app/model/movie_item_ui_model.dart'; // الكلاس الجديد
+import 'package:movies_app/model/movie_item_ui_model.dart'; 
 import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
 import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
@@ -13,6 +18,7 @@ import 'package:movies_app/utils/shared_pref_utils.dart';
 import 'package:movies_app/utils/size_utils.dart';
 import 'web_view_screen.dart';
 
+ 
 class MovieDetailsScreen extends StatefulWidget {
   final int movieId;
   const MovieDetailsScreen({super.key, required this.movieId});
@@ -23,12 +29,15 @@ class MovieDetailsScreen extends StatefulWidget {
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   late Future<MovieDetails> _movieDetailsFuture;
+  late Future<List<Movie>> _similarMoviesFuture;
   bool _isInWatchlist = false;
 
   @override
   void initState() {
     super.initState();
     _movieDetailsFuture = DioManager.getMovieDetails(widget.movieId);
+    _similarMoviesFuture = DioManager.getSimilarMovies(widget.movieId);
+
     _checkWatchlistStatus();
   }
 
@@ -289,7 +298,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                               Align(
                                 alignment: AlignmentDirectional.centerStart,
                                 child: Text(
-                                  'Screenshots',
+                                  AppLocalizations.of(context)!.screenShots,
                                   style: AppStyles.bold20White,
                                 ),
                               ),
@@ -323,6 +332,40 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           ],
                         ),
                       ),
+
+                       //Similar Section :
+                      SimilarMoviesSection(
+                        movieId: widget.movieId,
+                      ),
+                      //Summary Section :
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional.centerStart,
+                              child: Text(
+                                AppLocalizations.of(context)!.summary,
+                                style: AppStyles.bold24White,
+                              ),
+                            ),
+                            SizedBox(height: height * 0.015),
+                            Align(
+                              alignment: AlignmentDirectional.centerStart,
+                              child: Text(
+                                movie.summary
+                                    .trim()
+                                    .isEmpty
+                                    ? AppLocalizations.of(context)!
+                                    .noSummaryAvailable
+                                    : movie.summary,
+                                style: AppStyles.regular16White,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: height * 0.015),
                     ],
                   ),
                 ),

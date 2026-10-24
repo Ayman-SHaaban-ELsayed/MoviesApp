@@ -1021,6 +1021,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Login With Google'**
   String get loginWithGoogle;
+
+  /// No description provided for @failedToLoadSimilarMovies.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load similar movies'**
+  String get failedToLoadSimilarMovies;
 }
 
 class _AppLocalizationsDelegate

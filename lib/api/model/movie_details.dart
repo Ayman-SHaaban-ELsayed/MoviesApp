@@ -8,6 +8,7 @@ class MovieDetails {
   final String largeCoverImage;
   final String url;
   final List<String> screenshots;
+  final String summary;
 
   MovieDetails({
     required this.id,
@@ -19,15 +20,20 @@ class MovieDetails {
     required this.largeCoverImage,
     required this.url,
     required this.screenshots,
+    required this.summary,
   });
 
   factory MovieDetails.fromJson(Map<String, dynamic> json) {
-    List<String> shots = [];
+    final List<String> shots = [];
 
-    void addShot(String? key) {
-      if (json[key] != null && json[key].toString().trim().isNotEmpty) {
-        shots.add(json[key]);
-      }
+    if (json['medium_screenshot_image1'] != null) {
+      shots.add(json['medium_screenshot_image1']);
+    }
+    if (json['medium_screenshot_image2'] != null) {
+      shots.add(json['medium_screenshot_image2']);
+    }
+    if (json['medium_screenshot_image3'] != null) {
+      shots.add(json['medium_screenshot_image3']);
     }
 
     addShot('medium_screenshot_image1');
@@ -44,6 +50,7 @@ class MovieDetails {
       largeCoverImage: json['large_cover_image'] ?? '',
       url: json['url'] ?? '',
       screenshots: shots,
+      summary: json['description_full']?.toString() ?? '',
     );
   }
 }
