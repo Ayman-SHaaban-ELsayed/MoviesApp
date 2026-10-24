@@ -71,17 +71,39 @@ class LoginCubit extends Cubit<LoginState> {
           await FirebaseAuth.instance.signInWithCredential(credential);
 
       final uid = userCredential.user?.uid ?? '';
+      final googleName =
+      (userCredential.user?.displayName ?? googleUser.displayName)?.trim();
+      final googleEmail = userCredential.user?.email ?? googleUser.email;
+      final googlePhone = userCredential.user?.phoneNumber ?? '';
+
       MyUser? user = await FirebaseUtils.getUser(uid);
 
       if (user == null) {
         user = MyUser(
           id: uid,
-          name: userCredential.user?.displayName ?? 'User',
-          email: userCredential.user?.email ?? '',
-          phone: userCredential.user?.phoneNumber ?? '',
+          name: (googleName != null && googleName.isNotEmpty)
+              ? googleName
+              : 'User',
+          email: googleEmail,
+          phone: googlePhone,
           avatarId: 1,
         );
         await FirebaseUtils.addUserToFireStore(user);
+      } else {
+        bool needsUpdate = false;
+        if (googleName != null &&
+            googleName.isNotEmpty &&
+            user.name != googleName) {
+          user.name = googleName;
+          needsUpdate = true;
+        }
+        if (user.email.isEmpty && googleEmail.isNotEmpty) {
+          user.email = googleEmail;
+          needsUpdate = true;
+        }
+        if (needsUpdate) {
+          await FirebaseUtils.updateUser(user);
+        }
       }
 
       emit(LoginSuccessState(user: user));

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/fireStore/firebase_utils.dart';
+import 'package:movies_app/model/movie_item_ui_model.dart';
 import 'package:movies_app/model/my_user.dart';
 import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
 import 'package:movies_app/utils/shared_pref_utils.dart';
@@ -35,6 +36,18 @@ class ProfileCubit extends Cubit<ProfileState> {
         final fetchedUser = await FirebaseUtils.getUser(userId);
         if (fetchedUser != null) {
           currentUser = fetchedUser;
+          final firebaseUser = FirebaseAuth.instance.currentUser;
+          final googleName = firebaseUser?.displayName?.trim();
+          final isGoogleUser = firebaseUser?.providerData
+              .any((p) => p.providerId == 'google.com') ??
+              false;
+          if (isGoogleUser &&
+              googleName != null &&
+              googleName.isNotEmpty &&
+              currentUser!.name != googleName) {
+            currentUser!.name = googleName;
+            unawaited(FirebaseUtils.updateUser(currentUser!));
+          }
           _subscribeToWatchlistAndHistory(currentUser!.id);
           _emitLoaded();
           return;
