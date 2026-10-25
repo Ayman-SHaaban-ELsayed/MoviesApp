@@ -1,8 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/api/dio_manager.dart';
+import 'package:movies_app/api/model/movie/movie.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/cubit/home_states.dart';
-
-import '../../../../../api/model/movie/movie.dart';
 
 class CubitHomeViewModel extends Cubit<HomeStates> {
   CubitHomeViewModel() : super(HomeInitial());

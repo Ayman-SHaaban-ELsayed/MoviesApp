@@ -206,12 +206,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
                               ElevatedButtonReuse(
                                 background: AppColors.red,
-                                onpressed: () => _confirmDeleteAccount(
+                                onPressed: () =>
+                                    _confirmDeleteAccount(
                                   context,
                                   local,
                                   cubit,
                                 ),
-                                ChildType: Text(
+                                childType: Text(
                                   local.deleteAccount,
                                   style: AppStyles.bold20White,
                                 ),
@@ -220,7 +221,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
                               ElevatedButtonReuse(
                                 background: AppColors.yellow,
-                                onpressed: isUpdating
+                                onPressed: isUpdating
                                     ? () {}
                                     : () {
                                         if (_formKey.currentState!.validate()) {
@@ -231,7 +232,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                           );
                                         }
                                       },
-                                ChildType: isUpdating
+                                childType: isUpdating
                                     ? const SizedBox(
                                         height: 22,
                                         width: 22,

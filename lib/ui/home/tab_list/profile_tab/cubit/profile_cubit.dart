@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/fireStore/firebase_utils.dart';
+import 'package:movies_app/model/movie_item_ui_model.dart';
 import 'package:movies_app/model/my_user.dart';
 import 'package:movies_app/ui/home/tab_list/profile_tab/cubit/profile_states.dart';
 import 'package:movies_app/utils/shared_pref_utils.dart';
@@ -9,26 +11,44 @@ class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(ProfileInitialState());
 
   MyUser? currentUser;
-  int watchListCount = 12;
-  int historyCount = 10;
+  int watchListCount = 0;
+  int historyCount = 0;
   List<MovieItemUiModel> watchListMovies = [];
   List<MovieItemUiModel> historyMovies = [];
+
+  StreamSubscription<List<MovieItemUiModel>>? _watchListSubscription;
+  StreamSubscription<List<MovieItemUiModel>>? _historySubscription;
 
   Future<void> loadUser([MyUser? initialUser]) async {
     emit(ProfileLoadingState());
 
     if (initialUser != null) {
       currentUser = initialUser;
+      _subscribeToWatchlistAndHistory(currentUser!.id);
       _emitLoaded();
       return;
     }
 
-    final userId = SharedPrefUtils.userId;
+    final userId =
+        FirebaseAuth.instance.currentUser?.uid ?? SharedPrefUtils.userId;
     if (userId != null && userId.isNotEmpty) {
       try {
         final fetchedUser = await FirebaseUtils.getUser(userId);
         if (fetchedUser != null) {
           currentUser = fetchedUser;
+          final firebaseUser = FirebaseAuth.instance.currentUser;
+          final googleName = firebaseUser?.displayName?.trim();
+          final isGoogleUser = firebaseUser?.providerData
+              .any((p) => p.providerId == 'google.com') ??
+              false;
+          if (isGoogleUser &&
+              googleName != null &&
+              googleName.isNotEmpty &&
+              currentUser!.name != googleName) {
+            currentUser!.name = googleName;
+            unawaited(FirebaseUtils.updateUser(currentUser!));
+          }
+          _subscribeToWatchlistAndHistory(currentUser!.id);
           _emitLoaded();
           return;
         }
@@ -43,7 +63,43 @@ class ProfileCubit extends Cubit<ProfileState> {
       avatarId: 1,
     );
 
+    _subscribeToWatchlistAndHistory(currentUser!.id);
     _emitLoaded();
+  }
+
+  void _subscribeToWatchlistAndHistory(String userId) {
+    _watchListSubscription?.cancel();
+    _historySubscription?.cancel();
+
+    if (userId.isEmpty || userId == 'preview_user') {
+      watchListMovies = [];
+      watchListCount = 0;
+      historyMovies = [];
+      historyCount = 0;
+      return;
+    }
+
+    _watchListSubscription = FirebaseUtils.getWatchlistStream(userId).listen(
+          (movies) {
+        watchListMovies = movies;
+        watchListCount = movies.length;
+        if (currentUser != null) {
+          _emitLoaded();
+        }
+      },
+      onError: (_) {},
+    );
+
+    _historySubscription = FirebaseUtils.getHistoryStream(userId).listen(
+          (movies) {
+        historyMovies = movies;
+        historyCount = movies.length;
+        if (currentUser != null) {
+          _emitLoaded();
+        }
+      },
+      onError: (_) {},
+    );
   }
 
   void _emitLoaded() {
@@ -135,5 +191,12 @@ class ProfileCubit extends Cubit<ProfileState> {
       emit(ProfileErrorState(errorMessage: e.toString()));
       _emitLoaded();
     }
+  }
+
+  @override
+  Future<void> close() {
+    _watchListSubscription?.cancel();
+    _historySubscription?.cancel();
+    return super.close();
   }
 }

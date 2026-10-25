@@ -123,7 +123,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       SizedBox(height: height * .04),
                       ElevatedButtonReuse(
                         background: AppColors.yellow,
-                        onpressed: isLoading
+                        onPressed: isLoading
                             ? () {}
                             : () {
                                 if (formKey.currentState!.validate()) {
@@ -132,7 +132,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   );
                                 }
                               },
-                        ChildType: isLoading
+                        childType: isLoading
                             ? const SizedBox(
                                 height: 22,
                                 width: 22,
