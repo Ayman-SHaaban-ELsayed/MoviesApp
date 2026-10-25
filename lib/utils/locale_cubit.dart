@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'shared_pref_utils.dart';
+import 'package:movies_app/utils/shared_pref_utils.dart';
 
 class LocaleCubit extends Cubit<Locale> {
   LocaleCubit() : super(_savedLocale());

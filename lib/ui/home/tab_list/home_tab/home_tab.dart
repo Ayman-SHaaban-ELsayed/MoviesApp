@@ -8,14 +8,10 @@ import 'package:movies_app/ui/home/tab_list/home_tab/widget/latest_movies_carous
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/loading_widget.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_category_widget.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_gradient.dart';
+import 'package:movies_app/ui/movie_details/movie_details_screen.dart';
 import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/size_utils.dart';
-
-// 👇 ضيف الـ import ده عشان الشاشة تتعرف عليها 👇
-
-
-import '../../../movie_details/movie_details_screen.dart';
 
 class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
@@ -86,7 +82,6 @@ class _HomeTabState extends State<HomeTab> {
                             });
                           },
                           onMovieTap: (movie) {
-                            // 👇 هنا كود النقل للفيلم اللي في الكاروسيل 👇
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -113,7 +108,6 @@ class _HomeTabState extends State<HomeTab> {
                               print('See More ${category.categoryName}');
                             },
                             onMovieTap: (movie) {
-                              // 👇 وهنا كود النقل للفيلم اللي في الكاتيجوري 👇
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

@@ -337,7 +337,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                       ElevatedButtonReuse(
                         background: AppColors.yellow,
-                        onpressed: isLoading
+                        onPressed: isLoading
                             ? () {}
                             : () {
                                 if (formKey.currentState!.validate()) {
@@ -349,7 +349,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   );
                                 }
                               },
-                        ChildType: isLoading
+                        childType: isLoading
                             ? const SizedBox(
                                 height: 22,
                                 width: 22,

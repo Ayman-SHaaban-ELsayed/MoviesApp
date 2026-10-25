@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_card.dart';
-
-// غيّر مسار الموديل حسب مكانه في مشروعك.
 import 'package:movies_app/api/model/movie/movie.dart';
+import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_card.dart';
 
 class MovieListWidget extends StatelessWidget {
   final List<Movie> movies;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 
 class BrowseTab extends StatelessWidget {
@@ -9,7 +8,7 @@ class BrowseTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        'Browse Tab', // هنا هتعمل تصميم شاشة الـ Browse بعدين
+        'Browse Tab',
         style: AppStyles.bold24White,
       ),
     );
