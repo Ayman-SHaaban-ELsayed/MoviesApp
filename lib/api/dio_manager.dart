@@ -95,7 +95,7 @@ class DioManager {
         queryParameters: {
           'movie_id': movieId,
           'with_images': true,
-        },
+          'with_cast': true, },
       );
 
       if (response.statusCode == 200 &&

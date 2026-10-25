@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/api/model/movie_details.dart';
 import 'package:movies_app/ui/movie_details/cubit/movie_details_cubit.dart';
 import 'package:movies_app/ui/movie_details/web_view_screen.dart';
+import 'package:movies_app/ui/movie_details/widgets/cast_section.dart';
+import 'package:movies_app/ui/movie_details/widgets/genres_section.dart';
 import 'package:movies_app/ui/movie_details/widgets/similar_movies_section.dart';
 import 'package:movies_app/utils/size_utils.dart';
 
@@ -76,7 +78,11 @@ class MovieDetailsContent extends StatelessWidget {
                 ),
                 SimilarMoviesSection(movieId: movieId),
                 SummarySection(summary: movie.summary),
-                SizedBox(height: height * 0.015),
+                SizedBox(height: height * 0.02),
+                CastSection(cast: movie.cast),
+                SizedBox(height: height * 0.02),
+                GenresSection(genres: movie.genres),
+                SizedBox(height: height * 0.05),
               ],
             ),
           ),
