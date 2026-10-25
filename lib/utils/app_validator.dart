@@ -58,8 +58,8 @@ class AppValidators {
     }
 
     final bool isValid = RegExp(
-      r'^[a-zA-Z ]+$',
-    ).hasMatch(text);
+      r'^[a-zA-Z\u0600-\u06FF\s]+$',
+    ).hasMatch(text.trim());
 
     if (!isValid) {
       return "Please enter a valid name";

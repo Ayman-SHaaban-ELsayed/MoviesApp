@@ -153,5 +153,6 @@
   "failedToLoadMovieDetails": "Failed to load movie details",
   "permissionDenied": "Permission denied",
   "tooManyRequests": "Too many attempts. Please wait a moment and try again.",
-  "loginWithGoogle": "Login With Google"
+  "loginWithGoogle": "Login With Google",
+  "failedToLoadSimilarMovies": "Failed to load similar movies"
 }
