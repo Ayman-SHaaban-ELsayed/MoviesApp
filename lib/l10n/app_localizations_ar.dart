@@ -486,4 +486,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get loginWithGoogle => 'تسجيل الدخول بواسطة جوجل';
+
+  @override
+  String get failedToLoadSimilarMovies => 'فشل في العثور علي افلام مشابهة';
 }

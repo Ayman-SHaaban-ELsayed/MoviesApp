@@ -28,12 +28,18 @@ class DioManager {
         },
       );
 
-      if (response.statusCode == 200 && response.data['status'] == 'ok') {
-        List moviesJson = response.data['data']['movies'] ?? [];
-        return moviesJson.map((json) => Movie.fromJson(json)).toList();
+      if (response.statusCode == 200 &&
+          response.data['status'] == 'ok') {
+        final List moviesJson =
+            response.data['data']['movies'] ?? [];
+
+        return moviesJson
+            .map((json) => Movie.fromJson(json))
+            .toList();
       } else {
         throw Exception(
-          response.data['status_message'] ?? 'Failed to load movies',
+          response.data['status_message'] ??
+              'Failed to load movies',
         );
       }
     } on DioException catch (error) {
@@ -41,39 +47,43 @@ class DioManager {
         case DioExceptionType.connectionTimeout:
         case DioExceptionType.sendTimeout:
         case DioExceptionType.receiveTimeout:
-          throw Exception("Timeout occurred while sending or receiving");
+        throw Exception(
+          'Timeout occurred while sending or receiving',
+        );
+
         case DioExceptionType.badResponse:
           final statusCode = error.response?.statusCode;
-          if (statusCode != null) {
-            switch (statusCode) {
-              case 400:
-                throw Exception("Bad Request");
-              case 401:
-              case 403:
-                throw Exception("Unauthorized");
-              case 404:
-                throw Exception("Not Found");
-              case 409:
-                throw Exception('Conflict');
-              case 500:
-                throw Exception("Internal Server Error");
-            }
+
+          switch (statusCode) {
+            case 400:
+              throw Exception('Bad Request');
+            case 401:
+            case 403:
+              throw Exception('Unauthorized');
+            case 404:
+              throw Exception('Not Found');
+            case 409:
+              throw Exception('Conflict');
+            case 500:
+              throw Exception('Internal Server Error');
           }
-          break;
+          throw Exception('Unknown Error');
+
         case DioExceptionType.cancel:
-          break;
+          throw Exception('Request cancelled');
+
         case DioExceptionType.unknown:
-          throw Exception("No Internet Connection");
+          throw Exception('No Internet Connection');
+
         case DioExceptionType.badCertificate:
-          throw Exception("Internal Server Error");
+          throw Exception('Bad Certificate');
+
         case DioExceptionType.connectionError:
-          throw Exception("Connection Error");
+          throw Exception('Connection Error');
+
         default:
-          throw Exception("Unknown Error");
+          throw Exception('Unknown Error');
       }
-      throw Exception("Unknown Error");
-    } catch (e) {
-      rethrow;
     }
   }
 
@@ -85,16 +95,55 @@ class DioManager {
         queryParameters: {
           'movie_id': movieId,
           'with_images': true,
+          'with_cast': true, },
+      );
+
+      if (response.statusCode == 200 &&
+          response.data['status'] == 'ok') {
+        return MovieDetails.fromJson(
+          response.data['data']['movie'],
+        );
+      } else {
+        throw Exception(
+          response.data['status_message'] ??
+              'Failed to load movie details',
+        );
+      }
+    } on DioException catch (error) {
+      throw Exception(
+        'Error fetching details: ${error.message}',
+      );
+    }
+  }
+
+  static Future<List<Movie>> getSimilarMovies(int movieId,) async {
+    try {
+      final response = await dio.get(
+        ApiEndPoints.similarMovies,
+        queryParameters: {
+          'movie_id': movieId,
         },
       );
 
-      if (response.statusCode == 200 && response.data['status'] == 'ok') {
-        return MovieDetails.fromJson(response.data['data']['movie']);
+      if (response.statusCode == 200 &&
+          response.data['status'] == 'ok') {
+        final data = response.data['data'];
+
+        final List moviesJson = data['movies'] ?? [];
+
+        return moviesJson
+            .map((json) => Movie.fromJson(json))
+            .toList();
       } else {
-        throw Exception(response.data['status_message'] ?? 'Failed to load movie details');
+        throw Exception(
+          response.data['status_message'] ??
+              'Failed to load similar movies',
+        );
       }
     } on DioException catch (error) {
-      throw Exception("Error fetching details: ${error.message}");
+      throw Exception(
+        'Error fetching similar movies: ${error.message}',
+      );
     }
   }
 }

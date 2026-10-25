@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'app_colors.dart';
+import 'package:movies_app/utils/app_colors.dart';
 
 // (regular) => 400   -   (medium) => 500   -   (semi-bold) => 600   -   (bold) => 700
 
