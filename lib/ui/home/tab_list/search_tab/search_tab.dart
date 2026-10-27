@@ -70,8 +70,8 @@ class _SearchTabContentState extends State<_SearchTabContent> {
               onChanged: (query) {
                 context.read<SearchCubit>().searchMovies(query);
               },
-              prefixIcon: const Icon(
-                Icons.search,
+              prefixIcon: const ImageIcon(
+                AssetImage(AppAssets.searchIcon),
                 color: AppColors.white,
                 size: 28,
               ),
@@ -180,7 +180,6 @@ class _SearchTabContentState extends State<_SearchTabContent> {
                   );
                 }
 
-                // SearchInitialState (الحالة الابتدائية قبل البحث)
                 return _buildEmptyState(context);
               },
             ),
