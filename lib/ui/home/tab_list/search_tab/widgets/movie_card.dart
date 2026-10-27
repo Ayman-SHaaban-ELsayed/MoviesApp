@@ -1,10 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:movies_app/model/movie_item_ui_model.dart';
+import 'package:movies_app/api/model/movie/movie.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 
 class MovieCard extends StatelessWidget {
-  final MovieItemUiModel movie;
+  final Movie movie;
   final VoidCallback? onTap;
 
   const MovieCard({super.key, required this.movie, this.onTap});
@@ -19,10 +20,19 @@ class MovieCard extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             // صورة البوستر
-            Image.network(
-              movie.imagePath,
+            CachedNetworkImage(
+              imageUrl: movie.mediumCoverImage,
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Container(
+              placeholder: (context, url) => Container(
+                color: AppColors.darkGrey,
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    color: AppColors.yellow,
+                    strokeWidth: 2,
+                  ),
+                ),
+              ),
+              errorWidget: (context, url, error) => Container(
                 color: AppColors.darkGrey,
                 child: const Icon(Icons.movie, color: AppColors.grey, size: 50),
               ),
@@ -81,7 +91,7 @@ class MovieCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      movie.rating,
+                      movie.rating.toString(),
                       style: AppStyles.regular14White.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
