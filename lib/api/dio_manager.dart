@@ -16,15 +16,20 @@ class DioManager {
   static Future<List<Movie>> getMovies({
     String? genre,
     int limit = 10,
+    int page = 1,
     String? sortBy,
+    String? queryTerm,
   }) async {
     try {
       final response = await dio.get(
         ApiEndPoints.listMovies,
         queryParameters: {
           'limit': limit,
+          'page': page,
           if (genre != null) 'genre': genre,
           if (sortBy != null) 'sort_by': sortBy,
+          if (queryTerm != null && queryTerm.isNotEmpty)
+            'query_term': queryTerm,
         },
       );
 
@@ -87,6 +92,19 @@ class DioManager {
     }
   }
 
+  static Future<List<Movie>> searchMovies(
+    String query, {
+    int page = 1,
+    int limit = 20,
+    String? sortBy,
+  }) async {
+    return getMovies(
+      queryTerm: query,
+      page: page,
+      limit: limit,
+      sortBy: sortBy,
+    );
+  }
 
   static Future<MovieDetails> getMovieDetails(int movieId) async {
     try {
@@ -146,4 +164,4 @@ class DioManager {
       );
     }
   }
-}
+}
