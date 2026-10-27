@@ -1,55 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:movies_app/model/movie_item_ui_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/ui/home/tab_list/search_tab/cubit/search_cubit.dart';
+import 'package:movies_app/ui/home/tab_list/search_tab/cubit/search_states.dart';
+import 'package:movies_app/ui/movie_details/movie_details_screen.dart';
+import 'package:movies_app/ui/widgets/custom_text_form_field.dart';
+import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/size_utils.dart';
 import 'widgets/movie_card.dart';
 
-class SearchTab extends StatefulWidget {
+class SearchTab extends StatelessWidget {
   const SearchTab({super.key});
 
   @override
-  State<SearchTab> createState() => _SearchTabState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SearchCubit(),
+      child: const _SearchTabContent(),
+    );
+  }
 }
 
-class _SearchTabState extends State<SearchTab> {
+class _SearchTabContent extends StatefulWidget {
+  const _SearchTabContent();
+
+  @override
+  State<_SearchTabContent> createState() => _SearchTabContentState();
+}
+
+class _SearchTabContentState extends State<_SearchTabContent> {
   final TextEditingController _searchController = TextEditingController();
-
-  // البيانات التجريبية
-  final List<MovieItemUiModel> _allMovies = [
-    MovieItemUiModel(id: '1', title: 'Black Widow', rating: '7.7', imagePath: 'https://image.tmdb.org/t/p/w500/qAZ0pzat24kLdO3o0ejrPAeH2kE.jpg', year: '2021'),
-    MovieItemUiModel(id: '2', title: 'Captain America', rating: '7.7', imagePath: 'https://image.tmdb.org/t/p/w500/vSNxAJTlD0r02V9sPYpOjqDZXUK.jpg', year: '2011'),
-    MovieItemUiModel(id: '3', title: 'Iron Man 3', rating: '7.7', imagePath: 'https://image.tmdb.org/t/p/w500/1Ilv6ryHUv6rt9zIsbSEJUmmbEi.jpg', year: '2013'),
-    MovieItemUiModel(id: '4', title: 'Civil War', rating: '7.7', imagePath: 'https://image.tmdb.org/t/p/w500/rAGiXaUfPzY7CDEyNKUofk3Kw2e.jpg', year: '2016'),
-    MovieItemUiModel(id: '5', title: 'Avengers', rating: '7.7', imagePath: 'https://image.tmdb.org/t/p/w500/RYMX2wcKCBAr24UyPD7xwmja4Q.jpg', year: '2012'),
-    MovieItemUiModel(id: '6', title: 'Doctor Strange', rating: '7.7', imagePath: 'https://image.tmdb.org/t/p/w500/uGBVj3bEbCoZbDjjl9wTxcygko1.jpg', year: '2016'),
-  ];
-
-  List<MovieItemUiModel> _filteredMovies = [];
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _filteredMovies = _allMovies;
-    _searchController.addListener(_filterMovies);
+    _scrollController.addListener(_onScroll);
   }
 
-  void _filterMovies() {
-    final query = _searchController.text.toLowerCase();
-    setState(() {
-      if (query.isEmpty) {
-        _filteredMovies = _allMovies;
-      } else {
-        _filteredMovies = _allMovies
-            .where((movie) => movie.title.toLowerCase().contains(query))
-            .toList();
-      }
-    });
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      context.read<SearchCubit>().loadMoreMovies();
+    }
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -61,60 +61,141 @@ class _SearchTabState extends State<SearchTab> {
           // شريط البحث
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.darkGrey, // تأكد إن اللون ده موجود عندك
-                borderRadius: BorderRadius.circular(16),
+            child: CustomTextFormField(
+              controller: _searchController,
+              style: AppStyles.regular16White,
+              curserColor: AppColors.white,
+              hintText: 'Search...',
+              hintStyle: AppStyles.regular16grey,
+              onChanged: (query) {
+                context.read<SearchCubit>().searchMovies(query);
+              },
+              prefixIcon: const Icon(
+                Icons.search,
+                color: AppColors.white,
+                size: 28,
               ),
-              child: TextField(
-                controller: _searchController,
-                style: AppStyles.regular16White,
-                decoration: InputDecoration(
-                  hintText: 'Search...',
-                  hintStyle: AppStyles.regular16grey,
-                  prefixIcon: const Icon(
-                    Icons.search,
-                    color: AppColors.white,
-                    size: 28,
-                  ),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: context.height * 0.018, // تعديل بسيط للارتفاع
-                  ),
-                ),
+              suffixIcon: ValueListenableBuilder<TextEditingValue>(
+                valueListenable: _searchController,
+                builder: (context, value, _) {
+                  if (value.text.isEmpty) return const SizedBox.shrink();
+                  return IconButton(
+                    icon: const Icon(
+                      Icons.close,
+                      color: AppColors.grey,
+                    ),
+                    onPressed: () {
+                      _searchController.clear();
+                      context.read<SearchCubit>().clearSearch();
+                    },
+                  );
+                },
               ),
+              fill: true,
+              filledColor: AppColors.darkGrey,
+              borderColor: Colors.transparent,
             ),
           ),
 
-          // شبكة الأفلام
           Expanded(
-            child: _filteredMovies.isEmpty
-                ? Center(
-              child: Text(
-                'No movies found',
-                style: AppStyles.regular16White,
-              ),
-            )
-                : GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 0.65, // ده المقاس المناسب للبوسترات
-              ),
-              itemCount: _filteredMovies.length,
-              itemBuilder: (context, index) {
-                return MovieCard(
-                  movie: _filteredMovies[index],
-                  onTap: () {
-                    // كود الانتقال لصفحة التفاصيل
-                  },
-                );
+            child: BlocBuilder<SearchCubit, SearchStates>(
+              builder: (context, state) {
+                if (state is SearchLoadingState) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.yellow,
+                    ),
+                  );
+                }
+
+                if (state is SearchErrorState) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        state.errorMessage,
+                        style: AppStyles.regular16White,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                }
+
+                if (state is SearchEmptyState) {
+                  return _buildEmptyState(context);
+                }
+
+                if (state is SearchSuccessState ||
+                    state is SearchLoadingMoreState) {
+                  final movies = (state is SearchSuccessState)
+                      ? state.movies
+                      : (state as SearchLoadingMoreState).currentMovies;
+                  final isLoadingMore = state is SearchLoadingMoreState;
+
+                  if (movies.isEmpty) {
+                    return _buildEmptyState(context);
+                  }
+
+                  return GridView.builder(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: 0.65,
+                    ),
+                    itemCount: movies.length + (isLoadingMore ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index == movies.length) {
+                        return const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: CircularProgressIndicator(
+                              color: AppColors.yellow,
+                            ),
+                          ),
+                        );
+                      }
+
+                      final movie = movies[index];
+                      return MovieCard(
+                        movie: movie,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MovieDetailsScreen(
+                                movieId: movie.id,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  );
+                }
+
+                // SearchInitialState (الحالة الابتدائية قبل البحث)
+                return _buildEmptyState(context);
               },
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context) {
+    return Center(
+      child: Image.asset(
+        AppAssets.emptyLogo,
+        width: context.width * 0.42,
+        fit: BoxFit.contain,
       ),
     );
   }
