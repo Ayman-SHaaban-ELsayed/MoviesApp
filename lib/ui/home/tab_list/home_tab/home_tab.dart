@@ -8,6 +8,7 @@ import 'package:movies_app/ui/home/tab_list/home_tab/widget/latest_movies_carous
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/loading_widget.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_category_widget.dart';
 import 'package:movies_app/ui/home/tab_list/home_tab/widget/movie_gradient.dart';
+import 'package:movies_app/ui/movie_details/genre_movies_screen.dart';
 import 'package:movies_app/ui/movie_details/movie_details_screen.dart';
 import 'package:movies_app/utils/app_assets.dart';
 import 'package:movies_app/utils/app_colors.dart';
@@ -105,7 +106,14 @@ class _HomeTabState extends State<HomeTab> {
                             widthCard: 146,
                             heightCard: 220,
                             onSeeMoreTap: () {
-                              print('See More ${category.categoryName}');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      GenreMoviesScreen(
+                                          genre: category.categoryName),
+                                ),
+                              );
                             },
                             onMovieTap: (movie) {
                               Navigator.push(
