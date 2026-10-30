@@ -58,7 +58,6 @@ class _BrowseTabContentState extends State<_BrowseTabContent> {
     return SafeArea(
       child: Column(
         children: [
-          // شريط التصنيفات (Genres)
           SizedBox(
             height: height * 0.08,
             child: BlocBuilder<BrowseCubit, BrowseStates>(
