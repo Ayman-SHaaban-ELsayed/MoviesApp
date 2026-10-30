@@ -57,7 +57,7 @@ class CastSection extends StatelessWidget {
                           return Container(
                             width: width * 0.14,
                             height: width * 0.14,
-                            color: Colors.grey, // يمكنك استبدالها بـ AppColors.darkGrey إذا كانت متوفرة لديك
+                            color: AppColors.grey,
                             child: Icon(
                               Icons.broken_image,
                               color: AppColors.white,

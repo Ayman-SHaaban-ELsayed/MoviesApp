@@ -38,13 +38,12 @@ class MovieCard extends StatelessWidget {
               ),
             ),
 
-            // تدرج لوني في الأسفل عشان يوضح النص
             Positioned(
               bottom: 0,
               left: 0,
               right: 0,
               child: Container(
-                height: 80, // كبرت الارتفاع شوية عشان النص
+                height: 80,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [AppColors.transparent, Colors.black87],
@@ -55,7 +54,6 @@ class MovieCard extends StatelessWidget {
               ),
             ),
 
-            // اسم الفيلم (اللي كان ناقص)
             Positioned(
               bottom: 8,
               left: 8,
@@ -84,11 +82,7 @@ class MovieCard extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Icons.star,
-                      color: AppColors.yellow,
-                      size: 16,
-                    ),
+                    const Icon(Icons.star, color: AppColors.yellow, size: 16),
                     const SizedBox(width: 4),
                     Text(
                       movie.rating.toString(),
