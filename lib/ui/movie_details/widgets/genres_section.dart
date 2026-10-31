@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
+import 'package:movies_app/ui/movie_details/genre_movies_screen.dart';
 import 'package:movies_app/utils/app_styles.dart';
 import 'package:movies_app/utils/size_utils.dart';
 
@@ -32,18 +33,29 @@ class GenresSection extends StatelessWidget {
             spacing: width * 0.03,
             runSpacing: height * 0.015,
             children: genres.map((genre) {
-              return Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.06,
-                  vertical: height * 0.01,
-                ),
-                decoration: BoxDecoration(
-                  color: const Color(0xff282A28),
+              return Material(
+                color: const Color(0xff282A28),
+                borderRadius: BorderRadius.circular(width * 0.02),
+                child: InkWell(
                   borderRadius: BorderRadius.circular(width * 0.02),
-                ),
-                child: Text(
-                  genre,
-                  style: AppStyles.regular16White,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => GenreMoviesScreen(genre: genre),
+                      ),
+                    );
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: width * 0.06,
+                      vertical: height * 0.01,
+                    ),
+                    child: Text(
+                      genre,
+                      style: AppStyles.regular16White,
+                    ),
+                  ),
                 ),
               );
             }).toList(),
