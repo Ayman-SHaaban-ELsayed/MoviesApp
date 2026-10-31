@@ -1,4 +1,3 @@
-// file: lib/ui/movie_details/web_view_screen.dart
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:movies_app/utils/app_colors.dart';

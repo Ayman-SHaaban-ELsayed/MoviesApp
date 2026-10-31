@@ -56,39 +56,3 @@ class ProfileErrorState extends ProfileState {
 class ProfileLogoutSuccessState extends ProfileState {}
 
 class ProfileDeleteSuccessState extends ProfileState {}
-
-// class MovieItemUiModel {
-//   final String id;
-//   final String title;
-//   final String rating;
-//   final String imagePath;
-//   final String year;
-//
-//   const MovieItemUiModel({
-//     required this.id,
-//     required this.title,
-//     required this.rating,
-//     required this.imagePath,
-//     required this.year,
-//   });
-//
-//   Map<String, dynamic> toJson() {
-//     return {
-//       'id': id,
-//       'title': title,
-//       'rating': rating,
-//       'imagePath': imagePath,
-//       'year': year,
-//     };
-//   }
-//
-//   factory MovieItemUiModel.fromJson(Map<String, dynamic> json) {
-//     return MovieItemUiModel(
-//       id: json['id']?.toString() ?? '',
-//       title: json['title']?.toString() ?? '',
-//       rating: json['rating']?.toString() ?? '0.0',
-//       imagePath: json['imagePath']?.toString() ?? '',
-//       year: json['year']?.toString() ?? '',
-//     );
-//   }
-// }

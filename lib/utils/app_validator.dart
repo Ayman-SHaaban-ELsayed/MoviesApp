@@ -126,10 +126,3 @@ class AppValidators {
     return null;
   }
 }
-// final _formKey = GlobalKey<FormState>();
-// void signIn() {
-//   if (_formKey.currentState!.validate() == true) {
-//     FocusScope.of(context).unfocus();
-//     Navigator.of(context).pushReplacementNamed(AppRoutes.homeRoutesName);
-//   }
-// }
