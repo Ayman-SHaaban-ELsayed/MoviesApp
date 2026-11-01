@@ -59,7 +59,11 @@ class MovieDetailsContent extends StatelessWidget {
                   onWatchlistTap: cubit.toggleWatchlist,
                 ),
                 SizedBox(height: height * 0.15),
-                MoviePlayButton(onTap: cubit.addToHistory),
+                MoviePlayButton(
+                  videoId: movie.ytTrailerCode,
+                  movieTitle: movie.title,
+                  onTap: cubit.addToHistory,
+                ),
                 SizedBox(height: height * 0.04),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: width * 0.05),

@@ -11,6 +11,7 @@ class MovieDetails {
   final String summary;
   final List<Cast> cast;
   final List<String> genres;
+  final String ytTrailerCode;
 
   MovieDetails({
     required this.id,
@@ -25,6 +26,7 @@ class MovieDetails {
     required this.summary,
     required this.cast,
     required this.genres,
+    required this.ytTrailerCode, // ← الجديد
   });
 
   factory MovieDetails.fromJson(Map<String, dynamic> json) {
@@ -39,6 +41,7 @@ class MovieDetails {
     if (json['medium_screenshot_image3'] != null) {
       shots.add(json['medium_screenshot_image3']);
     }
+
     List<Cast> castList = [];
     if (json['cast'] != null) {
       json['cast'].forEach((v) {
@@ -50,6 +53,7 @@ class MovieDetails {
     if (json['genres'] != null) {
       genresList = List<String>.from(json['genres']);
     }
+
     return MovieDetails(
       id: json['id'] ?? 0,
       title: json['title'] ?? '',
@@ -63,6 +67,7 @@ class MovieDetails {
       summary: json['description_full']?.toString() ?? '',
       cast: castList,
       genres: genresList,
+      ytTrailerCode: json['yt_trailer_code']?.toString() ?? '',
     );
   }
 }
