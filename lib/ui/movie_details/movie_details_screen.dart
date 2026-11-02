@@ -7,7 +7,6 @@ import 'package:movies_app/ui/movie_details/widgets/movie_details_content.dart';
 import 'package:movies_app/utils/app_colors.dart';
 import 'package:movies_app/utils/app_styles.dart';
 
-
 class MovieDetailsScreen extends StatelessWidget {
   final int movieId;
 

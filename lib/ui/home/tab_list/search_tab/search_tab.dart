@@ -40,6 +40,8 @@ class _SearchTabContentState extends State<_SearchTabContent> {
   }
 
   void _onScroll() {
+    if (!_scrollController.hasClients) return;
+
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
       context.read<SearchCubit>().loadMoreMovies();
@@ -55,12 +57,15 @@ class _SearchTabContentState extends State<_SearchTabContent> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = context.width;
+    final screenHeight = context.height;
+
     return SafeArea(
       child: Column(
         children: [
-          // شريط البحث
+          // Search Field
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(screenWidth * 0.04),
             child: CustomTextFormField(
               controller: _searchController,
               style: AppStyles.regular16White,
@@ -70,15 +75,18 @@ class _SearchTabContentState extends State<_SearchTabContent> {
               onChanged: (query) {
                 context.read<SearchCubit>().searchMovies(query);
               },
-              prefixIcon: const ImageIcon(
-                AssetImage(AppAssets.searchIcon),
+              prefixIcon: ImageIcon(
+                const AssetImage(AppAssets.searchIcon),
                 color: AppColors.white,
-                size: 28,
+                size: screenWidth * 0.07,
               ),
               suffixIcon: ValueListenableBuilder<TextEditingValue>(
                 valueListenable: _searchController,
                 builder: (context, value, _) {
-                  if (value.text.isEmpty) return const SizedBox.shrink();
+                  if (value.text.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+
                   return IconButton(
                     icon: const Icon(
                       Icons.close,
@@ -111,7 +119,7 @@ class _SearchTabContentState extends State<_SearchTabContent> {
                 if (state is SearchErrorState) {
                   return Center(
                     child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(screenWidth * 0.04),
                       child: Text(
                         state.errorMessage,
                         style: AppStyles.regular16White,
@@ -127,9 +135,10 @@ class _SearchTabContentState extends State<_SearchTabContent> {
 
                 if (state is SearchSuccessState ||
                     state is SearchLoadingMoreState) {
-                  final movies = (state is SearchSuccessState)
+                  final movies = state is SearchSuccessState
                       ? state.movies
                       : (state as SearchLoadingMoreState).currentMovies;
+
                   final isLoadingMore = state is SearchLoadingMoreState;
 
                   if (movies.isEmpty) {
@@ -138,24 +147,24 @@ class _SearchTabContentState extends State<_SearchTabContent> {
 
                   return GridView.builder(
                     controller: _scrollController,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.04,
+                      vertical: screenHeight * 0.01,
                     ),
                     gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                    SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
+                      crossAxisSpacing: screenWidth * 0.04,
+                      mainAxisSpacing: screenHeight * 0.02,
                       childAspectRatio: 0.65,
                     ),
                     itemCount: movies.length + (isLoadingMore ? 1 : 0),
                     itemBuilder: (context, index) {
                       if (index == movies.length) {
-                        return const Center(
+                        return Center(
                           child: Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: CircularProgressIndicator(
+                            padding: EdgeInsets.all(screenWidth * 0.04),
+                            child: const CircularProgressIndicator(
                               color: AppColors.yellow,
                             ),
                           ),
@@ -163,6 +172,7 @@ class _SearchTabContentState extends State<_SearchTabContent> {
                       }
 
                       final movie = movies[index];
+
                       return MovieCard(
                         movie: movie,
                         onTap: () {
@@ -194,6 +204,7 @@ class _SearchTabContentState extends State<_SearchTabContent> {
       child: Image.asset(
         AppAssets.emptyLogo,
         width: context.width * 0.42,
+        height: context.height * 0.25,
         fit: BoxFit.contain,
       ),
     );
