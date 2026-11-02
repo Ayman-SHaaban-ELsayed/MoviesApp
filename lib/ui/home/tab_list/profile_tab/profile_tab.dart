@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/l10n/app_localizations.dart';
@@ -42,7 +43,7 @@ class _ProfileTabView extends StatelessWidget {
           Navigator.pushNamedAndRemoveUntil(
             context,
             AppRoutes.loginRouteName,
-            (route) => false,
+                (route) => false,
           );
         } else if (state is ProfileErrorState) {
           CustomDialog.showError(
@@ -53,8 +54,7 @@ class _ProfileTabView extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        final user =
-            cubit.currentUser ??
+        final currentUser = cubit.currentUser ??
             MyUser(
               id: 'preview_user',
               name: 'John Doe',
@@ -71,10 +71,14 @@ class _ProfileTabView extends StatelessWidget {
               child: Column(
                 children: [
                   ProfileHeader(
-                    user: user,
+                    user: currentUser,
                     cubit: cubit,
                     onExitPressed: () =>
-                        _showLogoutDialog(context, locale, cubit),
+                        _showLogoutDialog(
+                          context,
+                          locale,
+                          cubit,
+                        ),
                   ),
 
                   const SizedBox(height: 16),
@@ -102,7 +106,10 @@ class _ProfileTabView extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: AppColors.darkGrey, width: 1.5),
+          bottom: BorderSide(
+            color: AppColors.darkGrey,
+            width: 1.5,
+          ),
         ),
       ),
       child: TabBar(
@@ -124,7 +131,7 @@ class _ProfileTabView extends StatelessWidget {
                   height: 18,
                   color: AppColors.yellow,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(height: 8),
                 Text(locale.watchList),
               ],
             ),
@@ -139,7 +146,7 @@ class _ProfileTabView extends StatelessWidget {
                   height: 18,
                   color: AppColors.yellow,
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(height: 8),
                 Text(locale.history),
               ],
             ),
@@ -149,11 +156,9 @@ class _ProfileTabView extends StatelessWidget {
     );
   }
 
-  void _showLogoutDialog(
-    BuildContext context,
-    AppLocalizations locale,
-    ProfileCubit cubit,
-  ) {
+  void _showLogoutDialog(BuildContext context,
+      AppLocalizations locale,
+      ProfileCubit cubit,) {
     CustomDialog.showTwoButtons(
       context: context,
       title: locale.exit,
