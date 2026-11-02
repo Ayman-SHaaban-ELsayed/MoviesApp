@@ -41,6 +41,34 @@ class MovieDetailsContent extends StatelessWidget {
     }
   }
 
+  void _onTrailerPressed(BuildContext context) {
+    final trailerCode = movie.ytTrailerCode;
+
+    if (trailerCode == null || trailerCode.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Trailer is not available for this movie'),
+        ),
+      );
+      return;
+    }
+
+    context.read<MovieDetailsCubit>().addToHistory();
+
+    final trailerUrl = 'https://www.youtube.com/watch?v=$trailerCode';
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) =>
+            WebViewScreen(
+              url: trailerUrl,
+              title: '${movie.title} Trailer',
+            ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = context.height;
@@ -59,7 +87,9 @@ class MovieDetailsContent extends StatelessWidget {
                   onWatchlistTap: cubit.toggleWatchlist,
                 ),
                 SizedBox(height: height * 0.15),
-                MoviePlayButton(onTap: cubit.addToHistory),
+                MoviePlayButton(
+                  onTap: () => _onTrailerPressed(context),
+                ),
                 SizedBox(height: height * 0.04),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: width * 0.05),

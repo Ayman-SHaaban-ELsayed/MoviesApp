@@ -11,6 +11,7 @@ class MovieDetails {
   final String summary;
   final List<Cast> cast;
   final List<String> genres;
+  final String? ytTrailerCode;
 
   MovieDetails({
     required this.id,
@@ -25,6 +26,7 @@ class MovieDetails {
     required this.summary,
     required this.cast,
     required this.genres,
+    required this.ytTrailerCode
   });
 
   factory MovieDetails.fromJson(Map<String, dynamic> json) {
@@ -63,6 +65,7 @@ class MovieDetails {
       summary: json['description_full']?.toString() ?? '',
       cast: castList,
       genres: genresList,
+      ytTrailerCode: json['yt_trailer_code']?.toString(),
     );
   }
 }
