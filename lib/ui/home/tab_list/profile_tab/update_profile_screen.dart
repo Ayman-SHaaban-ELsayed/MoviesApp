@@ -14,24 +14,40 @@ import 'package:movies_app/utils/app_styles.dart';
 class UpdateProfileScreen extends StatefulWidget {
   final MyUser? user;
 
-  const UpdateProfileScreen({super.key, this.user});
+  const UpdateProfileScreen({
+    super.key,
+    this.user,
+  });
 
   @override
-  State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
+  State<UpdateProfileScreen> createState() =>
+      _UpdateProfileScreenState();
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nameController;
-  late TextEditingController _phoneController;
+
+  late final TextEditingController _nameController;
+  late final TextEditingController _phoneController;
+
   late int _selectedAvatarId;
+
+  bool _isResettingPassword = false;
 
   @override
   void initState() {
     super.initState();
+
     final user = widget.user;
-    _nameController = TextEditingController(text: user?.name ?? '');
-    _phoneController = TextEditingController(text: user?.phone ?? '');
+
+    _nameController = TextEditingController(
+      text: user?.name ?? '',
+    );
+
+    _phoneController = TextEditingController(
+      text: user?.phone ?? '',
+    );
+
     _selectedAvatarId = (user?.avatarId ?? 1).clamp(1, 9);
   }
 
@@ -47,25 +63,20 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     final local = AppLocalizations.of(context)!;
 
     return BlocConsumer<ProfileCubit, ProfileState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is ProfileUpdatedSuccessState) {
-          bool navigated = false;
-          void navigateBack() {
-            if (!navigated && context.mounted) {
-              navigated = true;
-              CustomDialog.hide(context);
-              Navigator.pop(context);
-            }
-          }
-
-          CustomDialog.showSuccess(
+          await CustomDialog.showSuccess(
             context: context,
             message: local.profileUpdatedSuccess,
             buttonText: local.close,
-          ).then((_) => navigateBack());
+          );
 
-          Future.delayed(const Duration(milliseconds: 900), navigateBack);
+          if (!context.mounted) return;
+
+          Navigator.pop(context, true);
         } else if (state is ProfileDeleteSuccessState) {
+          if (!context.mounted) return;
+
           Navigator.pop(context);
         } else if (state is ProfileErrorState) {
           CustomDialog.showError(
@@ -77,6 +88,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       },
       builder: (context, state) {
         final cubit = context.read<ProfileCubit>();
+
         final isUpdating = state is ProfileUpdatingState;
 
         return Scaffold(
@@ -86,12 +98,17 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             elevation: 0,
             centerTitle: true,
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: AppColors.yellow),
+              icon: const Icon(
+                Icons.arrow_back,
+                color: AppColors.yellow,
+              ),
               onPressed: () => Navigator.pop(context),
             ),
             title: Text(
               local.pickAvatar,
-              style: AppStyles.regular16Yellow.copyWith(fontSize: 18),
+              style: AppStyles.regular16Yellow.copyWith(
+                fontSize: 18,
+              ),
             ),
           ),
           body: SafeArea(
@@ -104,37 +121,41 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     ),
                     child: IntrinsicHeight(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
                         child: Form(
                           key: _formKey,
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.stretch,
                             children: [
                               const SizedBox(height: 24),
 
+                              // Avatar Picker
                               Center(
                                 child: GestureDetector(
                                   onTap: () {
                                     AvatarPickerBottomSheet.show(
                                       context: context,
-                                      selectedAvatarId: _selectedAvatarId,
+                                      selectedAvatarId:
+                                      _selectedAvatarId,
                                       onAvatarSelected: (id) {
                                         setState(() {
                                           _selectedAvatarId = id;
                                         });
+
                                         cubit.selectAvatar(id);
                                       },
                                     );
                                   },
-                                  child: Container(
+                                  child: SizedBox(
                                     width: 140,
                                     height: 140,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                    ),
                                     child: ClipOval(
                                       child: Image.asset(
-                                        AvatarPickerBottomSheet.getAvatarPath(
+                                        AvatarPickerBottomSheet
+                                            .getAvatarPath(
                                           _selectedAvatarId,
                                         ),
                                         fit: BoxFit.cover,
@@ -143,8 +164,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                   ),
                                 ),
                               ),
+
                               const SizedBox(height: 36),
 
+                              // Name
                               CustomTextFormField(
                                 controller: _nameController,
                                 fill: true,
@@ -156,14 +179,19 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 ),
                                 style: AppStyles.bold20White,
                                 validator: (value) {
-                                  if (value == null || value.trim().isEmpty) {
+                                  if (value == null ||
+                                      value
+                                          .trim()
+                                          .isEmpty) {
                                     return local.nameRequired;
                                   }
                                   return null;
                                 },
                               ),
+
                               const SizedBox(height: 20),
 
+                              // Phone
                               CustomTextFormField(
                                 controller: _phoneController,
                                 fill: true,
@@ -176,24 +204,54 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                                 keyboardType: TextInputType.phone,
                                 style: AppStyles.bold20White,
                                 validator: (value) {
-                                  if (value == null || value.trim().isEmpty) {
+                                  if (value == null ||
+                                      value
+                                          .trim()
+                                          .isEmpty) {
                                     return local.phoneRequired;
                                   }
                                   return null;
                                 },
                               ),
+
                               const SizedBox(height: 16),
 
+                              // Reset Password
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: TextButton(
-                                  onPressed: () {
-                                    cubit.resetPassword();
-                                    CustomDialog.showSuccess(
-                                      context: context,
-                                      message: local.passwordResetEmailSent,
-                                      buttonText: local.close,
-                                    );
+                                  onPressed: _isResettingPassword
+                                      ? null
+                                      : () async {
+                                    setState(() {
+                                      _isResettingPassword = true;
+                                    });
+
+                                    try {
+                                      await cubit.resetPassword();
+
+                                      if (!context.mounted) return;
+
+                                      await CustomDialog.showSuccess(
+                                        context: context,
+                                        message: local.passwordResetEmailSent,
+                                        buttonText: local.close,
+                                      );
+                                    } catch (e) {
+                                      if (!context.mounted) return;
+
+                                      CustomDialog.showError(
+                                        context: context,
+                                        message: e.toString(),
+                                        buttonText: local.close,
+                                      );
+                                    } finally {
+                                      if (mounted) {
+                                        setState(() {
+                                          _isResettingPassword = false;
+                                        });
+                                      }
+                                    }
                                   },
                                   child: Text(
                                     local.resetPassword,
@@ -204,48 +262,56 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
                               const Spacer(),
 
+                              // Delete Account
                               ElevatedButtonReuse(
                                 background: AppColors.red,
-                                onPressed: () =>
-                                    _confirmDeleteAccount(
-                                  context,
-                                  local,
-                                  cubit,
-                                ),
+                                onPressed: isUpdating
+                                    ? () {}
+                                    : () {
+                                  _confirmDeleteAccount(
+                                    context,
+                                    local,
+                                    cubit,
+                                  );
+                                },
                                 childType: Text(
                                   local.deleteAccount,
                                   style: AppStyles.bold20White,
                                 ),
                               ),
+
                               const SizedBox(height: 14),
 
+                              // Update Profile
                               ElevatedButtonReuse(
                                 background: AppColors.yellow,
                                 onPressed: isUpdating
                                     ? () {}
                                     : () {
-                                        if (_formKey.currentState!.validate()) {
-                                          cubit.updateProfile(
-                                            name: _nameController.text.trim(),
-                                            phone: _phoneController.text.trim(),
-                                            avatarId: _selectedAvatarId,
-                                          );
-                                        }
-                                      },
+                                  if (_formKey.currentState!
+                                      .validate()) {
+                                    cubit.updateProfile(
+                                      name: _nameController.text.trim(),
+                                      phone: _phoneController.text.trim(),
+                                      avatarId: _selectedAvatarId,
+                                    );
+                                  }
+                                },
                                 childType: isUpdating
                                     ? const SizedBox(
-                                        height: 22,
-                                        width: 22,
-                                        child: CircularProgressIndicator(
-                                          color: AppColors.primary,
-                                          strokeWidth: 2.5,
-                                        ),
-                                      )
+                                  height: 22,
+                                  width: 22,
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.primary,
+                                    strokeWidth: 2.5,
+                                  ),
+                                )
                                     : Text(
-                                        local.updateData,
-                                        style: AppStyles.bold20Black,
-                                      ),
+                                  local.updateData,
+                                  style: AppStyles.bold20Black,
+                                ),
                               ),
+
                               const SizedBox(height: 20),
                             ],
                           ),
@@ -262,11 +328,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     );
   }
 
-  void _confirmDeleteAccount(
-    BuildContext context,
-    AppLocalizations local,
-    ProfileCubit cubit,
-  ) {
+  void _confirmDeleteAccount(BuildContext context,
+      AppLocalizations local,
+      ProfileCubit cubit,) {
     CustomDialog.showTwoButtons(
       context: context,
       title: local.deleteAccount,
